@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Add a New Snippet {% endblock %}</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="content">Snippet Content</label>
+            <textarea type="text" name="content"
+                placeholder="Note content, you can use Markdown syntax" class="form-control"
+                value="{{ request.form['content'] }}" autofocus></textarea>
+        </div>
+       
+        {% include 'sec_sources.html' %}
+    </div>
+
+    <div class="form-group"> 
+        {% include 'sec_tags_auto.html' %}
+    </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" value="Add" name="action">Submit</button>
+        </div>
+    </form>
+
+    <form method="post">
+        <button type="submit" class="btn btn-secondary" value="Delete" name="action">Delete Marked</button>
+      
+        {% for item in items %}
+        <div class="card">
+            <div class="card-body">
+                <span class="badge badge-primary">#{{ item['id'] }}</span>
+                <span class="badge badge-default">{{ item['entry_datetime'] }}</span>
+                <span class="badge badge-default">{{ item['sources'] }}</span>
+                <span class="badge badge-default">{{ item['tags'] }}</span>
+                <input type="checkbox" id="{{ item['id'] }}" name="delete-checks" value="{{ item['id'] }}"   {% if item in request.form.getlist('delete-checks') %}checked{%endif -%} />
+                <label for="{{ item['id'] }}">Mark for delete</label>
+                <hr>
+                <p>{{ item['content'] |safe }}</p>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+
+{% endblock %}
