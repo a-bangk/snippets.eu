@@ -21,20 +21,21 @@ def create():
     if request.method == 'POST':
         if request.form['action'] == 'Add':
             content = request.form['content']
-            source = request.form['source_select']
+            source = request.form['sources-auto']
+            source_url=request.form['source-url']
             tagAuto=request.form['tags-auto'].strip()
             tagList=tagAuto.split(',')
             if not content:
                 flash('Content is required!')
                 return redirect(url_for('index'))
-            nm.addNote(content,source,tagList)
+            nm.addNote(content,source,tagList,source_url)
         elif request.form['action'] == 'Delete':
             nm.deleteSnippet(request.form.getlist('delete-checks'))
         elif request.form['action'] == 'Edit':
             nm.editSnippet(request.form.getlist('edit-snippet'))
     snippets=nm.listNotes()
     tags=tm.listTags()
-    sources = sm.listSources()
+    sources = sm.listSourceTitles()
     return render_template('create.html', items=snippets, tags=tags, sources=sources)
 
 

@@ -1,0 +1,25 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">
+</script>
+
+
+<input type="text" id="source_select" placeholder="Source Title" name="sources-auto">
+<script>
+    $(	function() {
+        var availableSources = [
+            {% for source in sources %}
+                "{{source}}",
+            {% endfor %}
+        ];
+       $( "#source_select" ).autocomplete({
+       source: availableSources
+       });
+    } );
+</script>
+
+<input type="text" id="url" placeholder="URL" name="source-url">
+                
+
+  

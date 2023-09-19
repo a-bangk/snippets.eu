@@ -41,7 +41,7 @@ def listTaggedNotes(tags,filter):
                     notes.append(note)
     return notes
 
-def addNote(content,source,tags):
+def addNote(content,source,tags,url):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     cur.execute(f'insert into note(content,entry_datetime) VALUES ("{content}", now())')
@@ -60,10 +60,26 @@ def addNote(content,source,tags):
                 tag_ids.append(cur.lastrowid)
     for tag_id in tag_ids:
         cur.execute(f'INSERT INTO associate_notetag_note (notetag_id, note_id) VALUES ({tag_id}, {n_id});')
-    cur.execute(f'SELECT id from source where title like"{source}%"')
-    source_entry =cur.fetchone()
-    source_id =source_entry['id']
-    cur.execute(f'INSERT INTO associate_source_note (source_id, note_id) VALUES ({source_id}, {n_id});')
+    
+    if source:    
+        cur.execute(f'SELECT id from source where title like"{source}%"')
+        source_entry =cur.fetchone()
+        if source_entry:
+             source_id =source_entry['id']
+        else:
+            cur.execute(f'INSERT INTO source (title,entry_datetime,update_datetime) values ("{source}", now(),now());')
+            source_id=cur.lastrowid
+        cur.execute(f'INSERT INTO associate_source_note (source_id, note_id) VALUES ({source_id}, {n_id});')    
+
+    if url:    
+        cur.execute(f'SELECT id from source where url like"{url}%"')
+        source_entry =cur.fetchone()
+        if source_entry:
+             source_id =source_entry['id']
+        else:
+            cur.execute(f'INSERT INTO source (url,entry_datetime,update_datetime) values ("{url}", now(),now());')
+            source_id=cur.lastrowid
+        cur.execute(f'INSERT INTO associate_source_note (source_id, note_id) VALUES ({source_id}, {n_id});')    
     conn.commit()
     conn.close()
 

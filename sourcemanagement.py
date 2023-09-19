@@ -11,6 +11,19 @@ def listSources():
         sources.append(source)
     return sources
 
+def listSourceTitles():
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    cur.execute('select s.title as title, s.id as id from source s;')
+    db_sources=cur.fetchall()
+    conn.close()
+    sources=[]
+    for source in db_sources:
+        if source:
+            sources.append(source['title'])
+    return sources
+
+
 def dictSourceTypes():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
