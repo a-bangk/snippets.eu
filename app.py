@@ -18,13 +18,17 @@ def index():
 
 @app.route('/create/', methods=('GET', 'POST'))
 def create():
+    sourceString=""
+    sourceUrl=""
+    tagString=""
     if request.method == 'POST':
         if request.form['action'] == 'Add':
             content = request.form['content']
             source = request.form['sources-auto']
+            sourceString=source
             source_url=request.form['source-url']
-            tagAuto=request.form['tags-auto'].strip()
-            tagList=tagAuto.split(',')
+            tagString=request.form['tags-auto'].strip()
+            tagList=tagString.split(',')
             if not content:
                 flash('Content is required!')
                 return redirect(url_for('index'))
@@ -36,7 +40,8 @@ def create():
     snippets=nm.listNotes()
     tags=tm.listTags()
     sources = sm.listSourceTitles()
-    return render_template('create.html', items=snippets, tags=tags, sources=sources)
+    print(sourceString)
+    return render_template('create.html', items=snippets, tags=tags, sources=sources, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString)
 
 
 
