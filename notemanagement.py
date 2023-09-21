@@ -92,4 +92,10 @@ def deleteSnippet(delete_ids):
     conn.commit()
     conn.close()
 
-
+def editSnippet(edit_id):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    cur.execute(f'select content from note where id={edit_id[0]}')
+    note=cur.fetchall()
+    print(note)
+    conn.close()

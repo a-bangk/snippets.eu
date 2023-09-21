@@ -1,5 +1,6 @@
 
 from flask import Flask, render_template, request, flash, redirect, url_for
+import re
 import sourcemanagement as sm
 from dbconnections import get_db_connection
 import notemanagement as nm
@@ -12,8 +13,8 @@ app.config['SECRET_KEY'] = 'HGrsAtU^Bt7cV8D5'
 
 @app.route('/')
 def index():
-    notes=nm.listNotes()
-    return render_template('index.html', notes=notes)
+    snippets=nm.listNotes()
+    return render_template('index.html', items=snippets)
 
 
 @app.route('/create/', methods=('GET', 'POST'))
@@ -35,8 +36,10 @@ def create():
             nm.addNote(content,source,tagList,source_url)
         elif request.form['action'] == 'Delete':
             nm.deleteSnippet(request.form.getlist('delete-checks'))
-        elif request.form['action'] == 'Edit':
-            nm.editSnippet(request.form.getlist('edit-snippet'))
+        elif re.search("Edit*",request.form['action']):
+            x=request.form['action']
+            id=re.findall(r'\d+',x)
+            nm.editSnippet(id)
     snippets=nm.listNotes()
     tags=tm.listTags()
     sources = sm.listSourceTitles()

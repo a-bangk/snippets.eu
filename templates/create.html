@@ -20,24 +20,9 @@
             <button type="submit" class="btn btn-primary" value="Add" name="action">Submit</button>
         </div>
     </form>
-
+   
     <form method="post">
         <button type="submit" class="btn btn-secondary" value="Delete" name="action">Delete Marked</button>
-      
-        {% for item in items %}
-        <div class="card">
-            <div class="card-body">
-                <span class="badge badge-primary">#{{ item['id'] }}</span>
-                <span class="badge badge-default">{{ item['entry_datetime'] }}</span>
-                <span class="badge badge-default">{{ item['sources'] }}</span>
-                <span class="badge badge-default">{{ item['tags'] }}</span>
-                <input type="checkbox" id="{{ item['id'] }}" name="delete-checks" value="{{ item['id'] }}"   {% if item in request.form.getlist('delete-checks') %}checked{%endif -%} />
-                <label for="{{ item['id'] }}">Mark for delete</label>
-                <hr>
-                <p>{{ item['content'] |safe }}</p>
-            </div>
-        </div>
-        <hr>
-        {% endfor %}
-
+        {% include 'sec_snippets_list.html' %}
+    </form>
 {% endblock %}
