@@ -6,14 +6,16 @@ With python libraries installed on hal and running from virtual environments. Se
 
 ## Access to Snippets
 ### Public
+Public facing running snippets
+#### Test (snippets-a)
 * snippets-a.akjems.com (Running latest build on main)
     * ~/websites/snippets-a/snippets/
 
-### Production
-* snippets.akjems.com (live branch) Significant versions are tagged.
-* * ~/websites/snippets-l/snippets
+#### Production (snippets-l)
+* snippets.akjems.com (live branch) Significant versions are tagged, merged from main
+    * ~/websites/snippets-l/snippets
 
-### Private
+### Private (snippets-p)
 Access to my private database is labeled *snippets-p* only accessible from the home network.
 It is run on the rasberrypi
 * 192.168.0.42:5042
@@ -22,6 +24,7 @@ It is run on the rasberrypi
 # Versioning
 
 Builds are named as Build-Major.Minor.Fix
+Builds numbers are incremented in sync with sprint stories
 
 Build:
 * alpha
