@@ -16,8 +16,8 @@ With python libraries installed on hal and running from virtual environments. Se
 
 ### Private
 Access to my private database is labeled snippets-p only accessible from the home network.
-It is run in 
-* 192.168.0.42:5005
+It is run on the rasberrypi
+* 192.168.0.42:5042
     * ~/websites/snippets-p/snippets
 
 # Versioning
