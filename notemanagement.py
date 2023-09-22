@@ -96,6 +96,8 @@ def editSnippet(edit_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     cur.execute(f'select content from note where id={edit_id[0]}')
+    cur.execute(f'update note set update_datetime=now() where id = {edit_id[0]};')
+    conn.commit()
     note=cur.fetchall()
     print(note)
     conn.close()
