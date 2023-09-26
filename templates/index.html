@@ -1,8 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Welcome to Snippets {% endblock %}</h1>
+    <h1>{% block title %} Add/Edit Snippet {% endblock %}</h1>
+    <form method="post">
+        <div class="form-group">
+            <input type="hidden" name="snippet-id" value="{{previous_id}}"> 
 
+            <textarea type="text" name="content"
+                placeholder="Snippet content, use markdown" class="form-control"
+                 autofocus>{{previous_content}}</textarea>
+        </div>
+        <div class="form-group"> 
+            {% include 'sec_sources_auto.html' %}
+        </div>
 
-    {% include 'sec_snippets_list.html' %}
+        <div class="form-group"> 
+            {% include 'sec_tags_auto.html' %}
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" value="Add" name="action">Save Snippet</button>
+        </div>
+    </form>
+    <form method="post">
+        <button type="submit" class="btn btn-secondary" value="Delete" name="action">Delete Marked</button>
+        {% include 'sec_snippets_list.html' %}
+    </form> 
 {% endblock %}

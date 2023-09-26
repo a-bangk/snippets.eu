@@ -24,9 +24,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('create') }}">New Snippet</a>
-           </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('filtersnippetslist') }}">Filter Snippets</a>
+                </li>
            <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('source') }}">Source Management</a>
        </li>
@@ -36,9 +36,7 @@
    <li class="nav-item active">
     <a class="nav-link" href="{{ url_for('tag') }}">Tag Management</a>
 </li>
-<li class="nav-item active">
-    <a class="nav-link" href="{{ url_for('filtersnippetslist') }}">Filter Snippets</a>
-</li>
+
    <li class="nav-item active">
     <a class="nav-link" href="{{ url_for('about') }}">About</a>
 </li>

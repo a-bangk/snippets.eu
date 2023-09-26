@@ -11,40 +11,45 @@ import sourcemanagement as sm
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'HGrsAtU^Bt7cV8D5'
 
-@app.route('/')
+#@app.route('/')
+#def index():
+#    snippets=nm.listNotes()
+#    return render_template('index.html', items=snippets)
+
+
+@app.route('/', methods=('GET', 'POST'))
 def index():
-    snippets=nm.listNotes()
-    return render_template('index.html', items=snippets)
-
-
-@app.route('/create/', methods=('GET', 'POST'))
-def create():
     sourceString=""
     sourceUrl=""
     tagString=""
+    contentString=""
+    snippetId=False
     if request.method == 'POST':
         if request.form['action'] == 'Add':
             content = request.form['content']
-            source = request.form['sources-auto']
-            sourceString=source
+            sourceString = request.form['sources-auto']
+            snippetId=request.form['snippet-id']
             source_url=request.form['source-url']
             tagString=request.form['tags-auto'].strip()
             tagList=tagString.split(',')
             if not content:
                 flash('Content is required!')
                 return redirect(url_for('index'))
-            nm.addNote(content,source,tagList,source_url)
+            nm.alterSnippet(content,sourceString,tagList,source_url,snippetId)
         elif request.form['action'] == 'Delete':
             nm.deleteSnippet(request.form.getlist('delete-checks'))
         elif re.search("Edit*",request.form['action']):
-            x=request.form['action']
-            id=re.findall(r'\d+',x)
-            nm.editSnippet(id)
+            id=re.findall(r'\d+',request.form['action'])
+            existingSnippet=nm.editSnippet(id)
+            contentString=existingSnippet['content']
+            sourceString=existingSnippet['sources']
+            sourceUrl=existingSnippet['url']
+            tagString=existingSnippet['tags']
+            snippetId=existingSnippet['id']
     snippets=nm.listNotes()
     tags=tm.listTags()
     sources = sm.listSourceTitles()
-    print(sourceString)
-    return render_template('create.html', items=snippets, tags=tags, sources=sources, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString)
+    return render_template('index.html', items=snippets, tags=tags, sources=sources, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
 
 
 

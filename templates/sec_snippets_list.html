@@ -9,27 +9,9 @@
         <input type="checkbox" id="{{ item['id'] }}" name="delete-checks" value="{{ item['id'] }}"   {% if item in request.form.getlist('delete-checks') %}checked{%endif -%} />
         <label for="{{ item['id'] }}">Mark for delete</label>
         <hr>
-        <p id="snippet"></p>
-      
-
+        <p>{{ item['content'] | safe }}</p>
     </div>
             <button type="submit" class="btn btn-primary" value="Edit_{{ item['id'] }}" name="action">Edit</button>
-      
 </div>
 <br>
-<script>
-    var user=''
-    var el = document.getElementById('snippet');
-    var content;
-
-    if  (!user) {
-        content = '{{ item['content'] |safe }}';
-    }
-    if  (user) {
-        content = '<button type="button">Click Me!</button>';
-    }
-
-    el.insertAdjacentHTML('afterbegin', content);
-
-</script>
 {% endfor %}
