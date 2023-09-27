@@ -11,6 +11,17 @@ def listSources():
         sources.append(source)
     return sources
 
+def listAuthors():
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=False)
+    cur.execute('select full_name as author from author;')
+    authors_db=cur.fetchall()
+    conn.close()
+    authors=[]
+    for author in authors_db:
+        authors.append(author[0])
+    return authors
+
 def listSourceTitles():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)

@@ -3,26 +3,11 @@
 {% block content %}
     <h1>{% block title %} Author Management {% endblock %}</h1>
     <form class="form-inline" method="post">
+
       <div class="form-group mx-sm-3 mb-2">
-        <label for="author_Title" class="sr-only">Title</label>
-        <input type="text" class="form-control" name="author_title" placeholder="Title"  value="{{ request.form['author_title'] }}">
+        <label for="author_fullname" class="sr-only">Full name</label>
+        <input type="text" class="form-control" name="author_fullname" placeholder="Author name"  value="{{ request.form['author_fullname'] }}">
       </div>
-        <div class="form-group mb-2">
-          <label for="author_forename" class="sr-only">First Name</label>
-          <input type="text" name="author_forename" id="author_forename" class="form-control" placeholder="Firstname" value="{{ request.form['author_forename'] }}">
-        </div>
-        <div class="form-group mx-sm-3 mb-2">
-          <label for="author_middlename" class="sr-only" >Middlename(s)</label>
-          <input type="text" class="form-control" name="author_middlename" placeholder="Middlename" value="{{ request.form['author_middlename'] }}">
-        </div>
-        <div class="form-group mx-sm-3 mb-2">
-          <label for="author_surname" class="sr-only" >Surname</label>
-          <input type="text" class="form-control" name="author_surname" placeholder="Surname" value="{{ request.form['author_surname'] }}">
-        </div>
-        <div class="form-group mx-sm-3 mb-2">
-            <label for="author_postnominal" class="sr-only">Post nominal</label>
-            <input type="text" class="form-control" name="author_postnominal" placeholder="Postnominal"  value="{{ request.form['author_title'] }}">
-          </div>
           <div class="form-group mx-sm-3 mb-2">
             <label for="author_birthyear" class="sr-only">Birth Year</label>
             <input type="text" class="form-control" name="author_birthyear" placeholder="Birth year"  value="{{ request.form['author_birthyear'] }}">
@@ -34,6 +19,10 @@
         <div class="form-group">
         <button type="submit" class="btn btn-primary mb-2">Add Author</button>
     </div>
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="author_comment" class="sr-only">Comment</label>
+      <input type="text" class="form-control" name="author_comment" placeholder="Comment"  value="{{ request.form['author_comment'] }}">
+    </div>
       </form>
 
     {% for author in authors %}
@@ -41,7 +30,8 @@
         <div class="card-body">
             <span class="badge badge-primary">#{{ author['id'] }}</span>
             <hr>
-            {{ author['title'] |safe }} {{ author['forename'] |safe }} {{ author['middlename'] |safe }} {{ author['surname'] |safe }} {{ author['postnominal'] |safe }} b.{{ author['birthyear'] |safe }} d. {{ author['deathyear'] |safe }}
+            {{ author['fullname'] |safe }} b.{{ author['birthyear'] |safe }} d. {{ author['deathyear'] |safe }} <br>
+            {{ author['comment'] |safe }}
         </div>
     </div>
     <hr>

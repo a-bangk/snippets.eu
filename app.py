@@ -32,10 +32,15 @@ def index():
             source_url=request.form['source-url']
             tagString=request.form['tags-auto'].strip()
             tagList=tagString.split(',')
+            authorsString=request.form['authors-auto'].strip()
+            authorList=authorsString.split(',')
             if not content:
                 flash('Content is required!')
                 return redirect(url_for('index'))
-            nm.alterSnippet(content,sourceString,tagList,source_url,snippetId)
+            if authorsString and not (sourceString or sourceUrl):
+                flash('Author entry requires Source Title or URL')
+                return redirect(url_for('index'))
+            nm.alterSnippet(content,sourceString,tagList,source_url,authorList,snippetId)
         elif request.form['action'] == 'Delete':
             nm.deleteSnippet(request.form.getlist('delete-checks'))
         elif re.search("Edit*",request.form['action']):
@@ -49,7 +54,8 @@ def index():
     snippets=nm.listNotes()
     tags=tm.listTags()
     sources = sm.listSourceTitles()
-    return render_template('index.html', items=snippets, tags=tags, sources=sources, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
+    authors = sm.listAuthors()
+    return render_template('index.html', items=snippets, tags=tags, sources=sources,authors=authors, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
 
 
 
@@ -91,18 +97,15 @@ def author():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     if request.method == 'POST':
-        forename = str(request.form['author_forename'])
-
-        author_title = str(request.form['author_title'])
-        surname = str(request.form['author_surname'])
-        middlename = str(request.form['author_middlename'])
-        postnominal = str(request.form['author_postnominal'])
+        authorFullname = str(request.form['author_fullname'])
+        comment = str(request.form['author_comment'])
         birthyear = str(request.form['author_birthyear'])
+        print(birthyear)
         deathyear = str(request.form['author_deathyear'])
-        if not forename and not surname and not middlename and not postnominal and not birthyear and not deathyear:
-            flash('One field is required!')
+        if not authorFullname:
+            flash('Name required!')
             return redirect(url_for('author'))
-        cur.execute(f'insert into author(forename,surname,title,postnominal,middlename,birthyear, deathyear) VALUES ("{forename}","{surname}","{author_title}","{postnominal}","{middlename}","{birthyear}","{deathyear}")')
+        cur.execute(f'insert into author(full_name,birthyear, deathyear, comment) VALUES ("{authorFullname}","{birthyear}","{deathyear}","{comment}");')
         conn.commit()
         conn.close()
         authorList=listAuthors()
@@ -111,7 +114,7 @@ def author():
 def listAuthors():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute('SELECT IFNULL(title,"") as title, IFNULL(forename,"") as forename,IFNULL(surname,"") as surname,IFNULL(middlename,"") as middlename,IFNULL(postnominal,"") as postnominal,IFNULL(birthyear,"") as birthyear,IFNULL(deathyear,"") as deathyear from author order by id desc;'.format(str()))
+    cur.execute('SELECT full_name as fullname, IFNULL(birthyear,"") as birthyear,IFNULL(deathyear,"") as deathyear, comment from author order by id desc;'.format(str()))
     db_authors=cur.fetchall()
     conn.close()
     authors=[]

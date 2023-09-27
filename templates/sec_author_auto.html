@@ -1,20 +1,6 @@
-<input type="text" id="source_select" placeholder="Source Title (optional)" name="sources-auto" value="{{previous_source}}">
-<script>
-    $(	function() {
-        var availableSources = [
-            {% for source in sources %}
-                "{{source}}",
-            {% endfor %}
-        ];
-       $( "#source_select" ).autocomplete({
-       source: availableSources
-       });
-    } );
-</script>
-
-<input type="text" id="url" placeholder="URL (optional)" name="source-url" value="{{previous_url}}">
-                
-
+<div class="form-group">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
     $( function() {
       var availableAuthors = [
@@ -63,4 +49,7 @@
         });
     } );
     </script>
-      <input type="text" id="authors" name="authors-auto" placeholder="Authors (optional)" value="{{previous_authors}}">
+      <input type="text" id="authors" name="authors-auto" placeholder="Authors" value="{{previous_authors}}">
+  </div>
+  
+    
