@@ -100,7 +100,6 @@ def author():
         authorFullname = str(request.form['author_fullname'])
         comment = str(request.form['author_comment'])
         birthyear = str(request.form['author_birthyear'])
-        print(birthyear)
         deathyear = str(request.form['author_deathyear'])
         if not authorFullname:
             flash('Name required!')
