@@ -6,16 +6,11 @@ from dbconnections import get_db_connection
 import notemanagement as nm
 import tagmanagement as tm
 import sourcemanagement as sm
+import authormanagement as am
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'HGrsAtU^Bt7cV8D5'
-
-#@app.route('/')
-#def index():
-#    snippets=nm.listNotes()
-#    return render_template('index.html', items=snippets)
-
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
@@ -54,7 +49,7 @@ def index():
     snippets=nm.listNotes()
     tags=tm.listTags()
     sources = sm.listSourceTitles()
-    authors = sm.listAuthors()
+    authors = am.listAuthorsAuto()
     return render_template('index.html', items=snippets, tags=tags, sources=sources,authors=authors, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
 
 
@@ -93,33 +88,33 @@ def source():
 
 @app.route('/author/', methods=('GET', 'POST'))
 def author():
-    authorList=listAuthors()
-    conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)
+    authorList=am.listAuthors()
+    exisitingBirthyear=''
+    exisitingDeathyear=''
+    exisitingComment=''
+    exisitingFullname=''
+    id=0
     if request.method == 'POST':
-        authorFullname = str(request.form['author_fullname'])
-        comment = str(request.form['author_comment'])
-        birthyear = str(request.form['author_birthyear'])
-        deathyear = str(request.form['author_deathyear'])
-        if not authorFullname:
-            flash('Name required!')
-            return redirect(url_for('author'))
-        cur.execute(f'insert into author(full_name,birthyear, deathyear, comment) VALUES ("{authorFullname}","{birthyear}","{deathyear}","{comment}");')
-        conn.commit()
-        conn.close()
-        authorList=listAuthors()
-    return render_template('author.html', authors=authorList)
-
-def listAuthors():
-    conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)
-    cur.execute('SELECT full_name as fullname, IFNULL(birthyear,"") as birthyear,IFNULL(deathyear,"") as deathyear, comment from author order by id desc;'.format(str()))
-    db_authors=cur.fetchall()
-    conn.close()
-    authors=[]
-    for author in db_authors:
-        authors.append(author)
-    return authors
+        if request.form['action']=='Add':
+            authorFullname = str(request.form['author_fullname'])
+            comment = str(request.form['author_comment'])
+            birthyear = str(request.form['author_birthyear'])
+            deathyear = str(request.form['author_deathyear'])
+            id=int(request.form['author_id'])
+            if not authorFullname:
+                flash('Name required!')
+                return redirect(url_for('author'))
+            am.saveAuthor(authorFullname,birthyear,deathyear,comment,id)
+        if re.search("Edit*",request.form['action']):
+            id=re.findall(r'\d+',request.form['action'])[0]
+            print(id, type(id))
+            existingAuthor=am.editAuthor(id)
+            exisitingBirthyear=existingAuthor['birthyear']
+            exisitingDeathyear=existingAuthor['deathyear']
+            exisitingComment=existingAuthor['comment']
+            exisitingFullname=existingAuthor['fullname']
+        authorList=am.listAuthors()
+    return render_template('author.html', authors=authorList, author_birthyear=exisitingBirthyear, author_deathyear=exisitingDeathyear, author_comment=exisitingComment, author_fullname=exisitingFullname, author_id=id)
 
 @app.route('/tag/', methods=('GET', 'POST'))
 def tag():

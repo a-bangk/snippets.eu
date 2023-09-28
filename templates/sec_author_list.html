@@ -1,0 +1,12 @@
+{% for author in authors %}
+<div class="card">
+    <div class="card-body">
+        <span class="badge badge-primary">#{{ author['id'] }}</span>
+        <hr>
+        {{ author['fullname'] |safe }} b.{{ author['birthyear'] |safe }} d. {{ author['deathyear'] |safe }} <br>
+        {{ author['comment'] |safe }}s
+    </div>
+    <button type="submit" class="btn btn-primary" value="Edit_{{ author['id'] }}" name="action">Edit</button>
+</div>
+<hr>
+{% endfor %}

@@ -1,39 +1,28 @@
 {% extends 'base.html' %}
-
 {% block content %}
     <h1>{% block title %} Author Management {% endblock %}</h1>
-    <form class="form-inline" method="post">
-
-      <div class="form-group mx-sm-3 mb-2">
+    <form method="post">
+      <div class="form-group">
+        <input type="hidden" name="author_id" value="{{author_id}}"> 
         <label for="author_fullname" class="sr-only">Full name</label>
-        <input type="text" class="form-control" name="author_fullname" placeholder="Author name"  value="{{ request.form['author_fullname'] }}">
+        <input type="text" class="form-control" name="author_fullname" placeholder="Author name"  value="{{author_fullname}}">
       </div>
-          <div class="form-group mx-sm-3 mb-2">
+      <div class="form-group">
             <label for="author_birthyear" class="sr-only">Birth Year</label>
-            <input type="text" class="form-control" name="author_birthyear" placeholder="Birth year"  value="{{ request.form['author_birthyear'] }}">
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <label for="author_deathyear" class="sr-only">Death Year</label>
-            <input type="text" class="form-control" name="author_deathyear" placeholder="Death year"  value="{{ request.form['author_deathyear'] }}">
-          </div>
-        <div class="form-group">
-        <button type="submit" class="btn btn-primary mb-2">Add Author</button>
-    </div>
-    <div class="form-group mx-sm-3 mb-2">
-      <label for="author_comment" class="sr-only">Comment</label>
-      <input type="text" class="form-control" name="author_comment" placeholder="Comment"  value="{{ request.form['author_comment'] }}">
-    </div>
-      </form>
+            <input type="text" class="form-control" name="author_birthyear" placeholder="Birth year"  value="{{author_birthyear}}">
+      </div>
+      <div class="form-group">
+          <label for="author_deathyear" class="sr-only">Death Year</label>
+          <input type="text" class="form-control" name="author_deathyear" placeholder="Death year"  value="{{author_deathyear}}">
+      </div>
+      <div class="form-group">
 
-    {% for author in authors %}
-    <div class="card">
-        <div class="card-body">
-            <span class="badge badge-primary">#{{ author['id'] }}</span>
-            <hr>
-            {{ author['fullname'] |safe }} b.{{ author['birthyear'] |safe }} d. {{ author['deathyear'] |safe }} <br>
-            {{ author['comment'] |safe }}
-        </div>
-    </div>
-    <hr>
-    {% endfor %}
+          <label for="author_comment" class="sr-only">Comment</label>
+          <input type="text" class="form-control" name="author_comment" placeholder="Comment"  value="{{author_comment}}">
+        <button type="submit" class="btn btn-primary mb-2" value="Add" name="action">Save Author</button>
+      </div>
+      </form>
+      <form method="post">
+        {% include 'sec_author_list.html' %}
+      </form>
 {% endblock %}

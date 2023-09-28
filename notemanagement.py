@@ -1,6 +1,5 @@
 from dbconnections import get_db_connection
 import markdown
-import re
 
 def listNotes():
     conn = get_db_connection()
