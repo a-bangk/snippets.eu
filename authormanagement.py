@@ -31,14 +31,11 @@ def editAuthor(edit_id):
     return(author)
 
 def saveAuthor(fullName,birthyear,deathyear,comment, id=0):
-    print(fullName,birthyear,deathyear,comment,id)
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     if id == 0:
         cur.execute(f'insert into author(full_name,birthyear,deathyear,comment) VALUES ("{fullName}", "{birthyear}", "{deathyear}", "{comment}");')
     else:
         cur.execute(f'update author set full_name = "{fullName}",birthyear = "{birthyear}",deathyear = "{deathyear}",comment = "{comment}" where id = "{id}";')
-        print(f'update author set full_name = "{fullName}",birthyear = "{birthyear}",deathyear = "{deathyear}",comment = "{comment}" where id = "{id}";')
-
     conn.commit()
     conn.close()

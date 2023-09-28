@@ -72,8 +72,7 @@ def about():
 
 @app.route('/source/', methods=('GET', 'POST'))
 def source():
-    sourcesList=sm.listSources()
-    sourceTypesDict=sm.dictSourceTypes()
+
     if request.method == 'POST':
         if request.form['action'] == 'Add':
             if not request.form['title'] and request.form['source_type']:
@@ -84,11 +83,12 @@ def source():
             sourcesList=sm.listSources()
         elif request.form['action'] == 'Delete':
             sm.deleteSource(request.form.getlist('delete-checks'))
+    sourcesList=sm.listSources()
+    sourceTypesDict=sm.dictSourceTypes()
     return render_template('source.html', sources=sourcesList, sourceTypes=sourceTypesDict)
 
 @app.route('/author/', methods=('GET', 'POST'))
 def author():
-    authorList=am.listAuthors()
     exisitingBirthyear=''
     exisitingDeathyear=''
     exisitingComment=''
@@ -105,7 +105,7 @@ def author():
                 flash('Name required!')
                 return redirect(url_for('author'))
             am.saveAuthor(authorFullname,birthyear,deathyear,comment,id)
-        if re.search("Edit*",request.form['action']):
+        elif re.search("Edit*",request.form['action']):
             id=re.findall(r'\d+',request.form['action'])[0]
             print(id, type(id))
             existingAuthor=am.editAuthor(id)
@@ -113,7 +113,7 @@ def author():
             exisitingDeathyear=existingAuthor['deathyear']
             exisitingComment=existingAuthor['comment']
             exisitingFullname=existingAuthor['fullname']
-        authorList=am.listAuthors()
+    authorList=am.listAuthors()
     return render_template('author.html', authors=authorList, author_birthyear=exisitingBirthyear, author_deathyear=exisitingDeathyear, author_comment=exisitingComment, author_fullname=exisitingFullname, author_id=id)
 
 @app.route('/tag/', methods=('GET', 'POST'))
