@@ -34,7 +34,6 @@ def listSourceTitles():
             sources.append(source['title'])
     return sources
 
-
 def dictSourceTypes():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
@@ -67,7 +66,6 @@ def addSource(forename, surname, middlename, postnominal, author_title, source_t
 def deleteSource(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    print(delete_ids)
     for id in delete_ids:
         cur.execute(f'delete from source where id={id}')
     conn.commit()

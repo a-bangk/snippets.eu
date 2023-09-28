@@ -39,3 +39,12 @@ def saveAuthor(fullName,birthyear,deathyear,comment, id=0):
         cur.execute(f'update author set full_name = "{fullName}",birthyear = "{birthyear}",deathyear = "{deathyear}",comment = "{comment}" where id = "{id}";')
     conn.commit()
     conn.close()
+
+def deleteAuthor(delete_ids):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    print(delete_ids)
+    for id in delete_ids:
+        cur.execute(f'delete from author where id={id}')
+    conn.commit()
+    conn.close()

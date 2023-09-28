@@ -113,6 +113,8 @@ def author():
             exisitingDeathyear=existingAuthor['deathyear']
             exisitingComment=existingAuthor['comment']
             exisitingFullname=existingAuthor['fullname']
+        elif request.form['action'] == 'Delete':
+            am.deleteAuthor(request.form.getlist('delete-checks'))
     authorList=am.listAuthors()
     return render_template('author.html', authors=authorList, author_birthyear=exisitingBirthyear, author_deathyear=exisitingDeathyear, author_comment=exisitingComment, author_fullname=exisitingFullname, author_id=id)
 
