@@ -1,0 +1,23 @@
+
+    {% for source in sources %}
+    <div class="card">
+        <div class="card-body">
+            <span class="badge badge-primary">#{{ source['id'] }}</span>
+            <span class="badge badge-default">{{ source['entry_datetime'] }}</span>
+            <span class="badge badge-default">{{ source['type'] }}</span>
+
+            <input type="checkbox" id="{{ source['id'] }}" name="delete-checks" value="{{ source['id'] }}"   {% if source in request.form.getlist('delete-checks') %}checked{%endif -%} />
+        <label for="{{ source['id'] }}">Mark for delete</label>
+
+            <hr>
+            <ul>
+                <li>{{ source['author'] |safe }}</li>
+                <li>Title: {{ source['title'] |safe }}</li>
+                <li>URL: {{ source['url'] |safe }}</li>
+                <li>Type: {{ source['type'] |safe }}</li>
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-primary" value="Edit_{{ source['id'] }}" name="action">Edit</button>
+    </div>
+    <hr>
+    {% endfor %}

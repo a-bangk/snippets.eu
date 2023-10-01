@@ -22,7 +22,7 @@ def listAuthorsAuto():
         authors.append(author[0])
     return authors
 
-def editAuthor(edit_id):
+def loadAuthor(edit_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     cur.execute(f'SELECT id,full_name as fullname, IFNULL(birthyear,"") as birthyear,IFNULL(deathyear,"") as deathyear, comment from author a where a.id={edit_id};')
@@ -30,21 +30,29 @@ def editAuthor(edit_id):
     conn.close()
     return(author)
 
-def saveAuthor(fullName,birthyear,deathyear,comment, id=0):
+def saveAuthor(fullName,birthyear='',deathyear='',comment='', id=0):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     if id == 0:
         cur.execute(f'insert into author(full_name,birthyear,deathyear,comment) VALUES ("{fullName}", "{birthyear}", "{deathyear}", "{comment}");')
     else:
         cur.execute(f'update author set full_name = "{fullName}",birthyear = "{birthyear}",deathyear = "{deathyear}",comment = "{comment}" where id = "{id}";')
+    a_id = cur.lastrowid
     conn.commit()
     conn.close()
+    return(a_id)
 
 def deleteAuthor(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    print(delete_ids)
     for id in delete_ids:
         cur.execute(f'delete from author where id={id}')
     conn.commit()
     conn.close()
+
+def returnAuthorId(fullName):
+    conn = get_db_connection()
+    cur=conn.cursor
+    id = cur.execute(f'select id from author where fullname={fullName}')[0]
+    conn.close()
+    return id

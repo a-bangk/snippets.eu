@@ -52,8 +52,6 @@ def index():
     authors = am.listAuthorsAuto()
     return render_template('index.html', items=snippets, tags=tags, sources=sources,authors=authors, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
 
-
-
 @app.route('/filtersnippetslist/', methods=('GET', 'POST'))
 def filtersnippetslist():
     tags=tm.listTags()
@@ -65,27 +63,38 @@ def filtersnippetslist():
         snippets=nm.listNotes()
     return render_template('filtersnippetslist.html', items=snippets, tags=tags)
 
-
 @app.route('/about/')
 def about():
     return render_template('about.html')
 
 @app.route('/source/', methods=('GET', 'POST'))
 def source():
-
+    exisitingTitle=''
+    exisitingYear=''      
+    exisitingUrl=''
+    exisitingFullname=''
+    exisitingType=''
+    sourceTypesDict=sm.dictSourceTypes()
+    id=''
     if request.method == 'POST':
         if request.form['action'] == 'Add':
             if not request.form['title'] and request.form['source_type']:
                 flash('A title and source type is required!')
-                return redirect(url_for('source'))        
-            sourceTypeId = [d.get('id') for d in sourceTypesDict if d.get('entry')==request.form['source_type']]
-            sm.addSource(request.form['author_forename'],request.form['author_surname'],request.form['author_middlename'],request.form['author_postnominal'],request.form['author_title'],request.form['title'],request.form['year'],sourceTypeId[0],request.form['url'])
-            sourcesList=sm.listSources()
+                return redirect(url_for('source'))
+            sourceTypeId = [d.get('id') for d in sourceTypesDict if d.get('entry')==request.form['source_type']][0]
+            sm.alterSource(request.form['authors-auto'],request.form['title'],request.form['year'],sourceTypeId,request.form['url'],request.form['source_id'])
+        elif re.search("Edit*",request.form['action']):
+            id=re.findall(r'\d+',request.form['action'])[0]
+            existingSource=sm.loadSource(id)
+            exisitingTitle=existingSource['title']
+            exisitingYear=existingSource['year']
+            exisitingUrl=existingSource['url']
+            exisitingFullname=existingSource['author']
+            exisitingType=existingSource['type']
         elif request.form['action'] == 'Delete':
             sm.deleteSource(request.form.getlist('delete-checks'))
     sourcesList=sm.listSources()
-    sourceTypesDict=sm.dictSourceTypes()
-    return render_template('source.html', sources=sourcesList, sourceTypes=sourceTypesDict)
+    return render_template('source.html', sources=sourcesList, sourceTypes=sourceTypesDict, title=exisitingTitle, year=exisitingYear, url=exisitingUrl, type=exisitingType, previous_authors=exisitingFullname, previous_id=id )
 
 @app.route('/author/', methods=('GET', 'POST'))
 def author():
@@ -104,11 +113,11 @@ def author():
             if not authorFullname:
                 flash('Name required!')
                 return redirect(url_for('author'))
+            ## search existing authors to confirm no double entry
             am.saveAuthor(authorFullname,birthyear,deathyear,comment,id)
         elif re.search("Edit*",request.form['action']):
             id=re.findall(r'\d+',request.form['action'])[0]
-            print(id, type(id))
-            existingAuthor=am.editAuthor(id)
+            existingAuthor=am.loadAuthor(id)
             exisitingBirthyear=existingAuthor['birthyear']
             exisitingDeathyear=existingAuthor['deathyear']
             exisitingComment=existingAuthor['comment']

@@ -1,4 +1,5 @@
 from dbconnections import get_db_connection
+import authormanagement as am
 
 def listSources():
     conn = get_db_connection()
@@ -42,26 +43,23 @@ def dictSourceTypes():
     conn.close()
     return dictSourceTypes
 
-def addSource(forename, surname, middlename, postnominal, author_title, source_title, year, sourceTypeId, url):
-    conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)
+def alterSource(authorFullName, title, year, typeId, url,sId):
+
     if year=='':
         year = 'NULL'
     if url=='':
         url = 'NULL'
-    insert_source_query=f'insert into source(title,entry_datetime,source_type_id,url,year) VALUES ("{source_title}", now(),"{sourceTypeId}", {url}, {year})'
-    if forename or surname or middlename or  postnominal or author_title:
-        cur.execute(f'insert into author(forename,surname,title,postnominal,middlename) VALUES ("{forename}","{surname}","{author_title}","{postnominal}","{middlename}")')
-        a_id = cur.lastrowid
-        cur.execute(insert_source_query)
-        s_id = cur.lastrowid
-        cur.execute(f'INSERT INTO associate_source_author (author_id, source_id) VALUES ({a_id}, {s_id});')
-        conn.commit()
-        conn.close()
+    if sId == "False":
+        sId=addSource(title,typeId,url,year)
     else:
-        cur.execute(insert_source_query)
-        conn.commit()
-        conn.close()
+        updateSource(title,url,typeId,year,sId)
+    existingAuthor=loadLinkedAuthors(sId)
+    print(authorFullName)
+    if authorFullName:
+        # needs to check the existing
+        if existingAuthor['author']!=authorFullName:
+            aId=am.saveAuthor(authorFullName)
+            linkAuthor(aId,sId)
 
 def deleteSource(delete_ids):
     conn = get_db_connection()
@@ -71,14 +69,39 @@ def deleteSource(delete_ids):
     conn.commit()
     conn.close()
 
-def editSource(edit_id):
+def loadSource(edit_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute(f'with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag SEPARATOR ", ") as tags from associate_notetag_note ann join notetag nt on nt.id = ann.notetag_id group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources, s.url from associate_source_note asn join source s on s.id = asn.source_id group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources,s.url from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id where n.id={edit_id[0]};')
+    cur.execute(f'select st.entry as type,s.id,s.year as year, s.title as title, GROUP_CONCAT(a.full_name SEPARATOR " & ") as author, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id where s.id={edit_id};')
     previousSnippet=cur.fetchone()
     conn.close()
     return(previousSnippet)
 
+def addSource(title, typeId, url, year):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    cur.execute(f'insert into source(title,entry_datetime,source_type_id,url,year) VALUES ("{title}", now(),"{typeId}", {url}, {year})')
+    sId = cur.lastrowid
+    conn.commit()
+    conn.close()
+    return(sId)
 
+def linkAuthor(sourceId, authorId):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    cur.execute(f'INSERT INTO associate_source_author (author_id, source_id) VALUES ({authorId}, {sourceId});')
+    conn.close()
 
+def loadLinkedAuthors(sourceId):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    linkedAuthors=cur.execute(f'select a.full_name as author,a.id as a_id, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id where s.id={sourceId};')
+    conn.close()
+    return(linkedAuthors)
 
+def updateSource(title,url,typeId,year,sourceId):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    cur.execute(f'update source set title = "{title}",update_datetime=now(),url="{url}", source_type_id={typeId}, year={year} where id = "{sourceId}";')
+    conn.commit()
+    conn.close()

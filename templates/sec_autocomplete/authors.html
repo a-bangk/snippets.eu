@@ -1,7 +1,4 @@
-<div class="form-group">
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <script>
+<script>
     $( function() {
       var availableAuthors = [
       {% for author in authors %}
@@ -49,7 +46,4 @@
         });
     } );
     </script>
-      <input type="text" id="authors" name="authors-auto" placeholder="Authors" value="{{previous_authors}}">
-  </div>
-  
-    
+      <input type="text" id="authors" name="authors-auto" placeholder="Authors (optional)" value="{{previous_authors}}">

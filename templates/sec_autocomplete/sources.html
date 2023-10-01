@@ -1,0 +1,17 @@
+<input type="text" id="source_select" placeholder="Source Title (optional)" name="sources-auto" value="{{previous_source}}">
+<script>
+    $(	function() {
+        var availableSources = [
+            {% for source in sources %}
+                "{{source}}",
+            {% endfor %}
+        ];
+       $( "#source_select" ).autocomplete({
+       source: availableSources
+       });
+    } );
+</script>
+
+<input type="text" id="url" placeholder="URL (optional)" name="source-url" value="{{previous_url}}">
+                
+

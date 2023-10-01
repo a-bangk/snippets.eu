@@ -1,81 +1,39 @@
 {% extends 'base.html' %}
-
 {% block content %}
     <h1>{% block title %} Source Management {% endblock %}</h1>     
-    <form class="form-inline" method="post">
-        <div class="form-row">
-          <div class="form-group col-md-6">
+    <form method="post">
+        <div class="form-group">
+          <input type="hidden" name="source_id" value="{{previous_id}}"> 
             <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" placeholder="Source name" name="title">
-          </div>
-          <div class="form-group col-md-6">
+            <input type="text" class="form-control" id="title" placeholder="Source name" name="title" value="{{title}}">
             <label for="year">Year</label>
-            <input type="number" class="form-control" id="year" placeholder="2023" name="year">
-          </div>
+            <input type="number" class="form-control" id="year" placeholder="2023" name="year" value="{{year}}">
         </div>
         <div class="form-group">
           <label for="url">URL</label>
-          <input type="url" class="form-control" id="url" placeholder="https://" name="url">
+          <input type="text" class="form-control" id="url" placeholder="https://" name="url" value="{{url}}">
         </div>
-          <div class="form-group col-md-4">
-            <label for="inputState">Source Type</label>
-            <select id="inputState" class="form-control" name="source_type">
-              <option selected>Choose...</option>
-              {% for sourceType in sourceTypes -%}
-                <option>
-                  {{ sourceType['entry'] }}
-                </option>
-              {% endfor -%}
-            </select>
-          </div>
-          <h3>Author</h3>
-          <div class="form-group mx-sm-3 mb-2">
-            <label for="author_Title" class="sr-only">Title</label>
-            <input type="text" class="form-control" name="author_title" placeholder="Title"  value="{{ request.form['author_title'] }}">
-          </div>
-            <div class="form-group mb-2">
-              <label for="author_forename" class="sr-only">First Name</label>
-              <input type="text" name="author_forename" id="author_forename" class="form-control" placeholder="First name" value="{{ request.form['author_forename'] }}">
-            </div>
-            <div class="form-group mx-sm-3 mb-2">
-              <label for="author_middlename" class="sr-only" >Middlename(s)</label>
-              <input type="text" class="form-control" name="author_middlename" placeholder="Middle name" value="{{ request.form['author_middlename'] }}">
-            </div>
-            <div class="form-group mx-sm-3 mb-2">
-              <label for="author_surname" class="sr-only" >Surname</label>
-              <input type="text" class="form-control" name="author_surname" placeholder="Surname" value="{{ request.form['author_surname'] }}">
-            </div>
-            <div class="form-group mx-sm-3 mb-2">
-                <label for="author_postnominal" class="sr-only">Post nominal</label>
-                <input type="text" class="form-control" name="author_postnominal" placeholder="Post nominal"  value="{{ request.form['author_title'] }}">
-              </div>
-        <button type="submit" class="btn btn-primary" value="Add" name="action">Add Source</button>
+        <div class="form-group">
+          <label for="inputState">Source Type</label>
+          <select id="inputState" class="form-control" name="source_type" value="{{type}}">
+            <option selected>Choose...</option>
+            {% for sourceType in sourceTypes -%}
+            <option>
+              {{ sourceType['entry'] }}
+            </option>
+            {% endfor -%}
+          </select>
+        </div>
+        <h3>Author</h3>
+        {% include 'sec_autocomplete/authors.html' %}
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary mb-2" value="Add" name="action" >Save Source</button>
+        </div>
+
+    </form>
+    <form method="post">
+      <button type="submit" class="btn btn-secondary" value="Delete" name="action">Delete Marked</button>
+        {% include 'sec_lists/sources.html' %}
       </form>
-
-
-<form method="post">
-  <button type="submit" class="btn btn-secondary" value="Delete" name="action">Delete Marked</button>
-
-    {% for source in sources %}
-    <div class="card">
-        <div class="card-body">
-            <span class="badge badge-primary">#{{ source['id'] }}</span>
-            <span class="badge badge-default">{{ source['entry_datetime'] }}</span>
-            <span class="badge badge-default">{{ source['type'] }}</span>
-
-            <input type="checkbox" id="{{ source['id'] }}" name="delete-checks" value="{{ source['id'] }}"   {% if source in request.form.getlist('delete-checks') %}checked{%endif -%} />
-        <label for="{{ source['id'] }}">Mark for delete</label>
-
-            <hr>
-            <ul>
-                <li>{{ source['author'] |safe }}</li>
-                <li>Title: {{ source['title'] |safe }}</li>
-                <li>URL: {{ source['url'] |safe }}</li>
-                <li>Type: {{ source['type'] |safe }}</li>
-            </ul>
-        </div>
-    </div>
-    <hr>
-    {% endfor %}
-</form>
 {% endblock %}
