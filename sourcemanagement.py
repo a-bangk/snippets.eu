@@ -49,7 +49,7 @@ def alterSource(authorFullNameList, title, year, typeId, url,sId):
         year = 'NULL'
     if url=='':
         url = 'NULL'
-    if sId == "False":
+    if sId == "":
         sId=addSource(title,typeId,url,year)
     else:
         updateSource(title,url,typeId,year,sId)
@@ -75,7 +75,7 @@ def loadSource(edit_id):
 def addSource(title, typeId, url, year):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute(f'insert into source(title,entry_datetime,source_type_id,url,year) VALUES ("{title}", now(),"{typeId}", {url}, {year})')
+    cur.execute(f'insert into source(title,entry_datetime,source_type_id,url,year) VALUES ("{title}", now(),"{typeId}", "{url}", {year})')
     sId = cur.lastrowid
     conn.commit()
     conn.close()
