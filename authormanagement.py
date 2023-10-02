@@ -50,9 +50,22 @@ def deleteAuthor(delete_ids):
     conn.commit()
     conn.close()
 
-def returnAuthorId(fullName):
+def idFromFullNamesList(fullNames):
     conn = get_db_connection()
-    cur=conn.cursor
-    id = cur.execute(f'select id from author where fullname={fullName}')[0]
+    cur=conn.cursor()
+    ids=[]
+    for fullName in fullNames:
+        commitFlag=False
+        cur.execute(f'select id from author where full_name="{fullName}";')
+        id=cur.fetchone()
+        if not id:
+            cur.execute(f'insert into author(full_name) values("{fullName}");')
+            id=cur.lastrowid
+            commitFlag=True
+        else:
+            id=id[0]
+        ids.append(id)
+        if commitFlag:
+            conn.commit()
     conn.close()
-    return id
+    return ids

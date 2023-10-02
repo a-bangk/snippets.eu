@@ -7,7 +7,7 @@
             <label for="{{ author['id'] }}">Mark for delete</label>
         <hr>
         {{ author['fullname'] |safe }} b.{{ author['birthyear'] |safe }} d. {{ author['deathyear'] |safe }} <br>
-        {{ author['comment'] |safe }}s
+        {{ author['comment'] |safe }}
     </div>
     <button type="submit" class="btn btn-primary" value="Edit_{{ author['id'] }}" name="action">Edit</button>
 </div>

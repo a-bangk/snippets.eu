@@ -40,15 +40,31 @@ def listTaggedNotes(tags,filter):
                     notes.append(note)
     return notes
 
-def alterSnippet(content,source,tags,url,authors,snippetId):
+def addNewSnippet(content):
     conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)
+    cur=conn.cursor(dictionary=True)   
+    cur.execute(f'insert into note(content,entry_datetime) VALUES ("{content}", now())')
+    snippetId=cur.lastrowid
+    conn.commit()
+    conn.close()
+    return(snippetId)
+
+def updateSnippet(content,snippetId):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)   
+    cur.execute(f'update note set content = "{content}",update_datetime=now() where id = "{snippetId}";')
+    conn.commit()
+    conn.close()
+
+#Snip-92
+def alterSnippet(content,source,tags,url,authors,snippetId):
     if snippetId == "False":
-        cur.execute(f'insert into note(content,entry_datetime) VALUES ("{content}", now())')
-        snippetId = cur.lastrowid
+        snippetId=addNewSnippet(content)
     else:
-        cur.execute(f'update note set content = "{content}",update_datetime=now() where id = "{snippetId}";')
-        deleteAssociateLinks(cur,[snippetId])
+        updateSnippet(content,snippetId)
+        deleteAssociateLinks(snippetId)
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)    
     tag_ids=[]
     if tags:
         for tag in tags:
@@ -73,8 +89,6 @@ def alterSnippet(content,source,tags,url,authors,snippetId):
             cur.execute(f'INSERT INTO source (title,entry_datetime,update_datetime) values ("{source}", now(),now());')
             sourceId=cur.lastrowid
         cur.execute(f'INSERT INTO associate_source_note (source_id, note_id) VALUES ({sourceId}, {snippetId});')
-        if authors:
-            addAuthors(cur,authors,snippetId)
     if url:    
         cur.execute(f'SELECT id from source where url like"{url}%"')
         source_entry =cur.fetchone()
@@ -84,12 +98,16 @@ def alterSnippet(content,source,tags,url,authors,snippetId):
             cur.execute(f'INSERT INTO source (url,entry_datetime,update_datetime) values ("{url}", now(),now());')
             sourceId=cur.lastrowid
         cur.execute(f'INSERT INTO associate_source_note (source_id, note_id) VALUES ({sourceId}, {snippetId});')  
-        if authors:
-            addAuthors(cur,authors,snippetId)  
     conn.commit()
     conn.close()
+    #TODO Snip-94
+    if (url or source) and authors[0] != '':
+        addAuthors(authors,snippetId)  
 
-def addAuthors(cur,authors, sourceId):
+
+def addAuthors(authors, sourceId):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)        
     authorIds=[]
     if authors:
         for author in authors:
@@ -104,7 +122,10 @@ def addAuthors(cur,authors, sourceId):
                     cur.execute(f'INSERT INTO author(full_name) values ("{author}");')
                     authorIds.append(cur.lastrowid)
         for authorId in authorIds:
+            cur.execute(f'select exists(select * from associate_source_author where source_id={sourceId} and author_id={authorId});')
             cur.execute(f'INSERT INTO associate_source_author (source_id, author_id) VALUES ({sourceId}, {authorId});')
+    conn.commit()
+    conn.close()
 
 def deleteSnippet(delete_ids):
     conn = get_db_connection()
@@ -124,7 +145,11 @@ def editSnippet(edit_id):
     conn.close()
     return(previousSnippet)
 
-def deleteAssociateLinks(cur,delete_ids):
+def deleteAssociateLinks(delete_ids):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
     for id in delete_ids:
         cur.execute(f'delete from associate_notetag_note where note_id={id}')
         cur.execute(f'delete from associate_source_note where note_id={id}')
+    conn.commit()
+    conn.close()

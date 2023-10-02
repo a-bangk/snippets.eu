@@ -18,6 +18,7 @@ def index():
     sourceUrl=""
     tagString=""
     contentString=""
+    authorsString=""
     snippetId=False
     if request.method == 'POST':
         if request.form['action'] == 'Add':
@@ -46,11 +47,13 @@ def index():
             sourceUrl=existingSnippet['url']
             tagString=existingSnippet['tags']
             snippetId=existingSnippet['id']
+            # TODO Snip-93 
+            #authorsString=am.linkedAuthors(id)
     snippets=nm.listNotes()
     tags=tm.listTags()
     sources = sm.listSourceTitles()
     authors = am.listAuthorsAuto()
-    return render_template('index.html', items=snippets, tags=tags, sources=sources,authors=authors, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
+    return render_template('index.html', items=snippets, tags=tags, authors=authors,sources=sources,previous_authors=authorsString, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
 
 @app.route('/filtersnippetslist/', methods=('GET', 'POST'))
 def filtersnippetslist():
@@ -78,11 +81,18 @@ def source():
     id=''
     if request.method == 'POST':
         if request.form['action'] == 'Add':
-            if not request.form['title'] and request.form['source_type']:
+            if request.form['source_type'] == "Choose...":
+                sourceTypeId=None
+            else:
+                 sourceTypeId = [d.get('id') for d in sourceTypesDict if d.get('entry')==request.form['source_type']][0]
+            if not request.form['title'] or sourceTypeId == None:
                 flash('A title and source type is required!')
                 return redirect(url_for('source'))
-            sourceTypeId = [d.get('id') for d in sourceTypesDict if d.get('entry')==request.form['source_type']][0]
-            sm.alterSource(request.form['authors-auto'],request.form['title'],request.form['year'],sourceTypeId,request.form['url'],request.form['source_id'])
+            authorString=request.form['authors-auto'].strip()
+            authorList=authorString.split(',')
+            while("" in authorList):
+                authorList.remove("")
+            sm.alterSource(authorList,request.form['title'],request.form['year'],sourceTypeId,request.form['url'],request.form['source_id'])
         elif re.search("Edit*",request.form['action']):
             id=re.findall(r'\d+',request.form['action'])[0]
             existingSource=sm.loadSource(id)
@@ -94,7 +104,8 @@ def source():
         elif request.form['action'] == 'Delete':
             sm.deleteSource(request.form.getlist('delete-checks'))
     sourcesList=sm.listSources()
-    return render_template('source.html', sources=sourcesList, sourceTypes=sourceTypesDict, title=exisitingTitle, year=exisitingYear, url=exisitingUrl, type=exisitingType, previous_authors=exisitingFullname, previous_id=id )
+    authors = am.listAuthorsAuto()
+    return render_template('source.html', sources=sourcesList, sourceTypes=sourceTypesDict, title=exisitingTitle, year=exisitingYear, url=exisitingUrl, type=exisitingType, previous_authors=exisitingFullname, previous_id=id, authors=authors )
 
 @app.route('/author/', methods=('GET', 'POST'))
 def author():

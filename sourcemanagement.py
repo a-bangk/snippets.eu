@@ -1,10 +1,11 @@
 from dbconnections import get_db_connection
 import authormanagement as am
+import associationmanagement as asm
 
 def listSources():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute('select st.entry as type,s.id,s.title as title, GROUP_CONCAT(concat(IFNULL(a.title,"")," ",IFNULL(a.forename,""),IFNULL(a.middlename,"")," ",IFNULL(a.surname,""), " ",IFNULL(a.postnominal,"")) SEPARATOR " & ") as author,a.id as a_id, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id group by s.id order by s.id desc;')
+    cur.execute('select st.entry as type,s.id,s.title as title, GROUP_CONCAT(a.full_name SEPARATOR " & ") as author,a.id as a_id, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id group by s.id order by s.id desc;')
     db_sources=cur.fetchall()
     conn.close()
     sources=[]
@@ -43,8 +44,7 @@ def dictSourceTypes():
     conn.close()
     return dictSourceTypes
 
-def alterSource(authorFullName, title, year, typeId, url,sId):
-
+def alterSource(authorFullNameList, title, year, typeId, url,sId):
     if year=='':
         year = 'NULL'
     if url=='':
@@ -53,13 +53,8 @@ def alterSource(authorFullName, title, year, typeId, url,sId):
         sId=addSource(title,typeId,url,year)
     else:
         updateSource(title,url,typeId,year,sId)
-    existingAuthor=loadLinkedAuthors(sId)
-    print(authorFullName)
-    if authorFullName:
-        # needs to check the existing
-        if existingAuthor['author']!=authorFullName:
-            aId=am.saveAuthor(authorFullName)
-            linkAuthor(aId,sId)
+    authorIds=am.idFromFullNamesList(authorFullNameList)
+    asm.linkAuthorsToSource(sId,authorIds)
 
 def deleteSource(delete_ids):
     conn = get_db_connection()
@@ -91,13 +86,6 @@ def linkAuthor(sourceId, authorId):
     cur=conn.cursor(dictionary=True)
     cur.execute(f'INSERT INTO associate_source_author (author_id, source_id) VALUES ({authorId}, {sourceId});')
     conn.close()
-
-def loadLinkedAuthors(sourceId):
-    conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)
-    linkedAuthors=cur.execute(f'select a.full_name as author,a.id as a_id, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id where s.id={sourceId};')
-    conn.close()
-    return(linkedAuthors)
 
 def updateSource(title,url,typeId,year,sourceId):
     conn = get_db_connection()
