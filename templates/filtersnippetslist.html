@@ -6,10 +6,10 @@
     {% include 'sec_filter.html' %}
 
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" name="action" value="filter">Submit</button>
     </div>
 </form>
-
+<form method="post">
 {% include 'sec_snippets_list.html' %}
-
+</form>
 {% endblock %}

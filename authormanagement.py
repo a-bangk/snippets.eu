@@ -47,6 +47,7 @@ def deleteAuthor(delete_ids):
     cur=conn.cursor(dictionary=True)
     for id in delete_ids:
         cur.execute(f'delete from author where id={id}')
+        cur.execute(f'delete ignore from associate_source_author where author_id={id}')
     conn.commit()
     conn.close()
 

@@ -44,7 +44,11 @@ def index():
             existingSnippet=nm.editSnippet(id)
             contentString=existingSnippet['content']
             sourceString=existingSnippet['sources']
+            if sourceString is None:
+                sourceString=''
             sourceUrl=existingSnippet['url']
+            if sourceUrl is None:
+                sourceUrl=''
             tagString=existingSnippet['tags']
             snippetId=existingSnippet['id']
             # TODO Snip-93 
@@ -58,10 +62,48 @@ def index():
 @app.route('/filtersnippetslist/', methods=('GET', 'POST'))
 def filtersnippetslist():
     tags=tm.listTags()
+    snippets=nm.listNotes()
     if request.method == 'POST':
-        tagValues = request.form.getlist('tag-checks')
-        filter = request.form['filter_logic']
-        snippets=nm.listTaggedNotes(tagValues,filter)
+        if request.form['action'] =='filter':
+            tagValues = request.form.getlist('tag-checks')
+            filter = request.form['filter_logic']
+            snippets=nm.listTaggedNotes(tagValues,filter)
+        if request.form['action'] == 'Add':
+            content = request.form['content']
+            sourceString = request.form['sources-auto']
+            snippetId=request.form['snippet-id']
+            source_url=request.form['source-url']
+            tagString=request.form['tags-auto'].strip()
+            tagList=tagString.split(',')
+            authorsString=request.form['authors-auto'].strip()
+            authorList=authorsString.split(',')
+            if not content:
+                flash('Content is required!')
+                return redirect(url_for('index'))
+            if authorsString and not (sourceString or sourceUrl):
+                flash('Author entry requires Source Title or URL')
+                return redirect(url_for('index'))
+            nm.alterSnippet(content,sourceString,tagList,source_url,authorList,snippetId)        
+        if re.search("Edit*",request.form['action']):
+            id=re.findall(r'\d+',request.form['action'])
+            existingSnippet=nm.editSnippet(id)
+            contentString=existingSnippet['content']
+            sourceString=existingSnippet['sources']
+            if sourceString is None:
+                sourceString=''
+            sourceUrl=existingSnippet['url']
+            if sourceUrl is None:
+                sourceUrl=''
+            tagString=existingSnippet['tags']
+            snippetId=existingSnippet['id']
+            # TODO Snip-93 
+            #authorsString=am.linkedAuthors(id)
+            authorsString=''
+            snippets=nm.listNotes()
+            tags=tm.listTags()
+            sources = sm.listSourceTitles()
+            authors = am.listAuthorsAuto()
+            return render_template('index.html', items=snippets, tags=tags, authors=authors,sources=sources,previous_authors=authorsString, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
     else:
         snippets=nm.listNotes()
     return render_template('filtersnippetslist.html', items=snippets, tags=tags)
@@ -81,8 +123,9 @@ def source():
     id=''
     if request.method == 'POST':
         if request.form['action'] == 'Add':
-            if request.form['source_type'] == "Choose...":
-                sourceTypeId=None
+            if request.form['source_type'] == "None" or request.form['source_type']=='':
+                flash('Sources require a type selected')
+                return redirect(url_for('source'))
             else:
                  sourceTypeId = [d.get('id') for d in sourceTypesDict if d.get('entry')==request.form['source_type']][0]
             if not request.form['title'] or sourceTypeId == None:

@@ -1,22 +1,22 @@
 <div class="form-group">
     <p>Select filter logic:</p>
-    <input type="radio" id="html" name="filter_logic" value="OR" checked="checked">
+    <input type="radio" id="html" name="filter_logic" value="OR">
     <label for="html">OR</label>
-    <input type="radio" id="css" name="filter_logic" value="AND">
+    <input type="radio" id="css" name="filter_logic" value="AND" checked="checked">
     <label for="css">AND</label><br>
 </div>
-<div class="form-group">
-    <div class="input-group">
+
+    <div style="column-count: 6;">
     {% for tag in tags -%}
         {% set tag_id = 'tag-checks-{0}'.format(loop.index0) -%}
             <input type="checkbox" id="{{ tag_id }}" name="tag-checks" value="{{ tag }}" 
                 {% if tag in request.form.getlist('tag-checks') %}checked{%endif -%} 
              />
             <label for="{{ tag_id }}">{{ tag }}</label>
-     
+            <br>
     {% endfor -%}
   
     </div>
-</div>
+
 
   
