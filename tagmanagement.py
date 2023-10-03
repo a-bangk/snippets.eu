@@ -31,6 +31,7 @@ def listTags():
     tags=[]
     for tag in db_tags:
         tags.append(tag['tag'])
+    tags=sorted(tags)
     return tags
 
 def idFromTagsList(tagList):
