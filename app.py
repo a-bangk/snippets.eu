@@ -28,8 +28,10 @@ def index():
             source_url=request.form['source-url']
             tagString=request.form['tags-auto'].strip()
             tagList=tagString.split(',')
+            tagList = [item.strip() for item in tagList]
             authorsString=request.form['authors-auto'].strip()
             authorList=authorsString.split(',')
+            authorList = [item.strip() for item in authorList]
             if not content:
                 flash('Content is required!')
                 return redirect(url_for('index'))
@@ -74,8 +76,10 @@ def filtersnippetslist():
             source_url=request.form['source-url']
             tagString=request.form['tags-auto'].strip()
             tagList=tagString.split(',')
+            tagList = [item.strip() for item in tagList]
             authorsString=request.form['authors-auto'].strip()
             authorList=authorsString.split(',')
+            authorList = [item.strip() for item in authorList]
             if not content:
                 flash('Content is required!')
                 return redirect(url_for('index'))
