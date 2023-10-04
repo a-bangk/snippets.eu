@@ -9,7 +9,10 @@ def test_smIdFromTitle():
     id=sm.idFromTitle("BabyWise")
     print(id)
 
-
+def test_amAuthorsListFromNoteId():
+    authors=am.authorsListFromNoteId(46)
+    print(type(authors[0]))
 
 if __name__ == "__main__":
     test_smIdFromTitle()
+    test_amAuthorsListFromNoteId()

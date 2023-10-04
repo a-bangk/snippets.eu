@@ -70,3 +70,10 @@ def idFromFullNamesList(fullNames):
             conn.commit()
     conn.close()
     return ids
+
+def authorsStringFromNoteId(snippetId):
+    conn=get_db_connection()
+    cur=conn.cursor()
+    cur.execute(f'with atable as (with a as(select asa.source_id, GROUP_CONCAT(a.full_name separator ", ") as authors from associate_source_author asa join author a on a.id=asa.author_id group by asa.source_id) select a.authors, s.title as title, s.id as source_id from source s left join a on a.source_id =s.id ) select atable.authors from associate_source_note asn left join atable on atable.source_id=asn.source_id where asn.note_id={snippetId};')
+    authors=cur.fetchone()
+    return(authors[0])

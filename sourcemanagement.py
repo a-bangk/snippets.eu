@@ -5,7 +5,7 @@ import associationmanagement as asm
 def listSources():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute('select st.entry as type,s.id,s.title as title, GROUP_CONCAT(a.full_name SEPARATOR " & ") as author,a.id as a_id, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id group by s.id order by s.id desc;')
+    cur.execute('select st.entry as type,s.id,s.title as title, GROUP_CONCAT(a.full_name SEPARATOR ", ") as author,a.id as a_id, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id group by s.id order by s.id desc;')
     db_sources=cur.fetchall()
     conn.close()
     sources=[]
@@ -69,7 +69,7 @@ def deleteSource(delete_ids):
 def loadSource(edit_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute(f'select st.entry as type,s.id,s.year as year, s.title as title, GROUP_CONCAT(a.full_name SEPARATOR " & ") as author, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id where s.id={edit_id};')
+    cur.execute(f'select st.entry as type,s.id,s.year as year, s.title as title, GROUP_CONCAT(a.full_name SEPARATOR ", ") as author, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id where s.id={edit_id};')
     previousSnippet=cur.fetchone()
     conn.close()
     return(previousSnippet)

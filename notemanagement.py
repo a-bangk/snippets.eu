@@ -79,10 +79,10 @@ def alterSnippet(content,sourceTitle,tags,url,authors,snippetId):
         asm.linkSourceToNote(snippetId,sId)
     #TODO Snip-94
     if (url or sourceTitle) and authors[0] != '':
-        addAuthors(authors,sId)  
+        alterAuthors(authors,sId)  
 
 
-def addAuthors(authors, sourceId):
+def alterAuthors(authors, sourceId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)        
     authorIds=[]
@@ -98,11 +98,12 @@ def addAuthors(authors, sourceId):
                 else:
                     cur.execute(f'INSERT INTO author(full_name) values ("{author}");')
                     authorIds.append(cur.lastrowid)
-        for authorId in authorIds:
-            cur.execute(f'select exists(select * from associate_source_author where source_id={sourceId} and author_id={authorId});')
-            cur.execute(f'INSERT INTO associate_source_author (source_id, author_id) VALUES ({sourceId}, {authorId});')
-    conn.commit()
+                    conn.commit()
     conn.close()
+        #for authorId in authorIds:
+            #cur.execute(f'select exists(select * from associate_source_author where source_id={sourceId} and author_id={authorId});')
+    asm.linkAuthorsToSource(sourceId,authorIds)
+
 
 def deleteSnippet(delete_ids):
     conn = get_db_connection()

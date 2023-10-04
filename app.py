@@ -51,8 +51,7 @@ def index():
                 sourceUrl=''
             tagString=existingSnippet['tags']
             snippetId=existingSnippet['id']
-            # TODO Snip-93 
-            #authorsString=am.linkedAuthors(id)
+            authorsString=am.authorsStringFromNoteId(snippetId)
     snippets=nm.listNotes()
     tags=tm.listTags()
     sources = sm.listSourceTitles()
