@@ -7,7 +7,7 @@ import markdown
 def listNotes():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute('with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag SEPARATOR "; ") as tags  from associate_notetag_note ann  join notetag nt on nt.id = ann.notetag_id  group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources, s.url  from associate_source_note asn  join source s on s.id = asn.source_id  group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources, s.url from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id order by n.update_datetime desc, n.entry_datetime desc;')
+    cur.execute('with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag SEPARATOR "; ") as tags  from associate_notetag_note ann  join notetag nt on nt.id = ann.notetag_id  group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources, s.url  from associate_source_note asn  join source s on s.id = asn.source_id  group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources, s.url from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id order by n.update_datetime desc;')
     db_notes=cur.fetchall()
     conn.close()
     notes=[]
@@ -19,7 +19,7 @@ def listNotes():
 def listTaggedNotes(tags,filter):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute('with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag SEPARATOR "; ") as tags  from associate_notetag_note ann  join notetag nt on nt.id = ann.notetag_id  group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources  from associate_source_note asn  join source s on s.id = asn.source_id  group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id order by n.update_datetime desc, n.entry_datetime desc;')
+    cur.execute('with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag SEPARATOR "; ") as tags  from associate_notetag_note ann  join notetag nt on nt.id = ann.notetag_id  group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources  from associate_source_note asn  join source s on s.id = asn.source_id  group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id order by n.update_datetime desc;')
     db_notes=cur.fetchall()
     conn.close()
     notes=[]
@@ -46,7 +46,7 @@ def listTaggedNotes(tags,filter):
 def addNewSnippet(content):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)   
-    cur.execute(f'insert into note(content,entry_datetime) VALUES ("{content}", now())')
+    cur.execute(f'insert into note(content,entry_datetime,update_datetime) VALUES ("{content}", now(), now())')
     snippetId=cur.lastrowid
     conn.commit()
     conn.close()
