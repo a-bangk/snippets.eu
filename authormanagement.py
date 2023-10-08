@@ -25,7 +25,8 @@ def listAuthorsAuto():
 def loadAuthor(edit_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute(f'SELECT id,full_name as fullname, IFNULL(birthyear,"") as birthyear,IFNULL(deathyear,"") as deathyear, comment from author a where a.id={edit_id};')
+    sql='SELECT id,full_name as fullname, IFNULL(birthyear,"") as birthyear,IFNULL(deathyear,"") as deathyear, comment from author a where a.id=?;'
+    cur.execute(sql,(edit_id,))
     author=cur.fetchone()
     conn.close()
     return(author)
@@ -34,9 +35,11 @@ def saveAuthor(fullName,birthyear='',deathyear='',comment='', id=0):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     if id == 0:
-        cur.execute(f'insert into author(full_name,birthyear,deathyear,comment) VALUES ("{fullName}", "{birthyear}", "{deathyear}", "{comment}");')
+        sql='insert into author(full_name,birthyear,deathyear,comment) VALUES (?, ?,?,?);'
+        cur.execute(sql,(fullName,birthyear,deathyear,comment))
     else:
-        cur.execute(f'update author set full_name = "{fullName}",birthyear = "{birthyear}",deathyear = "{deathyear}",comment = "{comment}" where id = "{id}";')
+        sql='update author set full_name = ?,birthyear =?,deathyear = ?,comment = ? where id = ?;'
+        cur.execute(sql,(fullName,birthyear,deathyear,comment,id))
     a_id = cur.lastrowid
     conn.commit()
     conn.close()
@@ -46,8 +49,10 @@ def deleteAuthor(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     for id in delete_ids:
-        cur.execute(f'delete from author where id={id}')
-        cur.execute(f'delete ignore from associate_source_author where author_id={id}')
+        sql='delete from author where id=?'
+        cur.execute(sql,(id,))
+        sql='delete ignore from associate_source_author where author_id=?'
+        cur.execute(sql,(id,))
     conn.commit()
     conn.close()
 
@@ -57,10 +62,12 @@ def idFromFullNamesList(fullNames):
     ids=[]
     for fullName in fullNames:
         commitFlag=False
-        cur.execute(f'select id from author where full_name="{fullName}";')
+        sql='select id from author where full_name=?;'
+        cur.execute(sql,(fullName,))
         id=cur.fetchone()
         if not id:
-            cur.execute(f'insert into author(full_name) values("{fullName}");')
+            sql='insert into author(full_name) values(?);'
+            cur.execute(sql,(fullName,))
             id=cur.lastrowid
             commitFlag=True
         else:
@@ -74,7 +81,8 @@ def idFromFullNamesList(fullNames):
 def authorsStringFromNoteId(snippetId):
     conn=get_db_connection()
     cur=conn.cursor()
-    cur.execute(f'with atable as (with a as(select asa.source_id, GROUP_CONCAT(a.full_name separator ", ") as authors from associate_source_author asa join author a on a.id=asa.author_id group by asa.source_id) select a.authors, s.title as title, s.id as source_id from source s left join a on a.source_id =s.id ) select atable.authors from associate_source_note asn left join atable on atable.source_id=asn.source_id where asn.note_id={snippetId};')
+    sql='with atable as (with a as(select asa.source_id, GROUP_CONCAT(a.full_name separator ", ") as authors from associate_source_author asa join author a on a.id=asa.author_id group by asa.source_id) select a.authors, s.title as title, s.id as source_id from source s left join a on a.source_id =s.id ) select atable.authors from associate_source_note asn left join atable on atable.source_id=asn.source_id where asn.note_id=?;'
+    cur.execute(sql,(snippetId,))
     authors=cur.fetchone()
     if authors:
         return(authors[0])

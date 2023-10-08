@@ -192,7 +192,8 @@ def tag():
             if not tag:
                 flash('Tag is required!')
                 return redirect(url_for('tag'))
-            cur.execute(f'insert into notetag(tag,entry_datetime, update_datetime) VALUES ("{tag}", now(), now())')
+            sql='insert into notetag(tag,entry_datetime, update_datetime) VALUES (?, now(), now())'
+            cur.execute(sql,(tag,))
         if request.form['action']=='Delete':
             tm.deleteTags(request.form.getlist('delete-checks'))
         conn.commit()

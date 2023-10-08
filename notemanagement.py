@@ -46,7 +46,8 @@ def listTaggedNotes(tags,filter):
 def addNewSnippet(content):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)   
-    cur.execute(f'insert into note(content,entry_datetime,update_datetime) VALUES ("{content}", now(), now())')
+    sql="insert into note(content,entry_datetime,update_datetime) VALUES (?, now(), now())"
+    cur.execute(sql,(content,))
     snippetId=cur.lastrowid
     conn.commit()
     conn.close()
@@ -54,8 +55,9 @@ def addNewSnippet(content):
 
 def updateSnippet(content,snippetId):
     conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)   
-    cur.execute(f'update note set content = "{content}",update_datetime=now() where id = "{snippetId}";')
+    cur=conn.cursor(dictionary=True)
+    sql="update note set content = ?,update_datetime=now() where id = ?;"   
+    cur.execute(sql,(content,snippetId))
     conn.commit()
     conn.close()
 
@@ -90,18 +92,18 @@ def alterAuthors(authors, sourceId):
         for author in authors:
             author=author.strip()
             if author:
-                cur.execute(f'SELECT id from author where full_name="{author}";')
+                sql="SELECT id from author where full_name=?;"
+                cur.execute(sql,(author,))
                 author_entry =cur.fetchone()
                 if author_entry:
                     author_id =author_entry['id']
                     authorIds.append(author_id)
                 else:
-                    cur.execute(f'INSERT INTO author(full_name) values ("{author}");')
+                    sql="INSERT INTO author(full_name) values (?);"
+                    cur.execute(sql,(author,))
                     authorIds.append(cur.lastrowid)
                     conn.commit()
     conn.close()
-        #for authorId in authorIds:
-            #cur.execute(f'select exists(select * from associate_source_author where source_id={sourceId} and author_id={authorId});')
     asm.linkAuthorsToSource(sourceId,authorIds)
 
 
@@ -110,16 +112,20 @@ def deleteSnippet(delete_ids):
     cur=conn.cursor(dictionary=True)
     for id in delete_ids:
         id=int(id)
-        cur.execute(f'delete from note where id={id};')
-        cur.execute(f'delete IGNORE from associate_notetag_note where note_id={id};')
-        cur.execute(f'delete IGNORE from associate_source_note where note_id={id};')
+        sql="delete from note where id=?;"
+        cur.execute(sql,(id,))
+        sql="delete IGNORE from associate_notetag_note where note_id=?;"
+        cur.execute(sql,(id,))
+        sql="delete IGNORE from associate_source_note where note_id=?;"
+        cur.execute(sql,(id,))
     conn.commit()
     conn.close()
 
 def editSnippet(edit_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute(f'with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag SEPARATOR ", ") as tags from associate_notetag_note ann join notetag nt on nt.id = ann.notetag_id group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources, s.url from associate_source_note asn join source s on s.id = asn.source_id group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources,s.url from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id where n.id={edit_id[0]};')
+    sql='with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag SEPARATOR ", ") as tags from associate_notetag_note ann join notetag nt on nt.id = ann.notetag_id group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources, s.url from associate_source_note asn join source s on s.id = asn.source_id group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources,s.url from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id where n.id=?;'
+    cur.execute(sql,(edit_id[0],))
     previousSnippet=cur.fetchone()
     conn.close()
     return(previousSnippet)
@@ -128,7 +134,9 @@ def deleteAssociateLinks(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     for id in delete_ids:
-        cur.execute(f'delete ignore from associate_notetag_note where note_id={id};')
-        cur.execute(f'delete ignore from associate_source_note where note_id={id};')
+        sql='delete ignore from associate_notetag_note where note_id=?;'
+        cur.execute(sql,(id,))
+        sql='delete ignore from associate_source_note where note_id=?;'
+        cur.execute(sql,(id,))
     conn.commit()
     conn.close()

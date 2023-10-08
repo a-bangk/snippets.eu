@@ -4,8 +4,10 @@ def deleteTags(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     for id in delete_ids:
-        cur.execute(f'delete from notetag where id={id};')
-        cur.execute(f'delete from associate_notetag_note where notetag_id={id};')
+        sql='delete from notetag where id=?;'
+        cur.execute(sql,(id,))
+        sql='delete from associate_notetag_note where notetag_id=?;'
+        cur.execute(sql,(id,))
     conn.commit()
     conn.close()
 
@@ -40,10 +42,12 @@ def idFromTagsList(tagList):
     ids=[]
     for tag in tagList:
         commitFlag=False
-        cur.execute(f'select id from notetag where tag="{tag}";')
+        sql='select id from notetag where tag=?;'
+        cur.execute(sql,(tag,))
         id=cur.fetchone()
         if not id:
-            cur.execute(f'insert into notetag(tag, entry_datetime) values("{tag}",now());')
+            sql='insert into notetag(tag, entry_datetime) values(?,now());'
+            cur.execute(sql,(tag,))
             id=cur.lastrowid
             commitFlag=True
         else:

@@ -60,16 +60,20 @@ def deleteSource(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     for id in delete_ids:
-        cur.execute(f'delete from source where id={id};')
-        cur.execute(f'delete ignore from associate_source_note where source_id={id};')
-        cur.execute(f'delete ignore from associate_source_author where source_id={id};')
+        sql='delete from source where id=?;'
+        cur.execute(sql,(id,))
+        sql='delete ignore from associate_source_note where source_id=?;'
+        cur.execute(sql,(id,))
+        sql='delete ignore from associate_source_author where source_id=?;'
+        cur.execute(sql,(id,))
     conn.commit()
     conn.close()
 
 def loadSource(edit_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute(f'select st.entry as type,s.id,s.year as year, s.title as title, GROUP_CONCAT(a.full_name SEPARATOR ", ") as author, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id where s.id={edit_id};')
+    sql='select st.entry as type,s.id,s.year as year, s.title as title, GROUP_CONCAT(a.full_name SEPARATOR ", ") as author, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id where s.id=?;'
+    cur.execute(sql,(edit_id,))
     previousSnippet=cur.fetchone()
     conn.close()
     return(previousSnippet)
@@ -77,7 +81,8 @@ def loadSource(edit_id):
 def addSource(title, typeId, url, year):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute(f'insert into source(title,entry_datetime,source_type_id,url,year) VALUES ("{title}", now(),"{typeId}", "{url}", {year});')
+    sql='insert into source(title,entry_datetime,source_type_id,url,year) VALUES (?, now(),?, ?, ?);'
+    cur.execute(sql,(title,typeId,url,year))
     sId = cur.lastrowid
     conn.commit()
     conn.close()
@@ -86,23 +91,27 @@ def addSource(title, typeId, url, year):
 def linkAuthor(sourceId, authorId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute(f'INSERT INTO associate_source_author (author_id, source_id) VALUES ({authorId}, {sourceId});')
+    sql='INSERT INTO associate_source_author (author_id, source_id) VALUES (?, ?);'
+    cur.execute(sql,(authorId,sourceId))
     conn.close()
 
 def updateSource(title,url,typeId,year,sourceId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute(f'update source set title = "{title}",update_datetime=now(),url="{url}", source_type_id={typeId}, year={year} where id = "{sourceId}";')
+    sql='update source set title = ?,update_datetime=now(),url=?, source_type_id=?, year=? where id = ?;'
+    cur.execute(sql,(title,url,typeId,year,sourceId))
     conn.commit()
     conn.close()
 
 def idFromTitle(title):
     conn = get_db_connection()
     cur=conn.cursor()
-    cur.execute(f'SELECT id from source where title = "{title}";')
+    sql='SELECT id from source where title = ?;'
+    cur.execute(sql,(title,))
     id=cur.fetchone()
     if not id:
-        cur.execute(f'INSERT INTO source (title,entry_datetime,update_datetime) values ("{title}", now(),now());')
+        sql='INSERT INTO source (title,entry_datetime,update_datetime) values (?, now(),now());'
+        cur.execute(sql,(title,))
         id=cur.lastrowid
         conn.commit()
     else:
@@ -113,10 +122,12 @@ def idFromTitle(title):
 def idFromUrl(url):
     conn = get_db_connection()
     cur=conn.cursor()
-    cur.execute(f'SELECT id from source where url = "{url}";')
+    sql='SELECT id from source where url = ?;'
+    cur.execute(sql,(url,))
     id=cur.fetchone()
     if not id:
-        cur.execute(f'INSERT INTO source (url,entry_datetime,update_datetime) values ("{url}", now(),now());')
+        sql='INSERT INTO source (url,entry_datetime,update_datetime) values (?, now(),now());'
+        cur.execute(sql,(url,))
         id=cur.lastrowid
         conn.commit()
     else:
@@ -127,10 +138,12 @@ def idFromUrl(url):
 def idFromTitleAndUrl(title,url):
     conn = get_db_connection()
     cur=conn.cursor()
-    cur.execute(f'SELECT id from source where title = "{title}" and url="{url}";')
+    sql='SELECT id from source where title = ? and url=?;'
+    cur.execute(sql(title,url))
     id=cur.fetchone()
     if not id:
-        cur.execute(f'INSERT INTO source (title,entry_datetime,update_datetime,url) values ("{title}", now(),now(),"{url}");')
+        sql='INSERT INTO source (title,entry_datetime,update_datetime,url) values (?, now(),now(),?);'
+        cur.execute(sql,(title,url))
         id=cur.lastrowid
         conn.commit()
     else:

@@ -14,3 +14,5 @@ def get_db_connection():
             print(f"Error connecting to MariaDB Platform: {e}") 
             sys.exit(1) 
     return conn 
+
+
