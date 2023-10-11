@@ -1,9 +1,6 @@
 from dbconnections import get_db_connection
 
 def linkAuthorsToSource(sId,aIds):
-    print(type(sId))
-    print(type(int(sId)))
-
     conn = get_db_connection()
     cur=conn.cursor()
     sql='DELETE IGNORE from associate_source_author where source_id=?;'

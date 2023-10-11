@@ -16,3 +16,7 @@ def test_sourceFunctions():
     sId=sm.idFromTitleAndUrl("Test Title 1","http://www.google.com")
     sm.alterSource("Bob Smith", "Test Title 2", '2002',3,'http://www.google.com',sId)
     sm.deleteSource([sId])
+
+def test_usingQuotes():
+    sId=sm.idFromTitleAndUrl('"','"')
+    sm.deleteSource([sId])

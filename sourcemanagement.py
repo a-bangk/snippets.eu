@@ -139,7 +139,7 @@ def idFromTitleAndUrl(title,url):
     conn = get_db_connection()
     cur=conn.cursor()
     sql='SELECT id from source where title = ? and url=?;'
-    cur.execute(sql(title,url))
+    cur.execute(sql,(title,url))
     id=cur.fetchone()
     if not id:
         sql='INSERT INTO source (title,entry_datetime,update_datetime,url) values (?, now(),now(),?);'
