@@ -46,10 +46,10 @@ def dictSourceTypes():
 
 def alterSource(authorFullNameList, title, year, typeId, url,sId):
     if year=='':
-        year = 'NULL'
+        year is None
     if url=='':
-        url = 'NULL'
-    if sId == "":
+        url is None
+    if sId == '':
         sId=addSource(title,typeId,url,year)
     else:
         updateSource(title,url,typeId,year,sId)

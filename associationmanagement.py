@@ -1,10 +1,13 @@
 from dbconnections import get_db_connection
 
 def linkAuthorsToSource(sId,aIds):
+    print(type(sId))
+    print(type(int(sId)))
+
     conn = get_db_connection()
     cur=conn.cursor()
     sql='DELETE IGNORE from associate_source_author where source_id=?;'
-    cur.execute(sql(sId,))
+    cur.execute(sql,(sId,))
     for aId in aIds:
         sql='INSERT IGNORE INTO associate_source_author(source_id,author_id) VALUES(?,?);'
         cur.execute(sql,(sId,aId))
