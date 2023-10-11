@@ -46,7 +46,7 @@ def idFromTagsList(tagList):
         cur.execute(sql,(tag,))
         id=cur.fetchone()
         if not id:
-            sql='insert into notetag(tag, entry_datetime) values(?,now());'
+            sql='insert into notetag(tag, entry_datetime, update_datetime) values(?,now(),now());'
             cur.execute(sql,(tag,))
             id=cur.lastrowid
             commitFlag=True

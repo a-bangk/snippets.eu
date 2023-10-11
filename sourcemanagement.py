@@ -81,7 +81,7 @@ def loadSource(edit_id):
 def addSource(title, typeId, url, year):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    sql='insert into source(title,entry_datetime,source_type_id,url,year) VALUES (?, now(),?, ?, ?);'
+    sql='insert into source(title,entry_datetime, update_datetime,source_type_id,url,year) VALUES (?, now(),now(),?, ?, ?);'
     cur.execute(sql,(title,typeId,url,year))
     sId = cur.lastrowid
     conn.commit()

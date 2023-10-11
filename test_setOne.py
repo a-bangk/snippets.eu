@@ -5,7 +5,7 @@ import notemanagement as nm
 
 
 def test_amIdFromFullNameList():
-    assert am.idFromFullNamesList(["Milton Friedman","Finn Kjems","Gary Enzo","Carl Marx"]) == [112,3,2,160]
+    assert am.idFromFullNamesList(["Milton Friedman","Finn Kjems","Gary Enzo","Karl Marx"]) == [112,3,2,160]
 
 def test_smIdFromTitle():
     assert sm.idFromTitle("BabyWise") == 1
