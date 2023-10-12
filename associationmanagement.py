@@ -28,6 +28,6 @@ def linkSourceToNote(nId,sId):
     sql='DELETE IGNORE from associate_source_note where note_id=?;'
     cur.execute(sql,(nId,))
     sql='INSERT IGNORE INTO associate_source_note (source_id, note_id) VALUES (?, ?);'
-    cur.execute(sql,(nId,sId))
+    cur.execute(sql,(sId,nId))
     conn.commit()
     conn.close()

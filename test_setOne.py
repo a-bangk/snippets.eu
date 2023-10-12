@@ -9,7 +9,7 @@ def test_amIdFromFullNameList():
 
 def test_smIdFromTitle():
     assert sm.idFromTitle("BabyWise") == 1
-    print(id)
+
 
 def test_sourceFunctions():
     sm.alterSource("Bob Smith", "Test Title 1", '',3,'http://www.google.com','')
@@ -20,3 +20,14 @@ def test_sourceFunctions():
 def test_usingQuotes():
     sId=sm.idFromTitleAndUrl('"','"')
     sm.deleteSource([sId])
+
+def test_alterSnippet_():
+    content="Test Content 667504ggyj"
+    nm.alterSnippet(content,"New title 3",'','',[''],False)        
+    sIds=nm.idsFromContent(content)
+    latestId=sIds[0][0]
+    sValues=nm.editSnippet(latestId)
+    nm.deleteSnippet([latestId])
+    assert sValues["content"]=="Test Content 667504ggyj"
+    assert sValues["sources"]=="New title 3"
+    assert sValues["id"]==latestId

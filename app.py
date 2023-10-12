@@ -43,7 +43,7 @@ def index():
             nm.deleteSnippet(request.form.getlist('delete-checks'))
         elif re.search("Edit*",request.form['action']):
             id=re.findall(r'\d+',request.form['action'])
-            existingSnippet=nm.editSnippet(id)
+            existingSnippet=nm.editSnippet(id[0])
             contentString=existingSnippet['content']
             sourceString=existingSnippet['sources']
             if sourceString is None:
@@ -89,7 +89,7 @@ def filtersnippetslist():
             nm.alterSnippet(content,sourceString,tagList,source_url,authorList,snippetId)        
         if re.search("Edit*",request.form['action']):
             id=re.findall(r'\d+',request.form['action'])
-            existingSnippet=nm.editSnippet(id)
+            existingSnippet=nm.editSnippet(id[0])
             contentString=existingSnippet['content']
             sourceString=existingSnippet['sources']
             if sourceString is None:
