@@ -1,4 +1,4 @@
-from dbconnections import get_db_connection
+from helperfunctions import get_db_connection
 
 def listAuthors():
     conn = get_db_connection()

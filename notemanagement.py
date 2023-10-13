@@ -1,4 +1,4 @@
-from dbconnections import get_db_connection
+from helperfunctions import get_db_connection
 import associationmanagement as asm
 import tagmanagement as tm
 import sourcemanagement as sm
@@ -62,7 +62,7 @@ def updateSnippet(content,snippetId):
     conn.close()
 
 def alterSnippet(content,sourceTitle,tags,url,authors,snippetId):
-    if snippetId == False:
+    if snippetId == 'False':
         snippetId=addNewSnippet(content)
     else:
         updateSnippet(content,snippetId)

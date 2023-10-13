@@ -1,6 +1,6 @@
-from dbconnections import get_db_connection
+from helperfunctions import get_db_connection
 
-def deleteTags(delete_ids):
+def deleteTagsById(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     for id in delete_ids:
@@ -57,3 +57,4 @@ def idFromTagsList(tagList):
             conn.commit()        
     conn.close()
     return ids
+

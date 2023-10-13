@@ -1,4 +1,4 @@
-from dbconnections import get_db_connection
+from helperfunctions import get_db_connection
 import authormanagement as am
 import associationmanagement as asm
 

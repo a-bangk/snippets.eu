@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 import re
 import sourcemanagement as sm
-from dbconnections import get_db_connection
+import helperfunctions as hf
 import notemanagement as nm
 import tagmanagement as tm
 import sourcemanagement as sm
@@ -26,12 +26,11 @@ def index():
             sourceString = request.form['sources-auto']
             snippetId=request.form['snippet-id']
             source_url=request.form['source-url']
-            tagString=request.form['tags-auto'].strip()
-            tagList=tagString.split(',')
-            tagList = [item.strip() for item in tagList]
-            authorsString=request.form['authors-auto'].strip()
+            tagString=request.form['tags-auto']
+            tagList=hf.commaStringToList(tagString)
+            authorsString=request.form['authors-auto']
+            authorList=hf.commaStringToList(authorsString)
             authorList=authorsString.split(',')
-            authorList = [item.strip() for item in authorList]
             if not content:
                 flash('Content is required!')
                 return redirect(url_for('index'))
@@ -184,7 +183,7 @@ def author():
 
 @app.route('/tag/', methods=('GET', 'POST'))
 def tag():
-    conn = get_db_connection()
+    conn = hf.get_db_connection()
     cur=conn.cursor(dictionary=True) 
     if request.method == 'POST':
         if request.form['action']=='Add':
@@ -195,7 +194,7 @@ def tag():
             sql='insert into notetag(tag,entry_datetime, update_datetime) VALUES (?, now(), now())'
             cur.execute(sql,(tag,))
         if request.form['action']=='Delete':
-            tm.deleteTags(request.form.getlist('delete-checks'))
+            tm.deleteTagsById(request.form.getlist('delete-checks'))
         conn.commit()
         conn.close()
     tags=tm.listTagsFull()
