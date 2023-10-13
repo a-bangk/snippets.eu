@@ -1,4 +1,5 @@
 from helperfunctions import get_db_connection
+import associationmanagement as asm
 
 def listAuthors():
     conn = get_db_connection()
@@ -45,7 +46,7 @@ def saveAuthor(fullName,birthyear='',deathyear='',comment='', id=0):
     conn.close()
     return(a_id)
 
-def deleteAuthor(delete_ids):
+def deleteAuthors(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     for id in delete_ids:
@@ -81,10 +82,33 @@ def idFromFullNamesList(fullNames):
 def authorsStringFromNoteId(snippetId):
     conn=get_db_connection()
     cur=conn.cursor()
-    sql='with atable as (with a as(select asa.source_id, GROUP_CONCAT(a.full_name separator ", ") as authors from associate_source_author asa join author a on a.id=asa.author_id group by asa.source_id) select a.authors, s.title as title, s.id as source_id from source s left join a on a.source_id =s.id ) select atable.authors from associate_source_note asn left join atable on atable.source_id=asn.source_id where asn.note_id=?;'
+    sql='with atable as (with a as(select asa.source_id, GROUP_CONCAT(a.full_name order by full_name asc separator ", ") as authors from associate_source_author asa join author a on a.id=asa.author_id group by asa.source_id) select a.authors, s.title as title, s.id as source_id from source s left join a on a.source_id =s.id ) select atable.authors from associate_source_note asn left join atable on atable.source_id=asn.source_id where asn.note_id=?;'
     cur.execute(sql,(snippetId,))
     authors=cur.fetchone()
     if authors:
         return(authors[0])
     else:
         return('')
+    
+
+def alterAuthors(authors, sourceId):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)        
+    authorIds=[]
+    if authors:
+        for author in authors:
+            author=author.strip()
+            if author:
+                sql="SELECT id from author where full_name=?;"
+                cur.execute(sql,(author,))
+                author_entry =cur.fetchone()
+                if author_entry:
+                    author_id =author_entry['id']
+                    authorIds.append(author_id)
+                else:
+                    sql="INSERT INTO author(full_name) values (?);"
+                    cur.execute(sql,(author,))
+                    authorIds.append(cur.lastrowid)
+                    conn.commit()
+    conn.close()
+    asm.linkAuthorsToSource(sourceId,authorIds)

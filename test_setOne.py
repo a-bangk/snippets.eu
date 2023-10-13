@@ -5,8 +5,6 @@ import notemanagement as nm
 import tagmanagement as tm
 import helperfunctions as hf
 
-
-
 def test_amIdFromFullNameList():
     assert am.idFromFullNamesList(["Milton Friedman","Finn Kjems","Gary Enzo","Karl Marx"]) == [112,3,2,160]
 
@@ -26,11 +24,12 @@ def test_usingQuotes():
 
 def test_alterSnippet_SourceTitle():
     content="Test Content 667504ggyj"
-    nm.alterSnippet(content,"New title 3",'','',[''],False)        
+    nm.alterSnippet(content,"New title 3",'','',[''],'False')        
     sIds=nm.idsFromContent(content)
     latestId=sIds[0][0]
     sValues=nm.editSnippet(latestId)
     nm.deleteSnippet([latestId])
+    sm.deleteSource([sm.idFromTitle("New title 3")])
     assert sValues["content"]==content
     assert sValues["sources"]=="New title 3"
     assert sValues["id"]==latestId
@@ -46,5 +45,33 @@ def test_alterSnippet_Tag():
     nm.deleteSnippet([latestId])
     tm.deleteTagsById(tm.idFromTagsList(tagList))
     assert sValues["content"]==content
-    assert sValues["tags"]=="test tag, testtag, @dae"
+    assert sValues["tags"]=="@dae, test tag, testtag"
     assert sValues["id"]==latestId
+
+def test_alterSnippet_All():
+    startCount=len(nm.listNotes())
+    content="Test Content adding All"
+    title='Source with Authors'
+    url="www.AWESOME-TEST.org     "
+    tagString="test tag,    testtag    ,  @dae ,   "
+    authorsString="Author 1,     Author person 3, M.D manpanfan,    "
+    tagList=hf.commaStringToList(tagString)
+    authorsList=hf.commaStringToList(authorsString)
+    nm.alterSnippet(content,title,tagList,url,authorsList,'False')        
+    sIds=nm.idsFromContent(content)
+    latestId=sIds[0][0]
+    allSnippets=nm.listNotes()
+    assert startCount<len(allSnippets)
+    sValues=allSnippets[000]
+    authorsInDb=am.authorsStringFromNoteId(latestId)
+    nm.deleteSnippet([latestId])
+    tm.deleteTagsById(tm.idFromTagsList(tagList))
+    authorIds=am.idFromFullNamesList(authorsList)
+    am.deleteAuthors(authorIds)
+    sourceId=sm.idFromTitleAndUrl(title,url)
+    sm.deleteSource([sourceId])
+    assert sValues["content"]=='<p>'+content+'</p>'
+    assert sValues["tags"]=='@dae; test tag; testtag'
+    assert sValues["id"]==latestId
+    assert sValues["sources"]==title
+    assert authorsInDb=="Author 1, Author person 3, M.D manpanfan"

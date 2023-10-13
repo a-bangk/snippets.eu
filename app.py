@@ -62,7 +62,6 @@ def index():
 @app.route('/filtersnippetslist/', methods=('GET', 'POST'))
 def filtersnippetslist():
     tags=tm.listTags()
-    snippets=nm.listNotes()
     if request.method == 'POST':
         if request.form['action'] =='filter':
             tagValues = request.form.getlist('tag-checks')
@@ -177,7 +176,7 @@ def author():
             exisitingComment=existingAuthor['comment']
             exisitingFullname=existingAuthor['fullname']
         elif request.form['action'] == 'Delete':
-            am.deleteAuthor(request.form.getlist('delete-checks'))
+            am.deleteAuthors(request.form.getlist('delete-checks'))
     authorList=am.listAuthors()
     return render_template('author.html', authors=authorList, author_birthyear=exisitingBirthyear, author_deathyear=exisitingDeathyear, author_comment=exisitingComment, author_fullname=exisitingFullname, author_id=id)
 

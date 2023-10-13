@@ -2,12 +2,13 @@ from helperfunctions import get_db_connection
 import associationmanagement as asm
 import tagmanagement as tm
 import sourcemanagement as sm
+import authormanagement as am
 import markdown
 
 def listNotes():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute('with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag SEPARATOR "; ") as tags  from associate_notetag_note ann  join notetag nt on nt.id = ann.notetag_id  group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources, s.url  from associate_source_note asn  join source s on s.id = asn.source_id  group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources, s.url from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id order by n.update_datetime desc;')
+    cur.execute('with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag order by tag asc SEPARATOR "; ") as tags  from associate_notetag_note ann  join notetag nt on nt.id = ann.notetag_id  group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources, s.url  from associate_source_note asn  join source s on s.id = asn.source_id  group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources, s.url from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id order by n.update_datetime desc;')
     db_notes=cur.fetchall()
     conn.close()
     notes=[]
@@ -81,30 +82,7 @@ def alterSnippet(content,sourceTitle,tags,url,authors,snippetId):
         asm.linkSourceToNote(snippetId,sId)
     #TODO Snip-94
     if (url or sourceTitle) and authors[0] != '':
-        alterAuthors(authors,sId)  
-
-
-def alterAuthors(authors, sourceId):
-    conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)        
-    authorIds=[]
-    if authors:
-        for author in authors:
-            author=author.strip()
-            if author:
-                sql="SELECT id from author where full_name=?;"
-                cur.execute(sql,(author,))
-                author_entry =cur.fetchone()
-                if author_entry:
-                    author_id =author_entry['id']
-                    authorIds.append(author_id)
-                else:
-                    sql="INSERT INTO author(full_name) values (?);"
-                    cur.execute(sql,(author,))
-                    authorIds.append(cur.lastrowid)
-                    conn.commit()
-    conn.close()
-    asm.linkAuthorsToSource(sourceId,authorIds)
+        am.alterAuthors(authors,sId)  
 
 
 def deleteSnippet(delete_ids):
