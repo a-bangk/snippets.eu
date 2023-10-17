@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'HGrsAtU^Bt7cV8D5'
 
 @app.route('/', methods=('GET', 'POST'))
-def index():
+def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentString="", snippetsId=""):
     sourceString=""
     sourceUrl=""
     tagString=""
@@ -84,25 +84,7 @@ def filtersnippetslist():
             if authorsString and not (sourceString or sourceUrl):
                 flash('Author entry requires Source Title or URL')
                 return redirect(url_for('index'))
-            nm.alterSnippet(content,sourceString,tagList,source_url,authorList,snippetId)        
-        if re.search("Edit*",request.form['action']):
-            id=re.findall(r'\d+',request.form['action'])
-            existingSnippet=nm.editSnippet(id[0])
-            contentString=existingSnippet['content']
-            sourceString=existingSnippet['sources']
-            if sourceString is None:
-                sourceString=''
-            sourceUrl=existingSnippet['url']
-            if sourceUrl is None:
-                sourceUrl=''
-            tagString=existingSnippet['tags']
-            snippetId=existingSnippet['id']
-            authorsString=am.authorsStringFromNoteId(snippetId)
-            snippets=nm.listNotes()
-            tags=tm.listTags()
-            sources = sm.listSourceTitles()
-            authors = am.listAuthorsAuto()
-            return render_template('index.html', items=snippets, tags=tags, authors=authors,sources=sources,previous_authors=authorsString, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
+            nm.alterSnippet(content,sourceString,tagList,source_url,authorList,snippetId)
     else:
         snippets=nm.listNotes()
     return render_template('filtersnippetslist.html', items=snippets, tags=tags)

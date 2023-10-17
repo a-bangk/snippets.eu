@@ -20,6 +20,6 @@ def commaStringToList(commaString):
     itemList = [item.strip() for item in itemList]
     while("" in itemList):
         itemList.remove("")
-    itemList.sort()
+    itemList = sorted(itemList, key=str.casefold)
     return itemList
      

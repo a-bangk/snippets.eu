@@ -33,7 +33,7 @@ def listTags():
     tags=[]
     for tag in db_tags:
         tags.append(tag['tag'])
-    tags=sorted(tags)
+    tags=sorted(tags,key=str.casefold)
     return tags
 
 def idFromTagsList(tagList):
