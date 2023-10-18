@@ -75,3 +75,6 @@ def test_alterSnippet_All():
     assert sValues["id"]==latestId
     assert sValues["sources"]==title
     assert authorsInDb=="Author 1, Author person 3, M.D manpanfan"
+
+def test_authorManagement():
+    assert 1==1

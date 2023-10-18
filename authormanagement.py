@@ -39,7 +39,7 @@ def saveAuthor(fullName,birthyear='',deathyear='',comment='', id=0):
         sql='insert into author(full_name,birthyear,deathyear,comment,entry_datetime,update_datetime) VALUES (?, ?,?,?,now(),now());'
         cur.execute(sql,(fullName,birthyear,deathyear,comment))
     else:
-        sql='update author set update_dateime=now(),full_name = ?,birthyear =?,deathyear = ?,comment = ? where id = ?;'
+        sql='update author set update_datetime=now(),full_name = ?,birthyear =?,deathyear = ?,comment = ? where id = ?;'
         cur.execute(sql,(fullName,birthyear,deathyear,comment,id))
     a_id = cur.lastrowid
     conn.commit()
@@ -90,7 +90,6 @@ def authorsStringFromNoteId(snippetId):
     else:
         return('')
     
-
 def alterAuthors(authors, sourceId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)        
@@ -111,4 +110,5 @@ def alterAuthors(authors, sourceId):
                     authorIds.append(cur.lastrowid)
                     conn.commit()
     conn.close()
-    asm.linkAuthorsToSource(sourceId,authorIds)
+    if sourceId != 0:
+        asm.linkAuthorsToSource(sourceId,authorIds)
