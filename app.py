@@ -38,6 +38,7 @@ def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentStr
                 flash('Author entry requires Source Title or URL')
                 return redirect(url_for('index'))
             nm.alterSnippet(content,sourceString,tagList,sourceUrl,authorList,snippetId)
+            snippetId=False
         elif request.form['action'] == 'Delete':
             nm.deleteSnippet(request.form.getlist('delete-checks'))
         elif re.search("Edit*",request.form['action']):
