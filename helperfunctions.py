@@ -1,14 +1,17 @@
 import sys
 import mariadb
+from dynaconf import settings
 
 def get_db_connection(): 
+    print("hllow")
+    print(settings.MYSQL)
     try: 
         conn = mariadb.connect( 
-            user="adam", 
-            password="savagge23.3", 
-            host="192.168.0.42", 
-            port=3306, 
-            database="personal_snippetsdb" 
+            user=settings.MYSQL.user, 
+            password=settings.MYSQL.auth.get('passwd'), 
+            host=settings.MYSQL.host, 
+            port=settings.MYSQL.port, 
+            database=settings.MYSQL.database 
         ) 
     except mariadb.Error as e: 
             print(f"Error connecting to MariaDB Platform: {e}") 

@@ -5,3 +5,5 @@
 *.code-workspace
 sql_scratch.sql
 *.pyc
+
+secrets.toml
