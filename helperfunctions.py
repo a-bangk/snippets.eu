@@ -2,17 +2,16 @@ import sys
 import mariadb
 from dynaconf import settings
 
-def get_db_connection(): 
-    print("hllow")
-    print(settings.MYSQL)
+def get_db_connection():
     try: 
         conn = mariadb.connect( 
-            user=settings.MYSQL.user, 
+            user=settings.MYSQL.auth.USER, 
             password=settings.MYSQL.auth.get('passwd'), 
             host=settings.MYSQL.host, 
             port=settings.MYSQL.port, 
             database=settings.MYSQL.database 
         ) 
+
     except mariadb.Error as e: 
             print(f"Error connecting to MariaDB Platform: {e}") 
             sys.exit(1) 

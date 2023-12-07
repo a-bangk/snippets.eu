@@ -6,4 +6,5 @@
 sql_scratch.sql
 *.pyc
 
-secrets.toml
+# Ignore dynaconf secret files
+.secrets.*
