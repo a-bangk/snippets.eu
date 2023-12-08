@@ -1,8 +1,15 @@
 # Hosting
 
 ## Development
-
+### Environments
 Environment is set the environmental variable ENV_FOR_DYNACONF, see settings.toml for possible environments
+
+### Testing
+```
+>pytest
+```
+
+runs all tests, they are in test_setOne.py
 
 ## Infrastructure
 Currently running on raspberrypi codename hal.
