@@ -1,10 +1,14 @@
 # Hosting
 
-## Infrastruture
+## Development
+
+Environment is set the environmental variable ENV_FOR_DYNACONF, see settings.toml for possible environments
+
+## Infrastructure
 Currently running on raspberrypi codename hal.
 With python libraries installed on hal and running from virtual environments. See details in tech-guides/hosting-flask.md
 
-## Access to Snippets
+## User Access to Snippets
 ### Public
 Public facing running snippets
 #### Test (snippets-a)
@@ -35,15 +39,3 @@ Numbering
 * Major for changes that break backwards compatibly or major new release
 * Minor Changing new features and usability
 * Fix, cosmetic and bug fixes
-
-Source
-
-https://www.digitalocean.com/community/tutorials/how-to-use-python-markdown-with-flask-and-sqlite?utm_source=pocket_saves
-
-relevant libraries
-* flask
-* markdown
-
-SQL schema goes in 'schema.sql'
-DB is created and started with 'init_db.py'
-
