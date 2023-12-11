@@ -5,6 +5,7 @@ from . import helperfunctions as hf
 from . import notemanagement as nm
 from . import tagmanagement as tm
 from . import authormanagement as am
+from .source import management as sm
 from dynaconf import FlaskDynaconf
 
 def create_app():
@@ -12,9 +13,8 @@ def create_app():
     app.config['SECRET_KEY'] = 'HGrsAtU^Bt7cV8D5'
     FlaskDynaconf(app, settings_files=["settings.toml"])
 
-    from . import source as sm
-    #import source.sourcemanagement as sm
-    app.register_blueprint(sm.source_bp)
+    from . import source
+    app.register_blueprint(source.source_bp)
 
     @app.route('/', methods=('GET', 'POST'))
     def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentString="", snippetsId=""):

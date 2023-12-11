@@ -1,6 +1,6 @@
 
 from app import authormanagement as am
-from app import source as sm
+from app.source import management as sm
 from app import notemanagement as nm
 from app import tagmanagement as tm
 from app import helperfunctions as hf

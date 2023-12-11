@@ -1,7 +1,7 @@
 from .helperfunctions import get_db_connection
 from . import associationmanagement as asm
 from . import tagmanagement as tm
-from . import source as sm
+from .source import management as sm
 from . import authormanagement as am
 import markdown
 

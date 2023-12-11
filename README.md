@@ -6,6 +6,7 @@ Environment is set the environmental variable ENV_FOR_DYNACONF, see settings.tom
 
 ```
 export ENV_FOR_DYNACONF=development
+export ENV_FOR_DYNACONF=personal
 ```
 ### Testing
 ```
