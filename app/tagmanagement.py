@@ -1,4 +1,4 @@
-from helperfunctions import get_db_connection
+from .helperfunctions import get_db_connection
 
 def deleteTagsById(delete_ids):
     conn = get_db_connection()

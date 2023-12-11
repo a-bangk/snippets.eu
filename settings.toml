@@ -9,3 +9,8 @@ mysql = {host="localhost", port=3306, database="snippetsdb_testa", auth={user="s
 
 [personal]
 mysql = {host="192.168.0.42", port=3306, database="personal_snippetsdb", auth={user="adam", passwd="savagge23.3"}}
+
+
+
+[pi]
+mysql = {host="192.168.0.42", port=3306, database="snippetsdb_testa", auth={user="root", passwd="Suffocate7-Eloquent-Confined"}}

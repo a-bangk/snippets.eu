@@ -1,19 +1,18 @@
 
-import authormanagement as am
-import sourcemanagement as sm
-import notemanagement as nm
-import tagmanagement as tm
-import helperfunctions as hf
+from app import authormanagement as am
+from app import source as sm
+from app import notemanagement as nm
+from app import tagmanagement as tm
+from app import helperfunctions as hf
 
 def test_amIdFromFullNameList():
-    assert am.idFromFullNamesList(["Milton Friedman","Finn Kjems","Gary Enzo","Karl Marx"]) == [112,3,2,160]
+    assert am.idFromFullNamesList(["Milton Friedman","Finn Kjems","Gary Enzo","Karl Marx"]) == [71,72,73,74]
 
 def test_smIdFromTitle():
-    assert sm.idFromTitle("BabyWise") == 1
-
+    assert sm.idFromTitle("BabyWise") == 61
 
 def test_sourceFunctions():
-    sm.alterSource("Bob Smith", "Test Title 1", '',3,'http://www.google.com','')
+    sm.alterSource("Bob Smith", "Test Title 1", '2000',3,'http://www.google.com','')
     sId=sm.idFromTitleAndUrl("Test Title 1","http://www.google.com")
     sm.alterSource("Bob Smith", "Test Title 2", '2002',3,'http://www.google.com',sId)
     sm.deleteSource([sId])

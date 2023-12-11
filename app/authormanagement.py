@@ -1,5 +1,5 @@
-from helperfunctions import get_db_connection
-import associationmanagement as asm
+from .helperfunctions import get_db_connection
+from . import associationmanagement as asm
 
 def listAuthors():
     conn = get_db_connection()

@@ -1,18 +1,20 @@
 
 from flask import Flask, render_template, request, flash, redirect, url_for
 import re
-import sourcemanagement as sm
-import helperfunctions as hf
-import notemanagement as nm
-import tagmanagement as tm
-import sourcemanagement as sm
-import authormanagement as am
+from . import helperfunctions as hf
+from . import notemanagement as nm
+from . import tagmanagement as tm
+from . import authormanagement as am
 from dynaconf import FlaskDynaconf
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'HGrsAtU^Bt7cV8D5'
     FlaskDynaconf(app, settings_files=["settings.toml"])
+
+    from . import source as sm
+    #import source.sourcemanagement as sm
+    app.register_blueprint(sm.source_bp)
 
     @app.route('/', methods=('GET', 'POST'))
     def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentString="", snippetsId=""):

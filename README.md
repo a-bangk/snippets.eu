@@ -4,6 +4,9 @@
 ### Environments
 Environment is set the environmental variable ENV_FOR_DYNACONF, see settings.toml for possible environments
 
+```
+export ENV_FOR_DYNACONF=development
+```
 ### Testing
 ```
 >pytest

@@ -1,4 +1,4 @@
-from helperfunctions import get_db_connection
+from .helperfunctions import get_db_connection
 
 def linkAuthorsToSource(sId,aIds):
     conn = get_db_connection()
