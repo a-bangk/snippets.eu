@@ -23,7 +23,6 @@ def listTagsFull():
         tags.append(tag)
     return tags
 
-
 def listTags():
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
@@ -57,4 +56,3 @@ def idFromTagsList(tagList):
             conn.commit()        
     conn.close()
     return ids
-

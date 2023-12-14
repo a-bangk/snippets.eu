@@ -8,9 +8,7 @@ from . import management as sm
 
 from . import source_bp
 
-
-
-@source_bp.route('/source/', methods=('GET', 'POST'))
+@source_bp.route('/source', methods=('GET', 'POST'))
 def source():
     exisitingTitle=''
     exisitingYear=''      
