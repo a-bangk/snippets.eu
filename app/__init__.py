@@ -2,9 +2,13 @@ from flask import Flask
 from dynaconf import FlaskDynaconf
 
 def create_app():
+    #This is a factory pattern
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'HGrsAtU^Bt7cV8D5'
-    FlaskDynaconf(app, settings_files=["settings.toml"])
+    FlaskDynaconf(
+        app, 
+        settings_files=["settings.toml"]
+    )
     with app.app_context():
 
         from . import source

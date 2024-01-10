@@ -1,15 +1,15 @@
 import sys
 import mariadb
-from dynaconf import settings
+from flask import current_app
 
 def get_db_connection():
     try: 
         conn = mariadb.connect( 
-            user=settings.MYSQL.auth.USER, 
-            password=settings.MYSQL.auth.get('passwd'), 
-            host=settings.MYSQL.host, 
-            port=settings.MYSQL.port, 
-            database=settings.MYSQL.database 
+            user=current_app.config["user"], 
+            password=current_app.config["passwd"],
+            host=current_app.config["host"], 
+            port=int(current_app.config["port"]), 
+            database=current_app.config["database"], 
         ) 
 
     except mariadb.Error as e: 

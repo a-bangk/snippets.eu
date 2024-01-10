@@ -4,24 +4,32 @@ from app.source import management as sm
 from app import notemanagement as nm
 from app import tagmanagement as tm
 from app import helperfunctions as hf
+from snippets import create_app
+import pytest
 
-def test_amIdFromFullNameList():
+@pytest.fixture
+def app():
+    app=create_app()
+    with app.app_context():
+        yield app
+
+def test_amIdFromFullNameList(app):
     assert am.idFromFullNamesList(["Milton Friedman","Finn Kjems","Gary Enzo","Karl Marx"]) == [71,72,73,74]
 
-def test_smIdFromTitle():
+def test_smIdFromTitle(app):
     assert sm.idFromTitle("BabyWise") == 61
 
-def test_sourceFunctions():
+def test_sourceFunctions(app):
     sm.alterSource("Bob Smith", "Test Title 1", '2000',3,'http://www.google.com','')
     sId=sm.idFromTitleAndUrl("Test Title 1","http://www.google.com")
     sm.alterSource("Bob Smith", "Test Title 2", '2002',3,'http://www.google.com',sId)
     sm.deleteSource([sId])
 
-def test_usingQuotes():
+def test_usingQuotes(app):
     sId=sm.idFromTitleAndUrl('"','"')
     sm.deleteSource([sId])
 
-def test_alterSnippet_SourceTitle():
+def test_alterSnippet_SourceTitle(app):
     content="Test Content 667504ggyj"
     nm.alterSnippet(content,"New title 3",'','',[''],'False')        
     sIds=nm.idsFromContent(content)
@@ -33,7 +41,7 @@ def test_alterSnippet_SourceTitle():
     assert sValues["sources"]=="New title 3"
     assert sValues["id"]==latestId
 
-def test_alterSnippet_Tag():
+def test_alterSnippet_Tag(app):
     content="Test Content adding Tags"
     tagString="test tag,    testtag    ,  @dae ,   "
     tagList=hf.commaStringToList(tagString)
@@ -47,7 +55,7 @@ def test_alterSnippet_Tag():
     assert sValues["tags"]=="@dae, test tag, testtag"
     assert sValues["id"]==latestId
 
-def test_alterSnippet_All():
+def test_alterSnippet_All(app):
     startCount=len(nm.listNotes())
     content="Test Content adding All"
     title='Source with Authors'
@@ -75,5 +83,30 @@ def test_alterSnippet_All():
     assert sValues["sources"]==title
     assert authorsInDb=="Author 1, Author person 3, M.D manpanfan"
 
-def test_authorManagement():
-    assert 1==1
+def test_endpoint_filter(app):
+    with app.test_client() as client:
+        response = client.get('/filtersnippetslist')
+        assert response.status_code == 200
+
+def test_endpoint_source(app):
+    with app.test_client() as client:
+        response = client.get('/source')
+        assert response.status_code == 200
+
+
+def test_endpoint_author(app):
+    with app.test_client() as client:
+        response = client.get('/author')
+        assert response.status_code == 200
+
+
+def test_endpoint_tag(app):
+    with app.test_client() as client:
+        response = client.get('/tag')
+        assert response.status_code == 200
+
+    
+def test_endpoint_about(app):
+    with app.test_client() as client:
+        response = client.get('/about')
+        assert response.status_code == 200
