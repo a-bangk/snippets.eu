@@ -2,18 +2,19 @@
 
 ## Development
 ### Environments
-Environment is set the environmental variable ENV_FOR_DYNACONF, see settings.toml for possible environments
+Which database is determined by FLASK_ENV, see settings.toml for possible environments
 
 ```
-export ENV_FOR_DYNACONF=development
-export ENV_FOR_DYNACONF=personal
+export FLASK_ENV=
 ```
 ### Testing
+
+VSCode uses pytest and relies on a local test database
+
 ```
 >pytest
 ```
 
-runs all tests, they are in test_setOne.py
 
 ## Infrastructure
 Currently running on raspberrypi codename hal.
@@ -22,11 +23,11 @@ With python libraries installed on hal and running from virtual environments. Se
 ## User Access to Snippets
 ### Public
 Public facing running snippets
-#### Test (snippets-a)
+#### Test (snippets-a) 2024-01-10 Down
 * snippets-a.akjems.com (Running latest build on main)
     * ~/websites/snippets-a/snippets/
 
-#### Production (snippets-l)
+#### Production (snippets-l) -> move to mysnippets.eu
 * snippets.akjems.com (live branch) Significant versions are tagged, merged from main
     * ~/websites/snippets-l/snippets
 
