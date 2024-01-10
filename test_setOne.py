@@ -110,3 +110,6 @@ def test_endpoint_about(app):
     with app.test_client() as client:
         response = client.get('/about')
         assert response.status_code == 200
+
+def test_alchemy_connection(app):
+    assert hf.conn_alchemy()

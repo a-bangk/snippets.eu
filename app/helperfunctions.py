@@ -1,5 +1,7 @@
 import sys
 import mariadb
+from sqlalchemy import create_engine, text
+import pymysql
 from flask import current_app
 
 def get_db_connection():
@@ -16,6 +18,10 @@ def get_db_connection():
             print(f"Error connecting to MariaDB Platform: {e}") 
             sys.exit(1) 
     return conn 
+
+def conn_alchemy():
+    engine = create_engine('mysql+pymysql://'+current_app.config["user"]+':'+current_app.config["passwd"]+'@'+current_app.config["host"]+':'+current_app.config["port"]+'/'+current_app.config["database"], pool_recycle=3600, echo=True)
+    return engine.connect()
 
 def commaStringToList(commaString):
     itemList=commaString.split(',')
