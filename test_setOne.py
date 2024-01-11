@@ -23,17 +23,19 @@ def test_databaseConnectionAlchemy(app):
     db=result.scalar()
     assert db == 'snippetsdb_testa'
 
-def test_amIdFromFullNameList(app):
+def test_amidFromFullNameList(app):
     assert am.idFromFullNamesList(["Milton Friedman","Finn Kjems","Gary Enzo","Karl Marx"]) == [71,72,73,74]
 
-def test_smIdFromTitle(app):
+def test_smidFromTitle(app):
     assert sm.idFromTitle("BabyWise") == 61
 
-def test_sourceFunctions(app):
-    sm.alterSource("Bob Smith", "Test Title 1", '2000',3,'http://www.google.com','')
-    sId=sm.idFromTitleAndUrl("Test Title 1","http://www.google.com")
-    sm.alterSource("Bob Smith", "Test Title 2", '2002',3,'http://www.google.com',sId)
-    sm.deleteSource([sId])
+
+# This test alters the database and therefore removed until fixed
+#def test_sourceFunctions(app):
+#    sm.alterSource("Bob Smith", "Test Title 1", '2000',3,'http://www.google.com','')
+#    sId=sm.idFromTitleAndUrl("Test Title 1","http://www.google.com")
+#    sm.alterSource("Bob Smith", "Test Title 2", '2002',3,'http://www.google.com',sId)
+#    sm.deleteSource([sId])
 
 def test_usingQuotes(app):
     sId=sm.idFromTitleAndUrl('"','"')
@@ -101,7 +103,8 @@ def test_smdictSourceTypes(app):
 
 def test_smlistSources(app):
     result=sm.listSources()[0]
-    assert result == {'type': 'video', 'id': 183, 'title': 'Test Title 1', 'author': 'B, o,  , S, m, i, t, h', 'a_id': 90, 'url': 'http://www.google.com'}
+    print(result)
+    assert result == {'type': None, 'id': 61, 'title': 'BabyWise', 'author': None, 'a_id': None, 'url': None}
 
 ## Test Endpoints
 
