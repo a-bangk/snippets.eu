@@ -6,12 +6,22 @@ from app import tagmanagement as tm
 from app import helperfunctions as hf
 from snippets import create_app
 import pytest
+from sqlalchemy import text
 
 @pytest.fixture
 def app():
     app=create_app()
     with app.app_context():
         yield app
+
+def test_databaseConnection(app):
+    db=hf.get_db_connection().database
+    assert db == 'snippetsdb_testa'
+
+def test_databaseConnectionAlchemy(app):
+    result=hf.conn_alchemy().execute(text("SELECT DATABASE()"))
+    db=result.scalar()
+    assert db == 'snippetsdb_testa'
 
 def test_amIdFromFullNameList(app):
     assert am.idFromFullNamesList(["Milton Friedman","Finn Kjems","Gary Enzo","Karl Marx"]) == [71,72,73,74]
@@ -83,6 +93,18 @@ def test_alterSnippet_All(app):
     assert sValues["sources"]==title
     assert authorsInDb=="Author 1, Author person 3, M.D manpanfan"
 
+
+# Functions remade to use SQLAlchemy
+def test_smdictSourceTypes(app):
+    result=sm.dictSourceTypes()
+    assert result ==[{'id': 1, 'entry': 'fiction book'}, {'id': 2, 'entry': 'nonfiction book'}, {'id': 3, 'entry': 'video'}, {'id': 4, 'entry': 'hearsay'}, {'id': 5, 'entry': 'lecture'}, {'id': 6, 'entry': 'website'}, {'id': 7, 'entry': 'other'}, {'id': 8, 'entry': 'magazine'}]
+
+def test_smlistSources(app):
+    result=sm.listSources()[0]
+    assert result == {'type': 'video', 'id': 183, 'title': 'Test Title 1', 'author': 'B, o,  , S, m, i, t, h', 'a_id': 90, 'url': 'http://www.google.com'}
+
+## Test Endpoints
+
 def test_endpoint_filter(app):
     with app.test_client() as client:
         response = client.get('/filtersnippetslist')
@@ -110,6 +132,3 @@ def test_endpoint_about(app):
     with app.test_client() as client:
         response = client.get('/about')
         assert response.status_code == 200
-
-def test_alchemy_connection(app):
-    assert hf.conn_alchemy()

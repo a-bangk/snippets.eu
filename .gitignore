@@ -5,6 +5,7 @@
 *.code-workspace
 sql_scratch.sql
 *.pyc
+.pytest_cache
 
 # Ignore dynaconf secret files
 .secrets.*
