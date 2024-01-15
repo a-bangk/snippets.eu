@@ -2,7 +2,7 @@
 
 ## Development
 ### Environments
-Which database is determined by FLASK_ENV, see settings.toml for possible environments
+Dynaconf sets database by FLASK_ENV, see settings.toml for possible environments
 
 ```
 export FLASK_ENV=
@@ -10,10 +10,6 @@ export FLASK_ENV=
 ### Testing
 
 VSCode uses pytest and relies on a local test database
-
-```
->pytest
-```
 
 
 ## Infrastructure
