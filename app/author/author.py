@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from .. import authormanagement as am
 from . import author_bp
 import re
+from flask_login import login_required
 
+@login_required
 @author_bp.route('/author', methods=('GET', 'POST'))
 def author():
     exisitingBirthyear=''

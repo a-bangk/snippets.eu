@@ -3,7 +3,9 @@ from .. import helperfunctions as hf
 from .. import tagmanagement as tm
 from . import tag_bp
 
+from flask_login import login_required
 
+@login_required
 @tag_bp.route('/tag', methods=('GET', 'POST'))
 def tag():
     conn = hf.get_db_connection()

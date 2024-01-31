@@ -1,5 +1,11 @@
 from flask import Flask
 from dynaconf import FlaskDynaconf
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+
+db = SQLAlchemy()
+login = LoginManager()
+login.login_view = 'login_bp.login'
 
 def create_app():
     #This is a factory pattern
@@ -10,7 +16,8 @@ def create_app():
         settings_files=["settings.toml"]
     )
     with app.app_context():
-
+        login.init_app(app)
+        db.init_app(app)
         from . import source
         app.register_blueprint(source.source_bp)
         from . import author
@@ -23,5 +30,7 @@ def create_app():
         app.register_blueprint(about.about_bp)
         from . import home
         app.register_blueprint(home.home_bp)
+        from . import authentication
+        app.register_blueprint(authentication.login_bp)
 
         return app

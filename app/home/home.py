@@ -7,8 +7,9 @@ from .. import authormanagement as am
 from .. source import management as sm
 from . import home_bp
 import re
+from flask_login import current_user, login_user,logout_user, login_required
 
-
+@login_required
 @home_bp.route('/', methods=('GET', 'POST'))
 def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentString="", snippetsId=""):
     sourceString=""
