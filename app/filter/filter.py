@@ -5,8 +5,9 @@ from .. import notemanagement as nm
 
 from flask_login import login_required
 
-@login_required
+
 @filter_bp.route('/filtersnippetslist', methods=('GET', 'POST'))
+@login_required
 def filtersnippetslist():
 
     tags=tm.listTags()

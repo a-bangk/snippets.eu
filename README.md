@@ -1,4 +1,8 @@
-# Hosting
+# Use
+
+Test user
+username: Adam
+password: savage23.3
 
 ## Development
 ### Environments

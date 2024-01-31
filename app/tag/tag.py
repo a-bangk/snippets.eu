@@ -5,8 +5,8 @@ from . import tag_bp
 
 from flask_login import login_required
 
-@login_required
 @tag_bp.route('/tag', methods=('GET', 'POST'))
+@login_required
 def tag():
     conn = hf.get_db_connection()
     cur=conn.cursor(dictionary=True) 

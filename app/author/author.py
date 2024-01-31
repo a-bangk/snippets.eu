@@ -4,8 +4,9 @@ from . import author_bp
 import re
 from flask_login import login_required
 
-@login_required
+
 @author_bp.route('/author', methods=('GET', 'POST'))
+@login_required
 def author():
     exisitingBirthyear=''
     exisitingDeathyear=''

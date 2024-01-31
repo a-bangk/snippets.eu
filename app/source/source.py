@@ -9,8 +9,8 @@ from . import management as sm
 from . import source_bp
 from flask_login import login_required
 
-@login_required
 @source_bp.route('/source', methods=('GET', 'POST'))
+@login_required
 def source():
     exisitingTitle=''
     exisitingYear=''      
