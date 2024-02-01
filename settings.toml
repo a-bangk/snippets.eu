@@ -6,7 +6,6 @@ port="3306"
 database="snippetsdb_testa"
 user="snippets_test"
 passwd="15485099a433658c4701487c66caa3747c831f3440d435b6"
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://snippets_test:15485099a433658c4701487c66caa3747c831f3440d435b6@localhost/snippetsdb_testa'
 
 
 [test]
@@ -15,6 +14,7 @@ port="3306"
 database="snippetsdb_testa"
 user="snippets_test"
 passwd="15485099a433658c4701487c66caa3747c831f3440d435b6"
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://snippets_test:15485099a433658c4701487c66caa3747c831f3440d435b6@localhost/snippetsdb_testa'
 
 
 [personal]
@@ -23,6 +23,7 @@ port="3306"
 database="personal_snippetsdb"
 user="adam"
 passwd="savagge23.3"
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://adam:savagge23.3@192.168.0.42/personal_snippetsdb'
 
 
 

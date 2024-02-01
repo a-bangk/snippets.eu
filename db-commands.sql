@@ -1,6 +1,26 @@
 show tables;
 
-select * from author;
+describe note;
+describe user;
+
+CREATE TABLE user (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    username VARCHAR(100) UNIQUE,
+    email VARCHAR(320) UNIQUE,
+    password_hash VARCHAR(255),
+    is_active TINYINT(1) DEFAULT 1,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated DATETIME,
+    PRIMARY KEY (id)
+);
+
+select * from users;
+ALTER TABLE user MODIFY COLUMN id int unsigned;
+drop table user;
+describe user;
+
+alter table note add column user_id int;
+
 select * from author;
 v
 v
