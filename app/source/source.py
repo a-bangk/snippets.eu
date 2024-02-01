@@ -23,12 +23,12 @@ def source():
         if request.form['action'] == 'Add':
             if request.form['source_type'] == "None" or request.form['source_type']=='':
                 flash('Sources require a type selected')
-                return redirect(url_for('source'))
+                return redirect(url_for('source_bp.source'))
             else:
                 sourceTypeId = [d.get('id') for d in sourceTypesDict if d.get('entry')==request.form['source_type']][0]
             if not request.form['title'] or sourceTypeId == None:
                 flash('A title and source type is required!')
-                return redirect(url_for('source'))
+                return redirect(url_for('source_bp.source'))
             authorString=request.form['authors-auto'].strip()
             authorList=authorString.split(',')
             while("" in authorList):

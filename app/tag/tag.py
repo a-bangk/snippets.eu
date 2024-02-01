@@ -15,7 +15,7 @@ def tag():
             tag = request.form['tag']
             if not tag:
                 flash('Tag is required!')
-                return redirect(url_for('tag'))
+                return redirect(url_for('tag_bp.tag'))
             sql='insert into notetag(tag,entry_datetime, update_datetime) VALUES (?, now(), now())'
             cur.execute(sql,(tag,))
         if request.form['action']=='Delete':

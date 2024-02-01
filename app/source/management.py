@@ -34,19 +34,17 @@ def listSourceTitles():
             sources.append(source['title'])
     return sources
 
-
-
 def alterSource(authorFullNameList, title, year, typeId, url,sId):
     if year=='':
-        year is None
+        year = None
     if url=='':
-        url is None
+        url = None
     if sId == '':
         sId=addSource(title,typeId,url,year)
     else:
         updateSource(title,url,typeId,year,sId)
-    authorIds=am.idFromFullNamesList(authorFullNameList)
-    asm.linkAuthorsToSource(sId,authorIds)
+    author_ids=am.idFromFullNamesList(authorFullNameList)
+    asm.linkAuthorsToSource(sId,author_ids)
 
 def deleteSource(delete_ids):
     conn = get_db_connection()
@@ -66,9 +64,9 @@ def loadSource(edit_id):
     cur=conn.cursor(dictionary=True)
     sql='select st.entry as type,s.id,s.year as year, s.title as title, GROUP_CONCAT(a.full_name SEPARATOR ", ") as author, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id where s.id=?;'
     cur.execute(sql,(edit_id,))
-    previousSnippet=cur.fetchone()
+    previous_snippet=cur.fetchone()
     conn.close()
-    return(previousSnippet)
+    return(previous_snippet)
 
 def addSource(title, typeId, url, year):
     conn = get_db_connection()

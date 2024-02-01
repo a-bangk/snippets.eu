@@ -22,7 +22,7 @@ def author():
             id=int(request.form['author_id'])
             if not authorFullname:
                 flash('Name required!')
-                return redirect(url_for('author'))
+                return redirect(url_for('author_bp.author'))
             ## search existing authors to confirm no double entry
             am.saveAuthor(authorFullname,birthyear,deathyear,comment,id)
         elif re.search("Edit*",request.form['action']):
