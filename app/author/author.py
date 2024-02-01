@@ -21,7 +21,7 @@ def author():
             deathyear = str(request.form['author_deathyear'])
             id=int(request.form['author_id'])
             if not authorFullname:
-                flash('Name required!')
+                flash('An author name is required')
                 return redirect(url_for('author_bp.author'))
             ## search existing authors to confirm no double entry
             am.saveAuthor(authorFullname,birthyear,deathyear,comment,id)

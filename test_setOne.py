@@ -122,7 +122,7 @@ def test_sm_dictSourceTypes(app):
     result=sm.dictSourceTypes()
     assert result ==[{'id': 1, 'entry': 'fiction book'}, {'id': 2, 'entry': 'nonfiction book'}, {'id': 3, 'entry': 'video'}, {'id': 4, 'entry': 'hearsay'}, {'id': 5, 'entry': 'lecture'}, {'id': 6, 'entry': 'website'}, {'id': 7, 'entry': 'other'}, {'id': 8, 'entry': 'magazine'}]
 
-"""" Fix test to use mock database, my tests change database state
+"""" Fix test to use mock database, my tests change database state SNIP.
 def test_sm_listSources(app):
     result=sm.listSources()[0]
     assert result == {'type': None, 'id': 61, 'title': 'BabyWise', 'author': None, 'a_id': None, 'url': None}

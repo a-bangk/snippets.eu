@@ -32,15 +32,15 @@ def loadAuthor(edit_id):
     conn.close()
     return(author)
 
-def saveAuthor(fullName,birthyear='',deathyear='',comment='', id=0):
+def saveAuthor(full_name,birthyear='',deathyear='',comment='', id=0):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     if id == 0:
         sql='insert into author(full_name,birthyear,deathyear,comment,entry_datetime,update_datetime) VALUES (?, ?,?,?,now(),now());'
-        cur.execute(sql,(fullName,birthyear,deathyear,comment))
+        cur.execute(sql,(full_name,birthyear,deathyear,comment))
     else:
         sql='update author set update_datetime=now(),full_name = ?,birthyear =?,deathyear = ?,comment = ? where id = ?;'
-        cur.execute(sql,(fullName,birthyear,deathyear,comment,id))
+        cur.execute(sql,(full_name,birthyear,deathyear,comment,id))
     a_id = cur.lastrowid
     conn.commit()
     conn.close()
@@ -57,11 +57,11 @@ def deleteAuthors(delete_ids):
     conn.commit()
     conn.close()
 
-def idFromFullNamesList(fullNames):
+def idFromFullNamesList(full_names):
     conn = get_db_connection()
     cur=conn.cursor()
     ids=[]
-    for fullName in fullNames:
+    for fullName in full_names:
         commitFlag=False
         sql='select id from author where full_name=?;'
         cur.execute(sql,(fullName,))
