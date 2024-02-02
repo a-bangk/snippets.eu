@@ -1,5 +1,6 @@
 from .helperfunctions import get_db_connection
 
+
 def deleteTagsById(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
@@ -11,6 +12,14 @@ def deleteTagsById(delete_ids):
     conn.commit()
     conn.close()
 
+def addTagForUser(tag,user_id):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    sql_query='insert into notetag(tag,user_id, entry_datetime, update_datetime) VALUES (?, ?, now(), now())'
+    cur=conn.cursor(dictionary=True)
+    cur.execute(sql_query,(tag,user_id))
+    conn.commit()
+    conn.close()
 
 def listTagsFull():
     conn = get_db_connection()
@@ -23,10 +32,11 @@ def listTagsFull():
         tags.append(tag)
     return tags
 
-def listTags():
+def listTagsForUserId(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute('select tag from notetag;')
+    sql_query='select tag from notetag where user_id=?;'
+    cur.execute(sql_query,(user_id,))
     db_tags=cur.fetchall()
     conn.close()
     tags=[]

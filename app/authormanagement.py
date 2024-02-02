@@ -1,10 +1,11 @@
 from .helperfunctions import get_db_connection
 from . import associationmanagement as asm
 
-def listAuthors():
+def listAuthorsForUserId(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute('SELECT id,full_name as fullname, IFNULL(birthyear,"") as birthyear,IFNULL(deathyear,"") as deathyear, comment from author order by id desc;'.format(str()))
+    sql_query='SELECT id,full_name as fullname, IFNULL(birthyear,"") as birthyear,IFNULL(deathyear,"") as deathyear, comment from author where user_id=? order by id desc;'.format(str())
+    cur.execute(sql_query,(user_id,))
     db_authors=cur.fetchall()
     conn.close()
     authors=[]
@@ -12,10 +13,11 @@ def listAuthors():
         authors.append(author)
     return authors
 
-def listAuthorsAuto():
+def listAuthorsAutoForUserId(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=False)
-    cur.execute('select full_name as author from author;')
+    sql_query='select full_name as author from author where user_id=?;'
+    cur.execute(sql_query,(user_id,))
     authors_db=cur.fetchall()
     conn.close()
     authors=[]
@@ -32,12 +34,12 @@ def loadAuthor(edit_id):
     conn.close()
     return(author)
 
-def saveAuthor(full_name,birthyear='',deathyear='',comment='', id=0):
+def saveAuthor(full_name,user_id,birthyear='',deathyear='',comment='', id=0):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     if id == 0:
-        sql='insert into author(full_name,birthyear,deathyear,comment,entry_datetime,update_datetime) VALUES (?, ?,?,?,now(),now());'
-        cur.execute(sql,(full_name,birthyear,deathyear,comment))
+        sql='insert into author(full_name,birthyear,deathyear,comment,user_id, entry_datetime,update_datetime) VALUES (?, ?,?,?,?,now(),now());'
+        cur.execute(sql,(full_name,birthyear,deathyear,comment,user_id))
     else:
         sql='update author set update_datetime=now(),full_name = ?,birthyear =?,deathyear = ?,comment = ? where id = ?;'
         cur.execute(sql,(full_name,birthyear,deathyear,comment,id))

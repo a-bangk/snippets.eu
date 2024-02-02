@@ -41,6 +41,9 @@ def test_usingQuotes(app):
     sId=sm.idFromTitleAndUrl('"','"')
     sm.deleteSource([sId])
 
+def test_sm_alterSource(app):
+    sm.alterSource("Bob Smith", "Testing Alter Source", 2001, 1, "www.bobsmith.com",'',3)
+
 def test_alterSnippet_SourceTitle(app):
     content="Test Content 667504ggyj"
     nm.alterSnippet(content,"New title 3",'','',[''],'False')        
@@ -137,6 +140,7 @@ def test_sm_updateSourceWithNull(app):
     sm.updateSource('New Title', 'www.new_source.com', 6, None,53)
     result=sm.loadSource(53)
     assert result == {'type': 'website', 'id': 53, 'year': None, 'title': 'New Title', 'author': 'Chris Anderson', 'url': 'www.new_source.com'}
+
 
 ## Test Endpoints fail because they require login 
 """ 

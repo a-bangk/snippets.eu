@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from .. import authormanagement as am
 from . import author_bp
 import re
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 
 @author_bp.route('/author', methods=('GET', 'POST'))
@@ -23,8 +23,7 @@ def author():
             if not authorFullname:
                 flash('An author name is required')
                 return redirect(url_for('author_bp.author'))
-            ## search existing authors to confirm no double entry
-            am.saveAuthor(authorFullname,birthyear,deathyear,comment,id)
+            am.saveAuthor(authorFullname,current_user.id,birthyear,deathyear,comment,id)
         elif re.search("Edit*",request.form['action']):
             id=re.findall(r'\d+',request.form['action'])[0]
             existingAuthor=am.loadAuthor(id)
@@ -34,6 +33,6 @@ def author():
             exisitingFullname=existingAuthor['fullname']
         elif request.form['action'] == 'Delete':
             am.deleteAuthors(request.form.getlist('delete-checks'))
-    authorList=am.listAuthors()
+    authorList=am.listAuthorsForUserId(current_user.id)
     return render_template('author.html', authors=authorList, author_birthyear=exisitingBirthyear, author_deathyear=exisitingDeathyear, author_comment=exisitingComment, author_fullname=exisitingFullname, author_id=id)
 

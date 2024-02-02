@@ -3,24 +3,19 @@ from .. import helperfunctions as hf
 from .. import tagmanagement as tm
 from . import tag_bp
 
-from flask_login import login_required
+from flask_login import login_required,current_user
 
 @tag_bp.route('/tag', methods=('GET', 'POST'))
 @login_required
 def tag():
-    conn = hf.get_db_connection()
-    cur=conn.cursor(dictionary=True) 
     if request.method == 'POST':
         if request.form['action']=='Add':
             tag = request.form['tag']
             if not tag:
                 flash('Tag is required!')
                 return redirect(url_for('tag_bp.tag'))
-            sql='insert into notetag(tag,entry_datetime, update_datetime) VALUES (?, now(), now())'
-            cur.execute(sql,(tag,))
+            tm.addTagForUser(tag,current_user.id)
         if request.form['action']=='Delete':
             tm.deleteTagsById(request.form.getlist('delete-checks'))
-        conn.commit()
-        conn.close()
-    tags=tm.listTagsFull()
+    tags=tm.listTagsForUserId(current_user.id)
     return render_template('tag.html', items=tags)

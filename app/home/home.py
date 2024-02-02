@@ -36,7 +36,7 @@ def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentStr
             if authorsString and not (sourceString or sourceUrl):
                 flash('Author entry requires Source Title or URL')
                 return redirect(url_for('home_bp.index'))
-            nm.alterSnippet(content,sourceString,tagList,sourceUrl,authorList,snippetId)
+            nm.alterSnippet(content,sourceString,tagList,sourceUrl,authorList,snippetId,current_user.id)
             snippetId=False
         elif request.form['action'] == 'Delete':
             nm.deleteSnippet(request.form.getlist('delete-checks'))
@@ -53,10 +53,10 @@ def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentStr
             tagString=existingSnippet['tags']
             snippetId=existingSnippet['id']
             authorsString=am.authorsStringFromNoteId(snippetId)
-    snippets=nm.listNotes()
-    tags=tm.listTags()
-    sources = sm.listSourceTitles()
-    authors = am.listAuthorsAuto()
+    snippets=nm.listNotesForUserId(current_user.id)
+    tags=tm.listTagsForUserId(current_user.id)
+    sources = sm.listSourceTitlesForUserId(current_user.id)
+    authors = am.listAuthorsAutoForUserId(current_user.id)
     return render_template('index.html', items=snippets, tags=tags, authors=authors,sources=sources,previous_authors=authorsString, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
 
 

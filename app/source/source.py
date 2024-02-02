@@ -1,13 +1,13 @@
 
 from flask import Flask, render_template, request, flash, redirect, url_for
 import re
+from flask_login import login_required, current_user
 
 from ..helperfunctions import get_db_connection
 from .. import authormanagement as am
 from . import management as sm
-
 from . import source_bp
-from flask_login import login_required
+
 
 @source_bp.route('/source', methods=('GET', 'POST'))
 @login_required
@@ -33,7 +33,7 @@ def source():
             authorList=authorString.split(',')
             while("" in authorList):
                 authorList.remove("")
-            sm.alterSource(authorList,request.form['title'],request.form['year'],sourceTypeId,request.form['url'],request.form['source_id'])
+            sm.alterSource(authorList,request.form['title'],request.form['year'],sourceTypeId,request.form['url'],request.form['source_id'],current_user.id)
         elif re.search("Edit*",request.form['action']):
             id=re.findall(r'\d+',request.form['action'])[0]
             existingSource=sm.loadSource(id)
@@ -44,6 +44,6 @@ def source():
             exisitingType=existingSource['type']
         elif request.form['action'] == 'Delete':
             sm.deleteSource(request.form.getlist('delete-checks'))
-    sourcesList=sm.listSources()
-    authors = am.listAuthorsAuto()
+    sourcesList=sm.listSourcesForUserId(current_user.id)
+    authors = am.listAuthorsAutoForUserId(current_user.id)
     return render_template('source.html', sources=sourcesList, sourceTypes=sourceTypesDict, title=exisitingTitle, year=exisitingYear, url=exisitingUrl, type=exisitingType, previous_authors=exisitingFullname, previous_id=id, authors=authors )

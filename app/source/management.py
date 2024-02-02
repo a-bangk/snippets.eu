@@ -13,19 +13,32 @@ def dictSourceTypes():
     dictSourceTypes = [dict(zip(keys, row)) for row in result]
     return dictSourceTypes
 
-def listSources():
-    query = 'SELECT st.entry as type, s.id, s.title as title, GROUP_CONCAT(a.full_name SEPARATOR ", ") as author, a.id as a_id, s.url as url FROM source s LEFT JOIN associate_source_author aa ON s.id = aa.source_id LEFT JOIN author a ON aa.author_id = a.id LEFT JOIN source_type st ON s.source_type_id = st.id GROUP BY s.id ORDER BY s.id DESC;'
+def listSourcesForUserId(user_id):
+    query = '''
+    SELECT 
+        st.entry as type, s.id, s.title as title, 
+        GROUP_CONCAT(a.full_name SEPARATOR ", ") as author, a.id as a_id, 
+        s.url as url 
+    FROM source s 
+    LEFT JOIN associate_source_author aa ON s.id = aa.source_id 
+    LEFT JOIN author a ON aa.author_id = a.id 
+    LEFT JOIN source_type st ON s.source_type_id = st.id 
+    WHERE s.user_id = :user_id  -- Filter by user_id
+    GROUP BY s.id 
+    ORDER BY s.id DESC;
+    '''
     session = sessionmaker(bind=conn_alchemy())()
-    result =session.execute(text(query))
+    result = session.execute(text(query), {'user_id': user_id})
     session.close()
     keys = result.keys()
     sources_list = [dict(zip(keys, row)) for row in result]
     return sources_list
 
-def listSourceTitles():
+def listSourceTitlesForUserId(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    cur.execute('select s.title as title, s.id as id from source s;')
+    sql_query='select s.title as title, s.id as id from source s where user_id=?;'
+    cur.execute(sql_query,(user_id,))
     db_sources=cur.fetchall()
     conn.close()
     sources=[]
@@ -34,17 +47,17 @@ def listSourceTitles():
             sources.append(source['title'])
     return sources
 
-def alterSource(authorFullNameList, title, year, typeId, url,sId):
+def alterSource(author_fullname_list, title, year, type_id, url,source_id,user_id):
     if year=='':
         year = None
     if url=='':
         url = None
-    if sId == '':
-        sId=addSource(title,typeId,url,year)
+    if source_id == '':
+        source_id=addSource(title,type_id,url,year,user_id)
     else:
-        updateSource(title,url,typeId,year,sId)
-    author_ids=am.idFromFullNamesList(authorFullNameList)
-    asm.linkAuthorsToSource(sId,author_ids)
+        updateSource(title,url,type_id,year,source_id)
+    author_ids=am.idFromFullNamesList(author_fullname_list)
+    asm.linkAuthorsToSource(source_id,author_ids)
 
 def deleteSource(delete_ids):
     conn = get_db_connection()
@@ -68,11 +81,11 @@ def loadSource(edit_id):
     conn.close()
     return(previous_snippet)
 
-def addSource(title, typeId, url, year):
+def addSource(title, typeId, url, year,user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    sql='insert into source(title,entry_datetime, update_datetime,source_type_id,url,year) VALUES (?, now(),now(),?, ?, ?);'
-    cur.execute(sql,(title,typeId,url,year))
+    sql_query='insert into source(title,entry_datetime, update_datetime,source_type_id,url,year,user_id) VALUES (?, now(),now(),?, ?, ?,?);'
+    cur.execute(sql_query,(title,typeId,url,year,user_id))
     sId = cur.lastrowid
     conn.commit()
     conn.close()
