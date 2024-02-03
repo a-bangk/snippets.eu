@@ -77,27 +77,27 @@ def updateSnippet(content,snippetId):
     conn.commit()
     conn.close()
 
-def alterSnippet(content,sourceTitle,tags,url,authors,snippetId,user_id):
-    if snippetId == 'False':
-        snippetId=addNewSnippet(content,user_id)
+def alterSnippet(content,source_title,tags,url,authors,snippet_id,user_id):
+    if snippet_id == 'False':
+        snippet_id=addNewSnippet(content,user_id)
     else:
-        updateSnippet(content,snippetId)
-        deleteAssociateLinks(snippetId)
+        updateSnippet(content,snippet_id)
+        deleteAssociateLinks(snippet_id)
     if tags:
         tagIds=tm.idFromTagsList(tags)
-        asm.linkTagsToNote(snippetId,tagIds)
-    if sourceTitle and url:
-        sId=sm.idFromTitleAndUrl(sourceTitle,url)
-        asm.linkSourceToNote(snippetId,sId)
-    elif sourceTitle:    
-        sId=sm.idFromTitle(sourceTitle)
-        asm.linkSourceToNote(snippetId,sId)
+        asm.linkTagsToNote(snippet_id,tagIds)
+    if source_title and url:
+        source_id=sm.idFromTitleAndUrl(source_title,url)
+        asm.linkSourceToNote(snippet_id,source_id)
+    elif source_title:    
+        source_id=sm.idFromTitle(source_title)
+        asm.linkSourceToNote(snippet_id,source_id)
     elif url:    
-        sId=sm.idFromUrl(url)
-        asm.linkSourceToNote(snippetId,sId)
+        source_id=sm.idFromUrl(url)
+        asm.linkSourceToNote(snippet_id,source_id)
     #TODO Snip-94
-    if (url or sourceTitle) and authors[0] != '':
-        am.alterAuthors(authors,sId)  
+    if (url or source_title) and authors[0] != '':
+        am.alterAuthors(authors,source_id,user_id)  
 
 
 def deleteSnippet(delete_ids):

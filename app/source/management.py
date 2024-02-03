@@ -34,7 +34,7 @@ def listSourcesForUserId(user_id):
     sources_list = [dict(zip(keys, row)) for row in result]
     return sources_list
 
-def listSourceTitlesForUserId(user_id):
+def sourceTitlesForUserId(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     sql_query='select s.title as title, s.id as id from source s where user_id=?;'

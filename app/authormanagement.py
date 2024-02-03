@@ -92,25 +92,26 @@ def authorsStringFromNoteId(snippetId):
     else:
         return('')
     
-def alterAuthors(authors, sourceId):
+def alterAuthors(authors, source_id,user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)        
-    authorIds=[]
+    author_ids=[]
     if authors:
         for author in authors:
             author=author.strip()
             if author:
-                sql="SELECT id from author where full_name=?;"
-                cur.execute(sql,(author,))
+                #SNIP-215, what if authors have same name?
+                sql="SELECT id from author where full_name=? AND user_id=?;"
+                cur.execute(sql,(author,user_id))
                 author_entry =cur.fetchone()
                 if author_entry:
                     author_id =author_entry['id']
-                    authorIds.append(author_id)
+                    author_ids.append(author_id)
                 else:
-                    sql="INSERT INTO author(full_name) values (?);"
-                    cur.execute(sql,(author,))
-                    authorIds.append(cur.lastrowid)
+                    sql="INSERT INTO author(full_name,user_id) values (?,?);"
+                    cur.execute(sql,(author,user_id))
+                    author_ids.append(cur.lastrowid)
                     conn.commit()
     conn.close()
-    if sourceId != 0:
-        asm.linkAuthorsToSource(sourceId,authorIds)
+    if source_id != 0:
+        asm.linkAuthorsToSource(source_id,author_ids)

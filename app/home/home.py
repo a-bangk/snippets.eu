@@ -54,8 +54,8 @@ def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentStr
             snippetId=existingSnippet['id']
             authorsString=am.authorsStringFromNoteId(snippetId)
     snippets=nm.listNotesForUserId(current_user.id)
-    tags=tm.listTagsForUserId(current_user.id)
-    sources = sm.listSourceTitlesForUserId(current_user.id)
+    tags=tm.tagsForUserId(current_user.id)
+    sources = sm.sourceTitlesForUserId(current_user.id)
     authors = am.listAuthorsAutoForUserId(current_user.id)
     return render_template('index.html', items=snippets, tags=tags, authors=authors,sources=sources,previous_authors=authorsString, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
 

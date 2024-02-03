@@ -12,6 +12,7 @@ def deleteTagsById(delete_ids):
     conn.commit()
     conn.close()
 
+
 def addTagForUser(tag,user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
@@ -21,18 +22,7 @@ def addTagForUser(tag,user_id):
     conn.commit()
     conn.close()
 
-def listTagsFull():
-    conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)
-    cur.execute('SELECT * from notetag order by id desc;')
-    db_tags=cur.fetchall()
-    conn.close()
-    tags=[]
-    for tag in db_tags:
-        tags.append(tag)
-    return tags
-
-def listTagsForUserId(user_id):
+def tagsForUserId(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     sql_query='select tag from notetag where user_id=?;'
@@ -43,6 +33,19 @@ def listTagsForUserId(user_id):
     for tag in db_tags:
         tags.append(tag['tag'])
     tags=sorted(tags,key=str.casefold)
+    return tags
+
+
+def tagsAllFieldsForUserId(user_id):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    sql_query='SELECT * from notetag where user_id=? order by id desc;'
+    cur.execute(sql_query,(user_id,))
+    db_tags=cur.fetchall()
+    conn.close()
+    tags=[]
+    for tag in db_tags:
+        tags.append(tag)
     return tags
 
 def idFromTagsList(tagList):

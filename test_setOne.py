@@ -45,8 +45,9 @@ def test_sm_alterSource(app):
     sm.alterSource("Bob Smith", "Testing Alter Source", 2001, 1, "www.bobsmith.com",'',3)
 
 def test_alterSnippet_SourceTitle(app):
+    user_id=3
     content="Test Content 667504ggyj"
-    nm.alterSnippet(content,"New title 3",'','',[''],'False')        
+    nm.alterSnippet(content,"New title 3",'','',[''],'False',user_id)        
     sIds=nm.idsFromContent(content)
     latestId=sIds[0][0]
     sValues=nm.editSnippet(latestId)
@@ -57,10 +58,11 @@ def test_alterSnippet_SourceTitle(app):
     assert sValues["id"]==latestId
 
 def test_alterSnippet_Tag(app):
+    user_id=3
     content="Test Content adding Tags"
     tagString="test tag,    testtag    ,  @dae ,   "
     tagList=hf.commaStringToList(tagString)
-    nm.alterSnippet(content,'',tagList,'',[''],'False')        
+    nm.alterSnippet(content,'',tagList,'',[''],'False',user_id)        
     sIds=nm.idsFromContent(content)
     latestId=sIds[0][0]
     sValues=nm.editSnippet(latestId)
@@ -71,37 +73,38 @@ def test_alterSnippet_Tag(app):
     assert sValues["id"]==latestId
 
 def test_alterSnippet_All(app):
-    startCount=len(nm.listNotes())
+    user_id=3
+    start_count=len(nm.listNotesForUserId(user_id))
     content="Test Content adding All"
     title='Source with Authors'
     url="www.AWESOME-TEST.org     "
-    tagString="test tag,    testtag    ,  @dae ,   "
-    authorsString="Author 1,     Author person 3, M.D manpanfan,    "
-    tagList=hf.commaStringToList(tagString)
-    authorsList=hf.commaStringToList(authorsString)
-    nm.alterSnippet(content,title,tagList,url,authorsList,'False')        
-    sIds=nm.idsFromContent(content)
-    latestId=sIds[0][0]
-    allSnippets=nm.listNotes()
-    assert startCount<len(allSnippets)
-    sValues=allSnippets[000]
-    authorsInDb=am.authorsStringFromNoteId(latestId)
-    nm.deleteSnippet([latestId])
-    tm.deleteTagsById(tm.idFromTagsList(tagList))
-    authorIds=am.idFromFullNamesList(authorsList)
-    am.deleteAuthors(authorIds)
-    sourceId=sm.idFromTitleAndUrl(title,url)
-    sm.deleteSource([sourceId])
-    assert sValues["content"]=='<p>'+content+'</p>'
-    assert sValues["tags"]=='@dae; test tag; testtag'
-    assert sValues["id"]==latestId
-    assert sValues["sources"]==title
-    assert authorsInDb=="Author 1, Author person 3, M.D manpanfan"
+    tag_string="test tag,    testtag    ,  @dae ,   "
+    author_string="Author 1,     Author person 3, M.D manpanfan,    "
+    tag_list=hf.commaStringToList(tag_string)
+    authors_list=hf.commaStringToList(author_string)
+    nm.alterSnippet(content,title,tag_list,url,authors_list,'False', user_id)        
+    source_ids=nm.idsFromContent(content)
+    latest_id=source_ids[0][0]
+    all_snippets=nm.listNotesForUserId(user_id)
+    assert start_count<len(all_snippets)
+    snippet_values=all_snippets[000]
+    authors_in_database=am.authorsStringFromNoteId(latest_id)
+    nm.deleteSnippet([latest_id])
+    tm.deleteTagsById(tm.idFromTagsList(tag_list))
+    author_ids=am.idFromFullNamesList(authors_list)
+    am.deleteAuthors(author_ids)
+    source_id=sm.idFromTitleAndUrl(title,url)
+    sm.deleteSource([source_id])
+    assert snippet_values["content"]=='<p>'+content+'</p>'
+    assert snippet_values["tags"]=='@dae; test tag; testtag'
+    assert snippet_values["id"]==latest_id
+    assert snippet_values["sources"]==title
+    assert authors_in_database=="Author 1, Author person 3, M.D manpanfan"
 
 def test_sm_listSourceTitles(app):
-    result=sm.listSourceTitles()[0]
-    print(result)
-    assert result =='The Language Instinct'
+    user_id=3
+    result=sm.sourceTitlesForUserId(user_id)[0]
+    assert result =='Testing Alter Source'
 
 def test_sm_loadSource(app):
     result=sm.loadSource(60)

@@ -17,5 +17,5 @@ def tag():
             tm.addTagForUser(tag,current_user.id)
         if request.form['action']=='Delete':
             tm.deleteTagsById(request.form.getlist('delete-checks'))
-    tags=tm.listTagsForUserId(current_user.id)
+    tags=tm.tagsAllFieldsForUserId(current_user.id)
     return render_template('tag.html', items=tags)
