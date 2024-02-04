@@ -14,14 +14,20 @@ CREATE TABLE user (
     PRIMARY KEY (id)
 );
 
-select * from users;
+alter table author drop column forename, drop column surname, drop column title, drop column middlename, drop column postnominal;
+alter table author add column user_id int unsigned;
+
+select * from user;
 ALTER TABLE user MODIFY COLUMN id int unsigned;
 drop table user;
 describe user;
+UPDATE source
+SET user_id = 2;
+ALTER TABLE note MODIFY user_id INT(10) UNSIGNED;
 
-alter table note add column user_id int;
+alter table source add column user_id int unsigned;
 
-select * from author;
+select * from user;
 v
 v
 select * from author;

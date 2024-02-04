@@ -90,7 +90,7 @@ def alterSnippet(content,source_title,tags,url,authors,snippet_id,user_id):
         source_id=sm.idFromTitleAndUrl(source_title,url)
         asm.linkSourceToNote(snippet_id,source_id)
     elif source_title:    
-        source_id=sm.idFromTitle(source_title)
+        source_id=sm.idFromTitle(source_title,user_id)
         asm.linkSourceToNote(snippet_id,source_id)
     elif url:    
         source_id=sm.idFromUrl(url)

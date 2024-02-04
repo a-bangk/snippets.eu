@@ -106,15 +106,15 @@ def updateSource(title,url,typeId,year,sourceId):
     conn.commit()
     conn.close()
 
-def idFromTitle(title):
+def idFromTitle(title,user_id):
     session = sessionmaker(bind=conn_alchemy())()
-    query=text('SELECT id from source where title = :title;')
-    record = session.execute(query, {'title': title}).fetchone()
+    query=text('SELECT id from source where title = :title and user_id = :user_id;')
+    record = session.execute(query, {'title': title, 'user_id': user_id}).fetchone()
     if record:
         id=record[0]
     else:
         insert_query = text("INSERT INTO source (title, entry_datetime, update_datetime) VALUES (:title, NOW(), NOW())")
-        session.execute(insert_query, {'title': title})
+        session.execute(insert_query, {'title': title, 'user_id':user_id})
         session.flush()
         id = session.execute(text("SELECT LAST_INSERT_ID()")).scalar()
         session.commit()

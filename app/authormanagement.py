@@ -59,18 +59,18 @@ def deleteAuthors(delete_ids):
     conn.commit()
     conn.close()
 
-def idFromFullNamesList(full_names):
+def idFromFullNamesList(full_names,user_id):
     conn = get_db_connection()
     cur=conn.cursor()
     ids=[]
-    for fullName in full_names:
+    for full_name in full_names:
         commitFlag=False
-        sql='select id from author where full_name=?;'
-        cur.execute(sql,(fullName,))
+        sql='select id from author where full_name=? and user_id=?;'
+        cur.execute(sql,(full_name,user_id))
         id=cur.fetchone()
         if not id:
-            sql='insert into author(full_name) values(?);'
-            cur.execute(sql,(fullName,))
+            sql='insert into author(full_name,user_id) values(?,?);'
+            cur.execute(sql,(full_name,user_id))
             id=cur.lastrowid
             commitFlag=True
         else:
