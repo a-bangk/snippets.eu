@@ -6,6 +6,7 @@ port="3306"
 database="snippetsdb_testa"
 user="snippets_test"
 passwd="15485099a433658c4701487c66caa3747c831f3440d435b6"
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://adam:savagge23.3@192.168.0.42/personal_snippetsdb'
 
 
 [test]

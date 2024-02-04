@@ -4,12 +4,21 @@ Test user
 username: Adam
 password: savage23.3
 
+To reset the password for username Adam
+
+```
+>>> u=db.session.scalar(sa.select(User).where(User.username == "Adam"))
+>>> u.set_password("new password)
+>>> db.session.add(u)
+>>> db.session.commit()
+```
+
 ## Development
 ### Environments
 Dynaconf sets database by FLASK_ENV, see settings.toml for possible environments
 
 ```
-export FLASK_ENV=
+export FLASK_ENV=""
 ```
 ### Testing
 

@@ -1,6 +1,6 @@
 import sys
 import mariadb
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 import pymysql
 from flask import current_app
 
