@@ -13,6 +13,12 @@ To reset the password for username Adam
 >>> db.session.commit()
 ```
 
+
+# Hosting
+
+nginx
+gunicorn
+
 ## Development
 ### Environments
 Dynaconf sets database by FLASK_ENV, see settings.toml for possible environments
