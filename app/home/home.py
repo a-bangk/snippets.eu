@@ -26,7 +26,7 @@ def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentStr
             snippetId=request.form['snippet-id']
             sourceUrl=request.form['source-url']
             tagString=request.form['tags-auto']
-            tagList=hf.commaStringToList(tagString)
+            tag_list=hf.commaStringToList(tagString)
             authorsString=request.form['authors-auto']
             authorList=hf.commaStringToList(authorsString)
             authorList=authorsString.split(',')
@@ -36,7 +36,7 @@ def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentStr
             if authorsString and not (sourceString or sourceUrl):
                 flash('Author entry requires Source Title or URL')
                 return redirect(url_for('home_bp.index'))
-            nm.alterSnippet(content,sourceString,tagList,sourceUrl,authorList,snippetId,current_user.id)
+            nm.alterSnippet(content,sourceString,tag_list,sourceUrl,authorList,snippetId,current_user.id)
             snippetId=False
         elif request.form['action'] == 'Delete':
             nm.deleteSnippet(request.form.getlist('delete-checks'))

@@ -1,6 +1,7 @@
 **/__pycache__/
 .DS_Store
 .venv
+venv
 .vscode
 *.code-workspace
 sql_scratch.sql

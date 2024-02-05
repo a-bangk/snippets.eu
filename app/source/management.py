@@ -113,7 +113,7 @@ def idFromTitle(title,user_id):
     if record:
         id=record[0]
     else:
-        insert_query = text("INSERT INTO source (title, entry_datetime, update_datetime) VALUES (:title, NOW(), NOW())")
+        insert_query = text("INSERT INTO source (title, user_id, entry_datetime, update_datetime) VALUES (:title, :user_id, NOW(), NOW())")
         session.execute(insert_query, {'title': title, 'user_id':user_id})
         session.flush()
         id = session.execute(text("SELECT LAST_INSERT_ID()")).scalar()
@@ -137,15 +137,15 @@ def idFromUrl(url):
     conn.close()
     return id
 
-def idFromTitleAndUrl(title,url):
+def idFromTitleAndUrl(title,url,user_id):
     conn = get_db_connection()
     cur=conn.cursor()
-    sql='SELECT id from source where title = ? and url=?;'
-    cur.execute(sql,(title,url))
+    sql='SELECT id from source where title = ? and url=? and user_id=?;'
+    cur.execute(sql,(title,url,user_id))
     id=cur.fetchone()
     if not id:
-        sql='INSERT INTO source (title,entry_datetime,update_datetime,url) values (?, now(),now(),?);'
-        cur.execute(sql,(title,url))
+        sql='INSERT INTO source (title,entry_datetime,update_datetime,url,user_id) values (?, now(),now(),?,?);'
+        cur.execute(sql,(title,url,user_id))
         id=cur.lastrowid
         conn.commit()
     else:

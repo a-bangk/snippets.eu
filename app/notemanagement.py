@@ -84,10 +84,10 @@ def alterSnippet(content,source_title,tags,url,authors,snippet_id,user_id):
         updateSnippet(content,snippet_id)
         deleteAssociateLinks(snippet_id)
     if tags:
-        tagIds=tm.idFromTagsList(tags)
+        tagIds=tm.idFromTagsList(tags,user_id)
         asm.linkTagsToNote(snippet_id,tagIds)
     if source_title and url:
-        source_id=sm.idFromTitleAndUrl(source_title,url)
+        source_id=sm.idFromTitleAndUrl(source_title,url,user_id)
         asm.linkSourceToNote(snippet_id,source_id)
     elif source_title:    
         source_id=sm.idFromTitle(source_title,user_id)

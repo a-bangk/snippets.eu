@@ -48,18 +48,18 @@ def tagsAllFieldsForUserId(user_id):
         tags.append(tag)
     return tags
 
-def idFromTagsList(tagList):
+def idFromTagsList(tag_list,user_id):
     conn = get_db_connection()
     cur=conn.cursor()
     ids=[]
-    for tag in tagList:
+    for tag in tag_list:
         commitFlag=False
-        sql='select id from notetag where tag=?;'
-        cur.execute(sql,(tag,))
+        sql='select id from notetag where tag=? and user_id=?;'
+        cur.execute(sql,(tag,user_id))
         id=cur.fetchone()
         if not id:
-            sql='insert into notetag(tag, entry_datetime, update_datetime) values(?,now(),now());'
-            cur.execute(sql,(tag,))
+            sql='insert into notetag(tag, entry_datetime, update_datetime, user_id) values(?,now(),now(), ?);'
+            cur.execute(sql,(tag,user_id))
             id=cur.lastrowid
             commitFlag=True
         else:
