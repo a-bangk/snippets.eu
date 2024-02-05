@@ -1,36 +1,24 @@
 [default]
-SECRET_KEY = "your-secret-key"
 FLASK_DEBUG="TRUE"
 host="localhost" 
 port="3306"
 database="snippetsdb_testa"
 user="snippets_test"
-passwd="15485099a433658c4701487c66caa3747c831f3440d435b6"
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://adam:savagge23.3@192.168.0.42/personal_snippetsdb'
 
-
-[test]
+[local_test]
 host="localhost" 
 port="3306"
 database="snippetsdb_testa"
 user="snippets_test"
-passwd="15485099a433658c4701487c66caa3747c831f3440d435b6"
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://snippets_test:15485099a433658c4701487c66caa3747c831f3440d435b6@localhost/snippetsdb_testa'
-
 
 [personal]
 host="192.168.0.42"
 port="3306"
 database="personal_snippetsdb"
 user="adam"
-passwd="savagge23.3"
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://adam:savagge23.3@192.168.0.42/personal_snippetsdb'
-
-
 
 [pi]
 host="192.168.0.42"
 port="3306"
 database="testa_snippetsdb"
 user="root"
-passwd="Suffocate7-Eloquent-Confined"

@@ -13,7 +13,7 @@ CREATE TABLE user (
     updated DATETIME,
     PRIMARY KEY (id)
 );
-
+select * from note;
 alter table author drop column forename, drop column surname, drop column title, drop column middlename, drop column postnominal;
 alter table author add column user_id int unsigned;
 
