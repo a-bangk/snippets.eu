@@ -2,6 +2,7 @@
 .DS_Store
 .venv
 venv
+env
 .vscode
 *.code-workspace
 sql_scratch.sql

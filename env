@@ -1,1 +1,1 @@
-FLASK_ENV=test
+FLASK_ENV=prod
