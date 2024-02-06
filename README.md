@@ -19,6 +19,10 @@ To reset the password for username Adam
 nginx
 gunicorn
 
+
+## Server
+Snippets runs on Coolermaster under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
+
 ## Development
 ### Environments
 Dynaconf sets database by FLASK_ENV, see settings.toml for possible environments
@@ -45,12 +49,6 @@ Public facing running snippets
 #### Production (snippets-l) -> move to mysnippets.eu
 * snippets.akjems.com (live branch) Significant versions are tagged, merged from main
     * ~/websites/snippets-l/snippets
-
-### Private (snippets-p)
-Access to my private database is labeled *snippets-p* only accessible from the home network.
-It is run on the rasberrypi
-* 192.168.0.42:5042
-    * ~/websites/snippets-p/snippets
 
 # Versioning
 
