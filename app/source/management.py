@@ -56,7 +56,7 @@ def alterSource(author_fullname_list, title, year, type_id, url,source_id,user_i
         source_id=addSource(title,type_id,url,year,user_id)
     else:
         updateSource(title,url,type_id,year,source_id)
-    author_ids=am.idFromFullNamesList(author_fullname_list)
+    author_ids=am.idFromFullNamesList(author_fullname_list,user_id)
     asm.linkAuthorsToSource(source_id,author_ids)
 
 def deleteSource(delete_ids):
