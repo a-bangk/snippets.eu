@@ -14,7 +14,7 @@ def dictSourceTypes():
     return dictSourceTypes
 
 def listSourcesForUserId(user_id):
-    query = '''
+    sql_query = '''
     SELECT 
         st.entry as type, s.id, s.title as title, 
         GROUP_CONCAT(a.full_name SEPARATOR ", ") as author, a.id as a_id, 
@@ -28,7 +28,7 @@ def listSourcesForUserId(user_id):
     ORDER BY s.id DESC;
     '''
     session = sessionmaker(bind=conn_alchemy())()
-    result = session.execute(text(query), {'user_id': user_id})
+    result = session.execute(text(sql_query), {'user_id': user_id})
     session.close()
     keys = result.keys()
     sources_list = [dict(zip(keys, row)) for row in result]

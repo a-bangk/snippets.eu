@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 @filter_bp.route('/filtersnippetslist', methods=('GET', 'POST'))
 @login_required
 def filtersnippetslist():
-    tags=tm.tagsForUserId(current_user.id)
+    tags=tm.tagsForUserIdWithCount(current_user.id)
     if request.method == 'POST':
         if request.form['action'] =='filter':
             tagValues = request.form.getlist('tag-checks')

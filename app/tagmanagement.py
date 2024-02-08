@@ -36,6 +36,23 @@ def tagsForUserId(user_id):
     return tags
 
 
+def tagsForUserIdWithCount(user_id):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    sql_query= '''
+        SELECT nt.id,nt.tag,COUNT(DISTINCT ann.note_id) AS notes_count
+        FROM notetag nt
+        JOIN associate_notetag_note ann ON nt.id = ann.notetag_id
+        JOIN note n ON ann.note_id = n.id
+        WHERE nt.user_id = ? -- Replace ? with the specific user_id you're querying for
+        GROUP BY nt.id
+    '''
+    cur.execute(sql_query,(user_id,))
+    db_tags=cur.fetchall()
+    conn.close()
+    return db_tags
+
+
 def tagsAllFieldsForUserId(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)

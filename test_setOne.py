@@ -16,12 +16,12 @@ def app():
 
 def test_databaseConnection(app):
     db=hf.get_db_connection().database
-    assert db == 'snippetsdb_testa'
+    assert db == 'snippets_test_a'
 
 def test_databaseConnectionAlchemy(app):
     result=hf.conn_alchemy().execute(text("SELECT DATABASE()"))
     db=result.scalar()
-    assert db == 'snippetsdb_testa'
+    assert db == 'snippets_test_a'
 
 def test_amidFromFullNameList(app):
     assert am.idFromFullNamesList(["Milton Friedman","Finn Kjems","Gary Enzo","Karl Marx"]) == [71,72,73,74]
@@ -29,6 +29,12 @@ def test_amidFromFullNameList(app):
 def test_smidFromTitle(app):
     assert sm.idFromTitle("BabyWise") == 61
 
+
+def test_tagsForUserIdWithCount(app):
+    tags=tm.tagsForUserIdWithCount(1)
+    print(tags)
+    assert True
+    
 
 # This test alters the database and therefore removed until fixed
 #def test_sourceFunctions(app):

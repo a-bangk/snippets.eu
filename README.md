@@ -7,7 +7,9 @@ password: savage23.3
 To reset the password for username Adam
 
 ```
->>> u=db.session.scalar(sa.select(User).where(User.username == "Adam"))
+>>> u = User(username='New user', email='Their Email.com')
+
+>>> u=db.session.scalar(sa.select(User).where(User.username == "Martin"))
 >>> u.set_password("new password)
 >>> db.session.add(u)
 >>> db.session.commit()
@@ -19,6 +21,11 @@ To reset the password for username Adam
 nginx
 gunicorn
 
+## Deploy
+Pull latst branch to coolermaster
+```
+systemctl restart snippets-website
+```
 
 ## Server
 Snippets runs on Coolermaster under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
