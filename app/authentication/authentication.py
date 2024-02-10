@@ -15,7 +15,7 @@ def login():
         return redirect(url_for('home_bp.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = db.session.scalar(sa.select(User).where(User.username == form.username.data))
+        user = db.session.scalar(sa.select(User).where(User.email == form.email.data.lower()))
         if user is None or not user.check_password(form.password.data):
             session['login_attempts'] = session.get('login_attempts', 0) + 1
             sleep_time = min(2 ** session['login_attempts'], 30)
