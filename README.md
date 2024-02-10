@@ -21,16 +21,13 @@ To reset the password for username Adam
 nginx
 gunicorn
 
-## Deploy
-Pull latst branch to coolermaster
-```
-systemctl restart snippets-website
-```
+## Production 
+branch production is run on coolermaster. 
+To update need to run ```systemctl restart snippets-website```
 
 ## Server
 Snippets runs on Coolermaster under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
 
-## Development
 ### Environments
 Dynaconf sets database by FLASK_ENV, see settings.toml for possible environments
 
@@ -47,15 +44,8 @@ Currently running on raspberrypi codename hal.
 With python libraries installed on hal and running from virtual environments. See details in tech-guides/hosting-flask.md
 
 ## User Access to Snippets
-### Public
-Public facing running snippets
-#### Test (snippets-a) 2024-01-10 Down
-* snippets-a.akjems.com (Running latest build on main)
-    * ~/websites/snippets-a/snippets/
 
-#### Production (snippets-l) -> move to mysnippets.eu
-* snippets.akjems.com (live branch) Significant versions are tagged, merged from main
-    * ~/websites/snippets-l/snippets
+
 
 # Versioning
 
