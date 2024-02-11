@@ -31,5 +31,7 @@ def create_app():
         app.register_blueprint(home.home_bp)
         from . import authentication
         app.register_blueprint(authentication.login_bp)
+        from . import error
+        app.register_blueprint(error.error_bp)
 
         return app
