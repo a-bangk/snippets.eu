@@ -33,8 +33,12 @@ def test_smidFromTitle(app):
 def test_tagsForUserIdWithCount(app):
     tags=tm.tagsForUserIdWithCount(1)
     print(tags)
-    assert True
+    assert tags==[{'id': 439, 'tag': 'tag 1', 'notes_count': 1}, {'id': 440, 'tag': 'tag 2', 'notes_count': 2}, {'id': 441, 'tag': 'tag 3', 'notes_count': 1}]
     
+def test_tagsForUserIdSortable(app):
+    tags=tm.tagsForUserIdSortable(1)
+    print(tags)
+    assert True
 
 # This test alters the database and therefore removed until fixed
 #def test_sourceFunctions(app):

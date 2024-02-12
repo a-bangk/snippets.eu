@@ -1,5 +1,4 @@
-
-    {% for source in sources %}
+{% for source in sources %}
     <div class="card">
         <div class="card-body">
             <span class="badge badge-primary">#{{ source['id'] }}</span>
@@ -20,4 +19,4 @@
         <button type="submit" class="btn btn-primary" value="Edit_{{ source['id'] }}" name="action">Edit</button>
     </div>
     <hr>
-    {% endfor %}
+{% endfor %}

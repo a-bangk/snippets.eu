@@ -40,7 +40,7 @@ def tagsForUserIdWithCount(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     sql_query= '''
-        SELECT nt.id,nt.tag,COUNT(DISTINCT ann.note_id) AS notes_count
+        SELECT nt.tag,COUNT(DISTINCT ann.note_id) AS notes_count
         FROM notetag nt
         JOIN associate_notetag_note ann ON nt.id = ann.notetag_id
         JOIN note n ON ann.note_id = n.id
@@ -52,6 +52,24 @@ def tagsForUserIdWithCount(user_id):
     conn.close()
     return db_tags
 
+
+def tagsForUserIdSortable(user_id):
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
+    sql_query = """
+    SELECT nt.tag, GROUP_CONCAT(antn.note_id) AS note_ids
+    FROM notetag nt
+    JOIN associate_notetag_note antn ON nt.id = antn.notetag_id
+    WHERE nt.user_id = %s
+    GROUP BY nt.tag
+    """
+    cur.execute(sql_query, (user_id,))
+    db_tags_raw = cur.fetchall()
+    conn.close()
+
+    # Convert the concatenated note_ids into a list
+    db_tags = {item['tag']: [int(note_id) for note_id in item['note_ids'].split(',')] for item in db_tags_raw}
+    return db_tags
 
 def tagsAllFieldsForUserId(user_id):
     conn = get_db_connection()
