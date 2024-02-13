@@ -1,3 +1,14 @@
+
+<script type="text/javascript">
+    // Convert the Flask `tags2` variable to a JSON string and parse it in JavaScript
+    var tagData = JSON.parse('{{ tags2 | tojson | safe }}');
+</script>
+
+<div id="tagCheckboxes"></div>
+<h2>Available Notes</h2>
+<ul id="availableNotes"></ul>
+
+
 <div class="form-group">
     <p>Select filter logic:</p>
     <input type="radio" id="html" name="filter_logic" value="OR">

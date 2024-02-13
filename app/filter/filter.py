@@ -9,7 +9,8 @@ from flask_login import login_required, current_user
 @filter_bp.route('/filtersnippetslist', methods=('GET', 'POST'))
 @login_required
 def filtersnippetslist():
-    tags=tm.tagsForUserIdSortable(current_user.id)
+    tags2=tm.tagsForUserIdSortable(current_user.id)
+    tags=tm.tagsForUserIdWithCount(current_user.id)
     if request.method == 'POST':
         if request.form['action'] =='filter':
             tagValues = request.form.getlist('tag-checks')
@@ -35,4 +36,4 @@ def filtersnippetslist():
             nm.alterSnippet(content,source_string,tag_list,source_url,author_list,snippet_id,current_user.id)
     else:
         snippets=nm.listNotesForUserId(current_user.id)
-    return render_template('filtersnippetslist.html', items=snippets, tags=tags)
+    return render_template('filtersnippetslist.html', items=snippets, tags=tags, tags2=tags2)
