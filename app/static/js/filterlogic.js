@@ -1,12 +1,3 @@
-/*
-const tagData = {
-    'tag 1': [245],
-    'tag 2': [245, 246],
-    'tag 3': [246],
-    'tag 4': [248, 245]
-};
-*/
-console.log(tagData);
 document.addEventListener('DOMContentLoaded', () => {
     createTagCheckboxes(tagData);
     updateSelectedNotes(); // Initial call to populate available notes with all note IDs
@@ -26,7 +17,7 @@ function createTagCheckboxes(tagData) {
         label.textContent = tag;
         const countSpan = document.createElement('span');
         countSpan.id = `count_${tag}`;
-        countSpan.textContent = ` (${tagData[tag].length} notes)`;
+        countSpan.textContent = ` (${tagData[tag].length})`;
         countSpan.style.marginLeft = '10px';
         label.appendChild(countSpan);
         checkboxWrapper.appendChild(checkbox);
@@ -65,7 +56,7 @@ function resetTagState(tag, noteCount) {
     const wrapper = document.getElementById(`wrapper_${tag}`);
     const checkbox = document.getElementById(tag);
     if (countSpan)
-        countSpan.textContent = ` (${noteCount} notes)`;
+        countSpan.textContent = ` (${noteCount})`;
     if (wrapper)
         wrapper.style.color = 'black';
     checkbox.disabled = false;
@@ -75,7 +66,7 @@ function setTagState(tag, noteCount, isEnabled) {
     const wrapper = document.getElementById(`wrapper_${tag}`);
     const checkbox = document.getElementById(tag);
     if (countSpan)
-        countSpan.textContent = ` (${noteCount} unique note${noteCount !== 1 ? 's' : ''})`;
+        countSpan.textContent = ` (${noteCount})`;
     wrapper.style.color = isEnabled ? 'black' : 'grey';
     checkbox.disabled = !isEnabled;
 }

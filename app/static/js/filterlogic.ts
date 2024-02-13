@@ -33,7 +33,7 @@ function createTagCheckboxes(tagData: TagNoteMapping): void {
 
         const countSpan = document.createElement('span');
         countSpan.id = `count_${tag}`;
-        countSpan.textContent = ` (${tagData[tag].length} notes)`;
+        countSpan.textContent = ` (${tagData[tag].length})`;
         countSpan.style.marginLeft = '10px';
 
         label.appendChild(countSpan);
@@ -78,7 +78,7 @@ function resetTagState(tag: string, noteCount: number): void {
     const wrapper = document.getElementById(`wrapper_${tag}`);
     const checkbox = document.getElementById(tag) as HTMLInputElement;
 
-    if (countSpan) countSpan.textContent = ` (${noteCount} notes)`;
+    if (countSpan) countSpan.textContent = ` (${noteCount})`;
     if (wrapper) wrapper.style.color = 'black';
     checkbox.disabled = false;
 }
@@ -88,7 +88,7 @@ function setTagState(tag: string, noteCount: number, isEnabled: boolean): void {
     const wrapper = document.getElementById(`wrapper_${tag}`);
     const checkbox = document.getElementById(tag) as HTMLInputElement;
 
-    if (countSpan) countSpan.textContent = ` (${noteCount} unique note${noteCount !== 1 ? 's' : ''})`;
+    if (countSpan) countSpan.textContent = ` (${noteCount})`;
     wrapper.style.color = isEnabled ? 'black' : 'grey';
     checkbox.disabled = !isEnabled;
 }
