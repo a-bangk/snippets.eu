@@ -5,12 +5,9 @@
    <form method="post">
     {% include 'sec_filter.html' %}
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary" name="action" value="filter">Submit</button>
-    </div>
 </form>
 <form method="post">
 {% include 'sec_lists/filtered.html' %}
 </form>
-<script src="{{ url_for('static', filename='js/filterlogic.js') }}"></script>
+
 {% endblock %}

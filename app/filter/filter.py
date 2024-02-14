@@ -1,4 +1,5 @@
-from flask import render_template,request,redirect,url_for,flash   
+from flask import render_template,request,redirect,url_for,flash  
+import json 
 from . import filter_bp
 from .. import tagmanagement as tm
 from .. import notemanagement as nm
@@ -13,9 +14,11 @@ def filtersnippetslist():
     tags=tm.tagsForUserIdWithCount(current_user.id)
     if request.method == 'POST':
         if request.form['action'] =='filter':
-            tagValues = request.form.getlist('tag-checks')
-            filter = request.form['filter_logic']
-            snippets=nm.listTaggedNotesForUserId(tagValues,filter,current_user.id)
+            tag_values = request.form.getlist('noteIds')
+            note_ids_str = request.form['noteIds']
+            note_ids = json.loads(note_ids_str)
+            print(tag_values,note_ids)
+            snippets=nm.listNotes(note_ids)
         if request.form['action'] == 'Add':
             content = request.form['content']
             source_string = request.form['sources-auto']

@@ -1,0 +1,5 @@
+#tagCheckboxes {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Creates 5 columns */
+    gap: 0px; /* Adjusts space between grid items */
+}

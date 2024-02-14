@@ -30,7 +30,6 @@ function updateSelectedNotes() {
     const allNoteIds = new Set();
     Object.values(tagData).forEach(notes => notes.forEach(noteId => allNoteIds.add(noteId)));
     const sharedNoteIds = checkedTags.length > 0 ? getSharedNoteIds(checkedTags) : allNoteIds;
-    updateAvailableNotesList(sharedNoteIds);
     if (checkedTags.length === 0) {
         Object.keys(tagData).forEach(tag => resetTagState(tag, tagData[tag].length));
     }
@@ -41,7 +40,9 @@ function updateSelectedNotes() {
             setTagState(tag, uniqueNotesCount, isEnabled);
         });
     }
+    document.getElementById('noteIdsField').value = JSON.stringify(Array.from(sharedNoteIds));
 }
+
 function getSharedNoteIds(checkedTags) {
     return checkedTags.reduce((sharedIds, tag, index) => {
         const noteIds = new Set(tagData[tag]);
@@ -69,13 +70,4 @@ function setTagState(tag, noteCount, isEnabled) {
         countSpan.textContent = ` (${noteCount})`;
     wrapper.style.color = isEnabled ? 'black' : 'grey';
     checkbox.disabled = !isEnabled;
-}
-function updateAvailableNotesList(noteIds) {
-    const listElement = document.getElementById('availableNotes');
-    listElement.innerHTML = ''; // Clear existing list items
-    noteIds.forEach(noteId => {
-        const listItem = document.createElement('li');
-        listItem.textContent = noteId.toString();
-        listElement.appendChild(listItem);
-    });
 }

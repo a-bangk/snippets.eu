@@ -1,33 +1,17 @@
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 <script type="text/javascript">
     // Convert the Flask `tags2` variable to a JSON string and parse it in JavaScript
     var tagData = JSON.parse('{{ tags2 | tojson | safe }}');
 </script>
 
 <div id="tagCheckboxes"></div>
-<h2>Available Notes</h2>
-<ul id="availableNotes"></ul>
 
-
-<div class="form-group">
-    <p>Select filter logic:</p>
-    <input type="radio" id="html" name="filter_logic" value="OR">
-    <label for="html">OR</label>
-    <input type="radio" id="css" name="filter_logic" value="AND" checked="checked">
-    <label for="css">AND</label><br>
-</div>
-
-    <div style="column-count: 6;">
-    {% for tag in tags %}
-        {% set tag_id = 'tag-checks-{0}'.format(loop.index0) -%}
-            <input type="checkbox" id="{{ tag.id }}" name="tag-checks" value="{{ tag.tag }}" 
-                {% if tag in request.form.getlist('tag-checks') %}checked{%endif -%} 
-             />
-            <label for="{{ tag.id }}">{{ tag.tag }} ({{ tag.notes_count }})</label>
-            <br>
-    {% endfor -%}
-   
-    </div>
+<form id="noteForm" class="form-group">
+    <!-- Your form elements -->
+    <input type="hidden" id="noteIdsField" name="noteIds">
+    <button type="submit" class="btn btn-primary" name="action" value="filter">Submit</button>
+</form>
+<script src="{{ url_for('static', filename='js/filterlogic.js') }}"></script>
 
 
   
