@@ -11,7 +11,18 @@ function createTagCheckboxes(tagData) {
         checkbox.type = 'checkbox';
         checkbox.id = tag;
         checkbox.value = tag;
-        checkbox.addEventListener('change', updateSelectedNotes);
+
+        // Check if this checkbox was previously checked
+        const checkedTags = JSON.parse(localStorage.getItem('checkedTags') || '[]');
+        if (checkedTags.includes(tag)) {
+            checkbox.checked = true;
+        }
+
+        checkbox.addEventListener('change', () => {
+            updateSelectedNotes();
+            saveCheckedState();
+        });
+
         const label = document.createElement('label');
         label.htmlFor = tag;
         label.textContent = tag;
@@ -25,6 +36,13 @@ function createTagCheckboxes(tagData) {
         container.appendChild(checkboxWrapper);
     });
 }
+
+function saveCheckedState() {
+    const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+    const checkedTags = Array.from(allCheckboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.id);
+    localStorage.setItem('checkedTags', JSON.stringify(checkedTags));
+}
+
 function updateSelectedNotes() {
     const checkedTags = Array.from(document.querySelectorAll('input[type=checkbox]:checked')).map(checkbox => checkbox.id);
     const allNoteIds = new Set();

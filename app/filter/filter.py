@@ -38,5 +38,5 @@ def filtersnippetslist():
                 return redirect(url_for('home_bp.index'))
             nm.alterSnippet(content,source_string,tag_list,source_url,author_list,snippet_id,current_user.id)
     else:
-        snippets=nm.listNotesForUserId(current_user.id)
+        snippets=[]
     return render_template('filtersnippetslist.html', items=snippets, tags=tags, tags2=tags2)
