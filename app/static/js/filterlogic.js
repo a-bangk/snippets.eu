@@ -56,13 +56,45 @@ function resetTagState(tag, noteCount) {
     const countSpan = document.getElementById(`count_${tag}`);
     const wrapper = document.getElementById(`wrapper_${tag}`);
     const checkbox = document.getElementById(tag);
-    if (countSpan)
+
+    // Reset text content for the countSpan
+    if (countSpan) {
         countSpan.textContent = ` (${noteCount})`;
-    if (wrapper)
-        wrapper.style.color = 'black';
-    checkbox.disabled = false;
+        countSpan.style.display = ""; // Ensure it is visible
+    }
+
+    // Ensure the wrapper and checkbox are visible
+    if (wrapper) {
+        wrapper.style.display = ""; // Reset display to default or use 'block', 'inline', etc., as needed
+    }
+
+    if (checkbox) {
+        checkbox.style.display = ""; // Reset display to default or use 'inline-block' for checkboxes
+        checkbox.disabled = false; // Ensure checkbox is enabled
+    }
 }
+
+
 function setTagState(tag, noteCount, isEnabled) {
+    const countSpan = document.getElementById(`count_${tag}`);
+    const wrapper = document.getElementById(`wrapper_${tag}`);
+    const checkbox = document.getElementById(tag);
+
+    if (isEnabled) {
+        // Show elements if they are enabled
+        if (countSpan) countSpan.style.display = ""; // Reset to default or you can use 'inline' or 'block' depending on your layout
+        if (wrapper) wrapper.style.display = ""; // Reset to default or use 'block', 'inline', etc.
+        if (checkbox) checkbox.style.display = ""; // Reset to default or use 'inline-block' for checkboxes
+        if (countSpan) countSpan.textContent = ` (${noteCount})`; // Update note count when enabled
+    } else {
+        // Hide elements if they are not enabled
+        if (countSpan) countSpan.style.display = "none";
+        if (wrapper) wrapper.style.display = "none";
+        if (checkbox) checkbox.style.display = "none";
+    }
+}
+
+function setTagStateOld(tag, noteCount, isEnabled) {
     const countSpan = document.getElementById(`count_${tag}`);
     const wrapper = document.getElementById(`wrapper_${tag}`);
     const checkbox = document.getElementById(tag);
@@ -71,3 +103,4 @@ function setTagState(tag, noteCount, isEnabled) {
     wrapper.style.color = isEnabled ? 'black' : 'grey';
     checkbox.disabled = !isEnabled;
 }
+
