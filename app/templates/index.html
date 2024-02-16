@@ -1,29 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Add/Edit Snippet {% endblock %}</h1>
-    <form method="post">
-        <div class="form-group">
-            <input type="hidden" name="snippet-id" value="{{previous_id}}"> 
-            <textarea type="text" name="content"
-                placeholder="Snippet content, use markdown" class="form-control"
-                 autofocus>{{previous_content}}</textarea>
-        </div>
-        <div class="form-group"> 
-            {% include 'sec_autocomplete/sources.html' %}
-           - {% include 'sec_autocomplete/authors.html' %}
-        </div>
+    <h1>{% block title %} Welcome to Snippets {% endblock %}</h1>
+ <p>Only an AI can know everything, people now have snippets to help us pick and choose what to know and who to trust. Snippets is for everything you find and consider  worth noting, ready for sharing, always linked back to the source.</p>
+    <p>
+Snippets is for knowledge seekers and Note wishers. Knowledge seekers, who know having a memory of information is not the same as knowing the it and where it came from. Note wishers who wish that at note taking system would reflect how we absorb information and need to know where it came from to trust it. O
+    </p>
 
-        <div class="form-group"> 
-            {% include 'sec_autocomplete/tags.html' %}
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary" value="Add" name="action">Save Snippet</button>
-        </div>
-    </form>
-    <form method="post">
-        <button type="submit" class="btn btn-secondary" value="Delete" name="action">Delete Marked</button>
-        {% include 'sec_snippets_list.html' %}
-    </form> 
 {% endblock %}

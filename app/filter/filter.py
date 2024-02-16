@@ -7,7 +7,7 @@ from .. import notemanagement as nm
 from flask_login import login_required, current_user
 
 
-@filter_bp.route('/filtersnippetslist', methods=('GET', 'POST'))
+@filter_bp.route('/explore', methods=('GET', 'POST'))
 @login_required
 def filtersnippetslist():
     tags2=tm.tagsForUserIdSortable(current_user.id)
@@ -39,4 +39,4 @@ def filtersnippetslist():
             nm.alterSnippet(content,source_string,tag_list,source_url,author_list,snippet_id,current_user.id)
     else:
         snippets=[]
-    return render_template('filtersnippetslist.html', items=snippets, tags=tags, tags2=tags2)
+    return render_template('explore.html', items=snippets, tags=tags, tags2=tags2)
