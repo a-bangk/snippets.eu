@@ -7,12 +7,12 @@
         <span class="badge badge-default">{{ item['sources'] }}</span>
         <span class="badge badge-default">{{ item['tags'] }}</span>
         <span class="badge badge-default">{{ item['url'] }}</span>
-        <input type="checkbox" id="{{ item['id'] }}" name="delete-checks" value="{{ item['id'] }}"   {% if item in request.form.getlist('delete-checks') %}checked{%endif -%} />
+        <input type="checkbox" id="{{ item['id'] }}" name="delete-checks" value="{{ item['id'] }}" tabindex=4  {% if item in request.form.getlist('delete-checks') %}checked{%endif -%} />
         <label for="{{ item['id'] }}">Mark for delete</label>
         <hr>
         <p>{{ item['content'] | safe }}</p>
     </div>
-            <button type="submit" class="btn btn-primary" value="Edit_{{ item['id'] }}" name="action">Edit</button>
+            <button type="submit" class="btn btn-primary" value="Edit_{{ item['id'] }}" name="action" tabindex="3">Edit</button>
 </div>
 <br>
 {% endfor %}

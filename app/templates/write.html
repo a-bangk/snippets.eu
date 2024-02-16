@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Add/Edit Snippet {% endblock %}</h1>
+    <h1>{% block title %} Write/Edit Snippet {% endblock %}</h1>
     <form method="post">
         <div class="form-group">
-            <input type="hidden" name="snippet-id" value="{{previous_id}}"> 
+            <input type="hidden" name="snippet-id" value="{{previous_id}}" > 
             <textarea type="text" name="content"
                 placeholder="Snippet content, use markdown" class="form-control"
                  autofocus>{{previous_content}}</textarea>
@@ -23,7 +23,7 @@
         </div>
     </form>
     <form method="post">
-        <button type="submit" class="btn btn-secondary" value="Delete" name="action">Delete Marked</button>
+        <button type="submit" class="btn btn-secondary" value="Delete" name="action" tabindex="3">Delete Marked</button>
         {% include 'sec_snippets_list.html' %}
     </form> 
 {% endblock %}
