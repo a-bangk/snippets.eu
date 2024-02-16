@@ -29,6 +29,8 @@ def create_app():
         app.register_blueprint(about.about_bp)
         from . import home
         app.register_blueprint(home.home_bp)
+        from . import write
+        app.register_blueprint(write.write_bp)
         from . import authentication
         app.register_blueprint(authentication.login_bp)
         from . import error
