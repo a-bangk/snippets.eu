@@ -14,10 +14,8 @@ def filtersnippetslist():
     tags=tm.tagsForUserIdWithCount(current_user.id)
     if request.method == 'POST':
         if request.form['action'] =='filter':
-            tag_values = request.form.getlist('noteIds')
             note_ids_str = request.form['noteIds']
             note_ids = json.loads(note_ids_str)
-            print(tag_values,note_ids)
             snippets=nm.listNotes(note_ids)
         if request.form['action'] == 'Add':
             content = request.form['content']

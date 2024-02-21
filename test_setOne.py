@@ -120,6 +120,11 @@ def test_sm_loadSource(app):
     result=sm.loadSource(60)
     assert result == {'type': 'website', 'id': 60, 'year': 2023, 'title': 'Garbage Day Blog', 'author': 'RYAN BRODERICK', 'url': 'https://www.garbageday.email/p/heres-where-the-fake-podcast-clips'}
 
+def test_sm_generateExploreUrl(app):
+    result=sm.generateExploreUrl("bob", 5)
+    assert result== f"/bob/source=5"
+
+
 def test_sm_idFromTitle(app):
     result = sm.idFromTitle('Why Human Writing Is Worth Defending In the Age of ChatGPT')
     assert result == 59
@@ -143,6 +148,7 @@ def test_sm_listSources(app):
     result=sm.listSources()[0]
     assert result == {'type': None, 'id': 61, 'title': 'BabyWise', 'author': None, 'a_id': None, 'url': None}
 """
+
 
 def test_sm_updateSource(app):
     sm.updateSource('New Title', 'www.new_source.com', 6, 2000,53)

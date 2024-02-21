@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Snippets by Source {% endblock %}</h1>
+    <h2 style="text-align: center;">Source</h2>
+    <div class="card">
+        <div class="card-body">
+            <span class="badge badge-primary">#{{ source['id'] }}</span>
+            <span class="badge badge-default">{{ source['entry_datetime'] }}</span>
+            <span class="badge badge-default">{{ source['type'] }}</span>
+            <hr>
+            <ul>
+                <li>{{ source['author'] |safe }}</li>
+                <li>Title: {{ source['title'] |safe }}</li>
+                <li>URL: {{ source['url'] |safe }}</li>
+                <li>Type: {{ source['type'] |safe }}</li>
+            </ul>
+        </div>
+    </div>
+    <hr>
+
+<h2 style="text-align: center;">Snippets</h2>
+{% include 'sec_lists/filtered.html' %}
+
+{% endblock %}

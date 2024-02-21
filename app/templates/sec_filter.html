@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 <script type="text/javascript">
-    // Convert the Flask `tags2` variable to a JSON string and parse it in JavaScript
+    // Convert the Flask `tags` variable to a JSON string and parse it in JavaScript
     var tagData = JSON.parse('{{ tags2 | tojson | safe }}');
 </script>
 

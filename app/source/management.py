@@ -72,14 +72,17 @@ def deleteSource(delete_ids):
     conn.commit()
     conn.close()
 
-def loadSource(edit_id):
+def loadSource(source_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     sql='select st.entry as type,s.id,s.year as year, s.title as title, GROUP_CONCAT(a.full_name SEPARATOR ", ") as author, s.url as url from source s left join associate_source_author aa on s.id = aa.source_id left join author a on aa.author_id = a.id left join source_type st on s.source_type_id = st.id where s.id=?;'
-    cur.execute(sql,(edit_id,))
-    previous_snippet=cur.fetchone()
+    cur.execute(sql,(source_id,))
+    source=cur.fetchone()
     conn.close()
-    return(previous_snippet)
+    return(source)
+
+def generateExploreUrl(user_name, source_id):
+    return f"/{user_name}/source={source_id}"
 
 def addSource(title, typeId, url, year,user_id):
     conn = get_db_connection()

@@ -5,6 +5,9 @@ from datetime import datetime, timezone
 from . import login
 from sqlalchemy.dialects.mysql import INTEGER
 
+
+
+
 class Note(db.Model):
     # Do I need to write db.Integer
     id = db.Column(INTEGER(unsigned=True), primary_key=True)

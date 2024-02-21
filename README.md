@@ -1,8 +1,9 @@
 # Use
 
 Test user
-username: Adam
-password: savage23.3
+username: susan
+email/login : susan@example.com
+password: see Bitwarden
 
 To reset the password for username Adam
 
@@ -22,7 +23,7 @@ nginx
 gunicorn
 
 ## Production 
-branch production is run on coolermaster. 
+branch live is run on coolermaster. 
 To update need to run ```systemctl restart snippets-website```
 
 ## Server
@@ -40,14 +41,10 @@ VSCode uses pytest and relies on a local test database
 
 
 ## Infrastructure
-Currently running on raspberrypi codename hal.
-With python libraries installed on hal and running from virtual environments. See details in tech-guides/hosting-flask.md
+Currently running on coolermaster codename hal2.
+With python libraries installed on hal2 and running from virtual environments. See details in tech-guides/hosting-flask.md
 
-## User Access to Snippets
-
-
-
-# Versioning
+# Versioning <not being used>
 
 Builds are named as Build-Major.Minor.Fix
 Builds numbers are incremented in sync with sprint stories
