@@ -4,7 +4,7 @@
     <div class="card-body">
         <span class="badge badge-primary">#{{ item['id'] }}</span>
         <span class="badge badge-default">{{ item['entry_datetime'] }}</span>
-        <span class="badge badge-default">{{ item['sources'] }}</span>
+        <span class="badge badge-default"><a href="{{ item['explore_source_url'] }}">{{ item['sources'] }}</a></span>
         <span class="badge badge-default">{{ item['tags'] }}</span>
         <span class="badge badge-default">{{ item['url'] }}</span>
         <input type="checkbox" id="{{ item['id'] }}" name="delete-checks" value="{{ item['id'] }}" tabindex=4  {% if item in request.form.getlist('delete-checks') %}checked{%endif -%} />
