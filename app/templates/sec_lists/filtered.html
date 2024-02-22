@@ -6,7 +6,7 @@
         <span class="badge badge-default">{{ item['entry_datetime'] }}</span>
         <span class="badge badge-default"><a href="{{ item['explore_source_url'] }}">{{ item['sources'] }}</a></span>
         <span class="badge badge-default">{{ item['tags'] }}</span>
-        <span class="badge badge-default">{{ item['url'] }}</span>
+        <span class="badge badge-default"><a href="{{ item['url'] }}" target="_blank">{{ item['url'] }}</a></span>
         <hr>
         <p>{{ item['content'] | safe }}</p>
     </div>
