@@ -24,14 +24,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                  {% if current_user.is_anonymous %}
-                  <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('login_bp.login') }}">Login</a>
-                  </li>
-                  {% else %}
-                  <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('login_bp.logout') }}">Logout</a>
-                  </li>
+
                   <li class="nav-item active">
                     <a class="nav-link" href="{{ url_for('write_bp.write') }}">Write</a>
                 </li>
@@ -49,11 +42,19 @@
                         </div>
                     </li>
         
-                    {% endif %}
+       
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ url_for('about_bp.about') }}">About</a>
                     </li>
-
+                    {% if current_user.is_anonymous %}
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{{ url_for('login_bp.login') }}">Login</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{{ url_for('login_bp.logout') }}">Logout</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
