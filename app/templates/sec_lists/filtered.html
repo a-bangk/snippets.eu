@@ -5,7 +5,13 @@
         <span class="badge badge-primary">#{{ item['id'] }}</span>
         <span class="badge badge-default">{{ item['entry_datetime'] }}</span>
         <span class="badge badge-default"><a href="{{ item['explore_source_url'] }}">{{ item['sources'] }}</a></span>
-        <span class="badge badge-default">{{ item['tags'] }}</span>
+        <!-- this needs to be for each -->
+        <span class="badge badge-default">
+            {% set tags = item['tags'].split(';') %}
+            {% for tag in tags %}
+                <a href="/explore" data-tag="{{ tag }}" class="tag-link">{{tag}}</a>
+            {% endfor %}
+        </span>
         <span class="badge badge-default"><a href="{{ item['url'] }}" target="_blank">{{ item['url'] }}</a></span>
         <hr>
         <p>{{ item['content'] | safe }}</p>

@@ -121,4 +121,3 @@ function setTagStateOld(tag, noteCount, isEnabled) {
     wrapper.style.color = isEnabled ? 'black' : 'grey';
     checkbox.disabled = !isEnabled;
 }
-
