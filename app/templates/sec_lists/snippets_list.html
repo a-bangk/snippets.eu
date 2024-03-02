@@ -5,8 +5,8 @@
         <span class="badge badge-primary">#{{ item['id'] }}</span>
         <span class="badge badge-default">{{ item['entry_datetime'] }}</span>
         <span class="badge badge-default"><a href="{{ item['explore_source_url'] }}">{{ item['sources'] }}</a></span>
-        <span class="badge badge-default">{{ item['tags'] }}</span>
-        <span class="badge badge-default"><a href="{{ item['url'] }}" target="_blank">{{ item['url'] }}</a></span>
+        <span class="badge badge-default">{{ item['explore_tag_urls']|safe }}</span>
+        <span class="badge badge-default"><a href="{{ item['url'] }}" target="_blank">weblink</a></span>
         <input type="checkbox" id="{{ item['id'] }}" name="delete-checks" value="{{ item['id'] }}" tabindex=4  {% if item in request.form.getlist('delete-checks') %}checked{%endif -%} />
         <label for="{{ item['id'] }}">Mark for delete</label>
         <hr>

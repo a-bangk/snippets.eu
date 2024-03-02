@@ -1,9 +1,11 @@
+from urllib.parse import quote
+import markdown
+
 from .helperfunctions import get_db_connection
 from . import associationmanagement as asm
 from . import tagmanagement as tm
 from .source import management as sm
 from . import authormanagement as am
-import markdown
 
 """ 
 def listNotes():
@@ -30,8 +32,17 @@ def listNotesForUserId(user_id):
         note['content'] = markdown.markdown(note['content'])
         note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
         note["explore_source_url"]=note.pop("source_id")
+        note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
         notes.append(note)
     return notes
+
+def tagUrlsFromTags(tag_list, username):
+    tags_urls = []
+    for tag in tag_list:
+        tag=tag.strip()
+        encoded_tag = quote(tag)
+        tags_urls.append(f'<a href="/{username}/tag={encoded_tag}">{tag}</a>')
+    return '; '.join(tags_urls)
 
 def listNotes(id_list):
     conn = get_db_connection()
