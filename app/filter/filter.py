@@ -42,9 +42,14 @@ def filtersnippetslist():
 @filter_bp.route('/<user_username>/tag=<tag>', methods=('GET', 'POST'))
 @login_required
 def tag_sorted(user_username,tag):
-    tags2=tm.tagsForUserIdSortableTag(current_user.id,tag)
-    tags=tm.tagsForUserIdWithCountTag(current_user.id,tag)
+    tags2=tm.tagsForUserIdSortable(current_user.id)
+    tags=tm.tagsForUserIdWithCount(current_user.id)
     snippets=nm.listNotesForUserIdTag(current_user.id, tag)
+    if request.method == 'POST':
+        if request.form['action'] =='filter':
+            note_ids_str = request.form['noteIds']
+            note_ids = json.loads(note_ids_str)
+            snippets=nm.listNotes(note_ids)
     for dictionary in snippets:
         dictionary['exploreTag']=f'/{user_username}/tag={tag}'
     return render_template('exploreTag.html', items=snippets, tag=tag, tags=tags, tags2=tags2)

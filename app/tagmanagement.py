@@ -62,7 +62,6 @@ def tagsForUserIdSortable(user_id):
     cur.execute(sql_query, (user_id,))
     db_tags_raw = cur.fetchall()
     conn.close()
-
     db_tags = {item['tag']: [int(note_id) for note_id in item['note_ids'].split(',')] for item in db_tags_raw}
     return db_tags
 
@@ -99,9 +98,3 @@ def idFromTagsList(tag_list,user_id):
             conn.commit()        
     conn.close()
     return ids
-
-def tagsForUserIdWithCountTag(user_id,tag):
-    return []
-
-def tagsForUserIdSortableTag(user_id,tag):
-    return []
