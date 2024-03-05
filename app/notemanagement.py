@@ -32,7 +32,8 @@ def listNotesForUserId(user_id):
         note['content'] = markdown.markdown(note['content'])
         note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
         note["explore_source_url"]=note.pop("source_id")
-        note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
+        if note["tags"] is not None:
+            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
         notes.append(note)
     return notes
 
@@ -75,7 +76,6 @@ def listNotesWithExplore(id_list):
         notes.append(note)
     return notes
 
-
 def listNotesForUserIdSourceId(user_id,source_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
@@ -88,6 +88,25 @@ def listNotesForUserIdSourceId(user_id,source_id):
         note['content'] = markdown.markdown(note['content'])
         notes.append(note)
     return notes
+
+def listNotesForUserIdTag(user_id, tag):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    sql_query='WITH nt AS ( SELECT ann.note_id, GROUP_CONCAT(nt.tag ORDER BY tag ASC SEPARATOR "; ") AS tags FROM associate_notetag_note ann JOIN notetag nt ON nt.id = ann.notetag_id GROUP BY ann.note_id ), s AS ( SELECT asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") AS sources,s.id, s.url FROM associate_source_note asn JOIN source s ON s.id = asn.source_id GROUP BY asn.note_id ) SELECT n.id,s.id as source_id, n.content, n.entry_datetime, nt.tags, s.sources, s.url, u.username FROM note n LEFT JOIN nt ON nt.note_id = n.id LEFT JOIN s ON s.note_id = n.id JOIN user u ON n.user_id = u.id WHERE n.user_id = ? ORDER BY n.update_datetime DESC;'
+    cur.execute(sql_query,(user_id,))
+    db_notes=cur.fetchall()
+    conn.close()
+    notes=[]
+    for note in db_notes:
+        note['content'] = markdown.markdown(note['content'])
+        note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
+        note["explore_source_url"]=note.pop("source_id")
+        tags = [tag.strip() for tag in note["tags"].split(";")]
+        if tag in tags:
+            note["explore_tag_urls"]=tagUrlsFromTags(tags, note.get("username"))
+            notes.append(note)
+    return notes
+  
 
 def listNotesForNoteIdsSourceIds(id_list, source_list):
     conn = get_db_connection()

@@ -38,3 +38,13 @@ def filtersnippetslist():
     else:
         snippets=[]
     return render_template('explore.html', items=snippets, tags=tags, tags2=tags2)
+
+@filter_bp.route('/<user_username>/tag=<tag>', methods=('GET', 'POST'))
+@login_required
+def tag_sorted(user_username,tag):
+    tags2=tm.tagsForUserIdSortableTag(current_user.id,tag)
+    tags=tm.tagsForUserIdWithCountTag(current_user.id,tag)
+    snippets=nm.listNotesForUserIdTag(current_user.id, tag)
+    for dictionary in snippets:
+        dictionary['exploreTag']=f'/{user_username}/tag={tag}'
+    return render_template('exploreTag.html', items=snippets, tag=tag, tags=tags, tags2=tags2)

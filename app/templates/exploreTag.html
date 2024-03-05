@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+    {% block content %}
+    <h1>{% block title %} Snippets by Tag {% endblock %}</h1>
+    <h2 style="text-align: center;">"{{tag}}"</h2>
+    <form method="post">
+        {% include 'sec_filter.html' %}
+    </form>
+    <h2 style="text-align: center;">Snippets</h2>
+    {% include 'sec_lists/snippets_list.html' %}
+{% endblock %}

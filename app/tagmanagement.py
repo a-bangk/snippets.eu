@@ -1,6 +1,5 @@
 from .helperfunctions import get_db_connection
 
-
 def deleteTagsById(delete_ids):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
@@ -11,7 +10,6 @@ def deleteTagsById(delete_ids):
         cur.execute(sql,(id,))
     conn.commit()
     conn.close()
-
 
 def addTagForUser(tag,user_id):
     conn = get_db_connection()
@@ -35,7 +33,6 @@ def tagsForUserId(user_id):
     tags=sorted(tags,key=str.casefold)
     return tags
 
-
 def tagsForUserIdWithCount(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
@@ -44,14 +41,13 @@ def tagsForUserIdWithCount(user_id):
         FROM notetag nt
         JOIN associate_notetag_note ann ON nt.id = ann.notetag_id
         JOIN note n ON ann.note_id = n.id
-        WHERE nt.user_id = ? -- Replace ? with the specific user_id you're querying for
+        WHERE nt.user_id = %s
         GROUP BY nt.id
     '''
     cur.execute(sql_query,(user_id,))
     db_tags=cur.fetchall()
     conn.close()
     return db_tags
-
 
 def tagsForUserIdSortable(user_id):
     conn = get_db_connection()
@@ -67,7 +63,6 @@ def tagsForUserIdSortable(user_id):
     db_tags_raw = cur.fetchall()
     conn.close()
 
-    # Convert the concatenated note_ids into a list
     db_tags = {item['tag']: [int(note_id) for note_id in item['note_ids'].split(',')] for item in db_tags_raw}
     return db_tags
 
@@ -104,3 +99,9 @@ def idFromTagsList(tag_list,user_id):
             conn.commit()        
     conn.close()
     return ids
+
+def tagsForUserIdWithCountTag(user_id,tag):
+    return []
+
+def tagsForUserIdSortableTag(user_id,tag):
+    return []

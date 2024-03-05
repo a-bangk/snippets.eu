@@ -2,7 +2,6 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 import re
 from flask_login import login_required, current_user
-import json 
 
 from ..helperfunctions import get_db_connection
 from .. import authormanagement as am
