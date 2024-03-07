@@ -94,10 +94,11 @@ def listNotesForUserIdTag(user_id, tag):
         note['content'] = markdown.markdown(note['content'])
         note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
         note["explore_source_url"]=note.pop("source_id")
-        tags = [tag.strip() for tag in note["tags"].split(";")]
-        if tag in tags:
-            note["explore_tag_urls"]=tagUrlsFromTags(tags, note.get("username"))
-            notes.append(note)
+        if note["tags"]:
+            tags = [tag.strip() for tag in note["tags"].split(";")]
+            if tag in tags:
+                note["explore_tag_urls"]=tagUrlsFromTags(tags, note.get("username"))
+                notes.append(note)
     return notes
   
 

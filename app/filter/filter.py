@@ -50,6 +50,6 @@ def tag_sorted(user_username,tag):
             note_ids_str = request.form['noteIds']
             note_ids = json.loads(note_ids_str)
             snippets=nm.listNotes(note_ids)
-    #for dictionary in snippets:
-     #   dictionary['exploreTag']=f'/{user_username}/tag={tag}'
+    for dictionary in snippets:
+        dictionary['exploreTag']=f'/{user_username}/tag={tag}'
     return render_template('exploreTag.html', items=snippets, tag=tag, tags=tags, tags2=tags2)
