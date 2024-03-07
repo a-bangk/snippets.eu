@@ -7,19 +7,6 @@ from . import tagmanagement as tm
 from .source import management as sm
 from . import authormanagement as am
 
-""" 
-def listNotes():
-    conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)
-    cur.execute('with nt as ( select ann.note_id, GROUP_CONCAT(nt.tag order by tag asc SEPARATOR "; ") as tags  from associate_notetag_note ann  join notetag nt on nt.id = ann.notetag_id  group by ann.note_id ), s as ( select asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") as sources, s.url  from associate_source_note asn  join source s on s.id = asn.source_id  group by asn.note_id ) select n.id,n.content, n.entry_datetime,nt.tags,s.sources, s.url from note n left join nt on nt.note_id = n.id left join s on s.note_id = n.id order by n.update_datetime desc;')
-    db_notes=cur.fetchall()
-    conn.close()
-    notes=[]
-    for note in db_notes:
-        note['content'] = markdown.markdown(note['content'])
-        notes.append(note)
-    return notes """
-
 def listNotesForUserId(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
@@ -58,6 +45,8 @@ def listNotes(id_list):
         note['content'] = markdown.markdown(note['content'])
         note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
         note["explore_source_url"]=note.pop("source_id")
+        if note["tags"] is not None:
+            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
         notes.append(note)
     return notes
 
@@ -86,6 +75,10 @@ def listNotesForUserIdSourceId(user_id,source_id):
     notes=[]
     for note in db_notes:
         note['content'] = markdown.markdown(note['content'])
+        note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
+        note["explore_source_url"]=note.pop("source_id")
+        if note["tags"] is not None:
+            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
         notes.append(note)
     return notes
 
@@ -120,6 +113,10 @@ def listNotesForNoteIdsSourceIds(id_list, source_list):
     notes=[]
     for note in db_notes:
         note['content'] = markdown.markdown(note['content'])
+        note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
+        note["explore_source_url"]=note.pop("source_id")
+        if note["tags"] is not None:
+            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
         notes.append(note)
     return notes
 
