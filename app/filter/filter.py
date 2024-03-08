@@ -1,5 +1,6 @@
 from flask import render_template,request,redirect,url_for,flash  
 import json 
+import re
 from . import filter_bp
 from .. import tagmanagement as tm
 from .. import notemanagement as nm
@@ -17,6 +18,8 @@ def filtersnippetslist():
             note_ids_str = request.form['noteIds']
             note_ids = json.loads(note_ids_str)
             snippets=nm.listNotes(note_ids)
+        elif re.search("Edit*",request.form['action']):
+            return render_template('write.html')
         if request.form['action'] == 'Add':
             content = request.form['content']
             source_string = request.form['sources-auto']
@@ -50,6 +53,8 @@ def tag_sorted(user_username,tag):
             note_ids_str = request.form['noteIds']
             note_ids = json.loads(note_ids_str)
             snippets=nm.listNotes(note_ids)
+        elif re.search("Edit*",request.form['action']):
+            return render_template('write.html')
     for dictionary in snippets:
         dictionary['exploreTag']=f'/{user_username}/tag={tag}'
     return render_template('exploreTag.html', items=snippets, tag=tag, tags=tags, tags2=tags2)
