@@ -13,7 +13,15 @@
         $cardBody.append($('<span>').addClass('badge badge-primary').text('#' + item.id));
         $cardBody.append($('<span>').addClass('badge badge-default').text(item.entry_epoch));
         $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.explore_source_url + '">' + item.sources + '</a>'));
-        $cardBody.append($('<span>').addClass('badge badge-default').html(item.explore_tag_urls)); // Assuming this is safe HTML
+
+        var $tagsSpan = $('<span>')
+        .addClass('editable-text-tags')
+        .attr('data-type', 'tags ')
+        .attr('data-id', item.id)
+        .html(item.explore_tag_urls);
+        $cardBody.append($tagsSpan);
+
+        $cardBody.append($('<span>').addClass('badge badge-default').html(item.explore_tag_urls)); 
         $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.url + '" target="_blank">weblink</a>'));
         
         var $checkbox = $('<input>').attr({type: 'checkbox', id: item.id, name: 'delete-checks', value: item.id, tabindex: 4});
@@ -29,6 +37,8 @@
         $card.append($cardBody);
         
         $('#content-area').append($card);
+        createEditTagButton($tagsSpan, $cardBody, item.id);
+        //createEditContentButton($contentElement, $contentDiv, content.id);
         $('#content-area').append($('<br>'));
       });
     }
@@ -56,7 +66,7 @@
           $saveButton.hide();
           $editButton.show();
     
-          // Send the updated content back to the server
+          // Send the updated content back to the serve
           fetch('/update-content', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -74,45 +84,53 @@
         $parentDiv.append($editButton, $saveButton);
       }
     
-      function createEditTagButton($elementToEdit, $parentDiv, contentId) {
-        var $editButton = $('<button>').addClass('edit-icon').text('T✏️');
-        var $saveButton = $('<button>').addClass('save-icon').text('T💾').hide();
-        var $inputElement;
-    
-        $editButton.click(function() {
-          // Determine the appropriate input type and create it
-          $inputElement = $elementToEdit.attr('data-type') === 'tags' ? $('<textarea>') : $('<input type="text">');
-          $inputElement.val($elementToEdit.text());
-          $elementToEdit.replaceWith($inputElement);
-          $inputElement.focus();
-          $editButton.hide();
-          $saveButton.show();
+      function createEditTagButton($elementToEdit, $parentDiv, contentId, username) {
+    var $editButton = $('<button>').addClass('edit-icon').text('T✏️');
+    var $saveButton = $('<button>').addClass('save-icon').text('T💾').hide();
+    var $inputElement;
+
+    $editButton.click(function() {
+        // Assume $elementToEdit contains the HTML with tags as links
+        // Convert HTML links back to a simple semicolon-separated list of tags for editing
+        var tagText = $elementToEdit.find('a').map(function() {
+            return $(this).text(); // Extract text from each link
+        }).get().join('; '); // Join tags with semicolon and space as delimiter
+
+        $inputElement = $('<input type="text">').val(tagText);
+        $elementToEdit.empty().append($inputElement); // Replace the links with the textarea
+        $inputElement.focus();
+        $editButton.hide();
+        $saveButton.show();
+    });
+
+    $saveButton.click(function() {
+        var updatedTags = $inputElement.val().split(';'); // Assuming tags are semicolon-separated
+        $elementToEdit.empty(); // Clear the container
+
+        $.each(updatedTags, function(index, tag) {
+            tag = tag.trim();
+            if (tag) {
+                // Encode tag for URL usage and recreate link HTML
+                var encodedTag = encodeURIComponent(tag);
+                var linkHtml = $('<a>').attr('href', `/${username}/tag=${encodedTag}`).text(tag);
+                $elementToEdit.append(linkHtml);
+
+                if (index < updatedTags.length - 1) {
+                    $elementToEdit.append('; '); // Add delimiter between tags
+                }
+            }
         });
-    
-        $saveButton.click(function() {
-          // Save changes
-          var updatedText = $inputElement.val();
-          $elementToEdit.text(updatedText);
-          $inputElement.replaceWith($elementToEdit);
-          $saveButton.hide();
-          $editButton.show();
-    
-          // Send the updated content back to the server
-          fetch('/update-content', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              id: contentId,
-              tags: updatedText,
-            }),
-          })
-          .then(response => response.json())
-          .then(data => console.log('Success:', data))
-          .catch(error => console.error('Error:', error));
-        });
-    
-        $parentDiv.append($editButton, $saveButton);
-      }
+
+        // Switch back to showing the edit button
+        $inputElement.remove();
+        $saveButton.hide();
+        $editButton.show();
+    });
+
+    // Append edit and save buttons next to the tag container
+    $parentDiv.append($editButton, $saveButton);
+}
+
     
       generateContent();
     });
