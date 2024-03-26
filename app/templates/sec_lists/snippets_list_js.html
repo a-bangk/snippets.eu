@@ -1,0 +1,119 @@
+
+<div id="content-area"></div> 
+
+
+<script>$(document).ready(function() {
+    var contents = {{ items | safe }};
+  
+    function generateContent() {
+      $.each(contents, function(index, item) {
+        var $card = $('<div>').addClass('card');
+        var $cardBody = $('<div>').addClass('card-body');
+        
+        $cardBody.append($('<span>').addClass('badge badge-primary').text('#' + item.id));
+        $cardBody.append($('<span>').addClass('badge badge-default').text(item.entry_epoch));
+        $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.explore_source_url + '">' + item.sources + '</a>'));
+        $cardBody.append($('<span>').addClass('badge badge-default').html(item.explore_tag_urls)); // Assuming this is safe HTML
+        $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.url + '" target="_blank">weblink</a>'));
+        
+        var $checkbox = $('<input>').attr({type: 'checkbox', id: item.id, name: 'delete-checks', value: item.id, tabindex: 4});
+        // Conditionally check the checkbox if needed, based on additional logic/data
+        $cardBody.append($checkbox);
+        $cardBody.append($('<label>').attr('for', item.id).text('Mark for delete'));
+        
+        $cardBody.append($('<hr>'));
+        $cardBody.append($('<p>').html(item.content)); // Assuming this is safe HTML
+        
+        $cardBody.append($('<button>').attr({type: 'submit', class: 'btn btn-primary', value: 'Edit_' + item.id, name: 'action', tabindex: 3}).text('Edit'));
+        
+        $card.append($cardBody);
+        
+        $('#content-area').append($card);
+        $('#content-area').append($('<br>'));
+      });
+    }
+  
+      function createEditContentButton($elementToEdit, $parentDiv, contentId) {
+        var $editButton = $('<button>').addClass('edit-icon').text('✏️');
+        var $saveButton = $('<button>').addClass('save-icon').text('💾').hide();
+        var $inputElement;
+    
+        $editButton.click(function() {
+          // Determine the appropriate input type and create it
+          $inputElement = $elementToEdit.attr('data-type') === 'note-content' ? $('<textarea>') : $('<input type="text">');
+          $inputElement.val($elementToEdit.text());
+          $elementToEdit.replaceWith($inputElement);
+          $inputElement.focus();
+          $editButton.hide();
+          $saveButton.show();
+        });
+    
+        $saveButton.click(function() {
+          // Save changes
+          var updatedText = $inputElement.val();
+          $elementToEdit.text(updatedText);
+          $inputElement.replaceWith($elementToEdit);
+          $saveButton.hide();
+          $editButton.show();
+    
+          // Send the updated content back to the server
+          fetch('/update-content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: contentId,
+              content: updatedText,
+              type: $elementToEdit.attr('data-type'),
+            }),
+          })
+          .then(response => response.json())
+          .then(data => console.log('Success:', data))
+          .catch(error => console.error('Error:', error));
+        });
+    
+        $parentDiv.append($editButton, $saveButton);
+      }
+    
+      function createEditTagButton($elementToEdit, $parentDiv, contentId) {
+        var $editButton = $('<button>').addClass('edit-icon').text('T✏️');
+        var $saveButton = $('<button>').addClass('save-icon').text('T💾').hide();
+        var $inputElement;
+    
+        $editButton.click(function() {
+          // Determine the appropriate input type and create it
+          $inputElement = $elementToEdit.attr('data-type') === 'tags' ? $('<textarea>') : $('<input type="text">');
+          $inputElement.val($elementToEdit.text());
+          $elementToEdit.replaceWith($inputElement);
+          $inputElement.focus();
+          $editButton.hide();
+          $saveButton.show();
+        });
+    
+        $saveButton.click(function() {
+          // Save changes
+          var updatedText = $inputElement.val();
+          $elementToEdit.text(updatedText);
+          $inputElement.replaceWith($elementToEdit);
+          $saveButton.hide();
+          $editButton.show();
+    
+          // Send the updated content back to the server
+          fetch('/update-content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: contentId,
+              tags: updatedText,
+            }),
+          })
+          .then(response => response.json())
+          .then(data => console.log('Success:', data))
+          .catch(error => console.error('Error:', error));
+        });
+    
+        $parentDiv.append($editButton, $saveButton);
+      }
+    
+      generateContent();
+    });
+    </script>

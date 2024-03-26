@@ -17,7 +17,8 @@ def filtersnippetslist():
         if request.form['action'] =='filter':
             note_ids_str = request.form['noteIds']
             note_ids = json.loads(note_ids_str)
-            snippets=nm.listNotes(note_ids)
+            snippets=nm.listNotesEpoch(note_ids)
+            snippets=json.dumps(snippets)
         elif re.search("Edit*",request.form['action']):
             return render_template('write.html')
         if request.form['action'] == 'Add':
