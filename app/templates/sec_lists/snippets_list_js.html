@@ -8,6 +8,14 @@ $(document).ready(function() {
     //var contents='[{"id": 249, "content": "<p>Hopper traveled a lot</p>", "entry_epoch": 1708283153, "tags": "art; tag 1", "sources": "The Art of Travel", "url": null, "username": "susan", "explore_source_url": "/susan/source=258", "explore_tag_urls": "<a href=\\"/susan/tag=art\\">art</a>; <a href=\\"/susan/tag=tag%201\\">tag 1</a>"}]'
     function generateContent() {
       $.each(contents, function(index, item) {
+        var date= new Date(item.entry_epoch*1000)
+
+        var year = date.getFullYear();
+        var month = ('0' + (date.getMonth() + 1)).slice(-2); // Add 1 because months are 0-indexed, then pad
+        var day = ('0' + date.getDate()).slice(-2);
+        var hours = ('0' + date.getHours()).slice(-2);
+        var minutes = ('0' + date.getMinutes()).slice(-2);
+        var formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes;
         var $card = $('<div>').addClass('card');
 
         var $tagsSpan = $('<span>')
@@ -27,7 +35,7 @@ $(document).ready(function() {
 
         var $cardBody = $('<div>').addClass('card-body');
         $cardBody.append($('<span>').addClass('badge badge-primary').text('#' + item.id));
-        $cardBody.append($('<span>').addClass('badge badge-default').text(item.entry_epoch));
+        $cardBody.append($('<span>').addClass('badge badge-default').text(formattedDate));
         $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.explore_source_url + '">' + item.sources + '</a>'));
         $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.url + '" target="_blank">weblink</a>'));
         var $checkbox = $('<input>').attr({type: 'checkbox', id: item.id, name: 'delete-checks', value: item.id, tabindex: 4});
