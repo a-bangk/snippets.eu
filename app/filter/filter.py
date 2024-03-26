@@ -1,9 +1,10 @@
-from flask import render_template,request,redirect,url_for,flash  
+from flask import render_template,request,redirect,url_for,flash,jsonify  
 import json 
 import re
 from . import filter_bp
 from .. import tagmanagement as tm
 from .. import notemanagement as nm
+from .. import associationmanagement as am
 
 from flask_login import login_required, current_user
 
@@ -59,3 +60,23 @@ def tag_sorted(user_username,tag):
     for dictionary in snippets:
         dictionary['exploreTag']=f'/{user_username}/tag={tag}'
     return render_template('exploreTag.html', items=snippets, tag=tag, tags=tags, tags2=tags2)
+
+
+@filter_bp.route('/update-tags', methods=['POST'])
+@login_required
+def update_tags():
+    data = request.json
+    snippetId = data.get('id')
+    tags = data.get('tags')
+    tagIds=tm.idFromTagsList(tags,current_user.id)
+    am.linkTagsToNote(snippetId,tagIds)
+    return jsonify({"status": "success", "message": "Content updated successfully"})
+
+@filter_bp.route('/update-snippet', methods=['POST'])
+@login_required
+def update_snippet():
+    data = request.json
+    snippetId = data.get('id')
+    content = data.get('content')
+    nm.updateSnippet(content,snippetId)
+    return jsonify({"status": "success", "message": "Content updated successfully"})
