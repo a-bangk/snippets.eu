@@ -16,6 +16,17 @@ To reset the password for username Adam
 >>> db.session.commit()
 ```
 
+# Source Control
+
+Epics get own branch
+
+End of sprint aim is to update live branch
+
+## Branches
+
+* Live: the live version running. Tested and works
+* Main : Code branch all works starts from and returns to
+* snip-### : A specific feature reflecting the user story, task, bug ,or epic in Jira. If Jira item is an epic, other branches come out of here, to keep main in a runnable.
 
 # Hosting
 
