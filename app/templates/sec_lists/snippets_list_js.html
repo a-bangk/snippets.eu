@@ -14,21 +14,25 @@
         $cardBody.append($('<span>').addClass('badge badge-default').text(item.entry_epoch));
         $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.explore_source_url + '">' + item.sources + '</a>'));
 
-        var $tagsSpan = $('<span>')
+
+
+
+        $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.url + '" target="_blank">weblink</a>'));
+        
+        var $checkbox = $('<input>').attr({type: 'checkbox', id: item.id, name: 'delete-checks', value: item.id, tabindex: 4});
+
+        $cardBody.append($checkbox);
+        $cardBody.append($('<label>').attr('for', item.id).text('Mark for delete'));
+          $cardBody.append($('<br>'));
+          var $tagsSpan = $('<span>')
         .addClass('editable-text-tags')
         .attr('data-type', 'tags ')
         .attr('data-id', item.id)
         .html(item.explore_tag_urls);
         $cardBody.append($tagsSpan);
+        createEditTagButton($tagsSpan, $cardBody, item.id);
 
-        $cardBody.append($('<span>').addClass('badge badge-default').html(item.explore_tag_urls)); 
-        $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.url + '" target="_blank">weblink</a>'));
-        
-        var $checkbox = $('<input>').attr({type: 'checkbox', id: item.id, name: 'delete-checks', value: item.id, tabindex: 4});
-        // Conditionally check the checkbox if needed, based on additional logic/data
-        $cardBody.append($checkbox);
-        $cardBody.append($('<label>').attr('for', item.id).text('Mark for delete'));
-        
+
         $cardBody.append($('<hr>'));
         $cardBody.append($('<p>').html(item.content)); // Assuming this is safe HTML
         
@@ -37,7 +41,7 @@
         $card.append($cardBody);
         
         $('#content-area').append($card);
-        createEditTagButton($tagsSpan, $cardBody, item.id);
+
         //createEditContentButton($contentElement, $contentDiv, content.id);
         $('#content-area').append($('<br>'));
       });
@@ -85,8 +89,8 @@
       }
     
       function createEditTagButton($elementToEdit, $parentDiv, contentId, username) {
-    var $editButton = $('<button>').addClass('edit-icon').text('T✏️');
-    var $saveButton = $('<button>').addClass('save-icon').text('T💾').hide();
+    var $editButton = $('<button>').addClass('edit-icon').text('✏️');
+    var $saveButton = $('<button>').addClass('save-icon').text('💾').hide();
     var $inputElement;
 
     $editButton.click(function() {
