@@ -2,12 +2,29 @@
 <div id="content-area"></div> 
 
 
-<script>$(document).ready(function() {
+<script>
+$(document).ready(function() {
     var contents = {{ items | safe }};
     //var contents='[{"id": 249, "content": "<p>Hopper traveled a lot</p>", "entry_epoch": 1708283153, "tags": "art; tag 1", "sources": "The Art of Travel", "url": null, "username": "susan", "explore_source_url": "/susan/source=258", "explore_tag_urls": "<a href=\\"/susan/tag=art\\">art</a>; <a href=\\"/susan/tag=tag%201\\">tag 1</a>"}]'
     function generateContent() {
       $.each(contents, function(index, item) {
         var $card = $('<div>').addClass('card');
+
+        var $tagsSpan = $('<span>')
+        .addClass('editable-text-tags')
+        .attr('data-type', 'tags ')
+        .attr('data-id', item.id)
+        .html(item.explore_tag_urls);
+
+        var $contentArea =$('<p>').html(item.content)
+
+        var $contentDiv = $('<pre>');
+        var $contentElement = $('<div>')
+        .addClass('editable-text-content')
+        .attr('data-type', 'note-content')
+        .attr('data-id', item.id)
+        .html(item.content);
+
         var $cardBody = $('<div>').addClass('card-body');
         $cardBody.append($('<span>').addClass('badge badge-primary').text('#' + item.id));
         $cardBody.append($('<span>').addClass('badge badge-default').text(item.entry_epoch));
@@ -16,21 +33,17 @@
         var $checkbox = $('<input>').attr({type: 'checkbox', id: item.id, name: 'delete-checks', value: item.id, tabindex: 4});
         $cardBody.append($checkbox);
         $cardBody.append($('<label>').attr('for', item.id).text('Mark for delete'));
-          $cardBody.append($('<br>'));
-          var $tagsSpan = $('<span>')
-        .addClass('editable-text-tags')
-        .attr('data-type', 'tags ')
-        .attr('data-id', item.id)
-        .html(item.explore_tag_urls);
+        $cardBody.append($('<br>'));
+
         $cardBody.append($tagsSpan);
         createEditTagButton($tagsSpan, $cardBody, item.id);
 
 
         $cardBody.append($('<hr>'));
-        $cardBody.append($('<p>').html(item.content)); // Assuming this is safe HTML
-        
-        $cardBody.append($('<button>').attr({type: 'submit', class: 'btn btn-primary', value: 'Edit_' + item.id, name: 'action', tabindex: 3}).text('Edit'));
-        
+        $cardBody.append($contentElement); 
+        $cardBody.append($contentDiv);
+        createEditContentButton($contentElement, $contentDiv, item.id);
+                
         $card.append($cardBody);
         
         $('#content-area').append($card);
@@ -40,8 +53,8 @@
       });
     }
   
-      function createEditContentButton($elementToEdit, $parentDiv, contentId) {
-        var $editButton = $('<button>').addClass('edit-icon').text('✏️');
+    function createEditContentButton($elementToEdit, $parentDiv, contentId) {
+        var $editButton = $('<button>').addClass('edit-icon').text('Edit Snippet');
         var $saveButton = $('<button>').addClass('save-icon').text('💾').hide();
         var $inputElement;
     
@@ -70,7 +83,6 @@
             body: JSON.stringify({
               id: contentId,
               content: updatedText,
-              type: $elementToEdit.attr('data-type'),
             }),
           })
           .then(response => response.json())

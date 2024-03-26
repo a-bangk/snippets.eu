@@ -70,9 +70,9 @@ def update_tags():
     tags = data.get('tags')
     tagIds=tm.idFromTagsList(tags,current_user.id)
     am.linkTagsToNote(snippetId,tagIds)
-    return jsonify({"status": "success", "message": "Content updated successfully"})
+    return jsonify({"status": "success", "message": "Tags updated successfully"})
 
-@filter_bp.route('/update-snippet', methods=['POST'])
+@filter_bp.route('/update-content', methods=['POST'])
 @login_required
 def update_snippet():
     data = request.json
