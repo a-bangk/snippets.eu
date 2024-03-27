@@ -5,6 +5,7 @@ from . import filter_bp
 from .. import tagmanagement as tm
 from .. import notemanagement as nm
 from .. import associationmanagement as am
+import markdown
 
 from flask_login import login_required, current_user
 
@@ -80,3 +81,16 @@ def update_snippet():
     content = data.get('content')
     nm.updateSnippet(content,snippetId)
     return jsonify({"status": "success", "message": "Content updated successfully"})
+
+
+
+# Adjusted route definition
+@filter_bp.route('/get-updated-content', methods=['GET'])
+@login_required
+def get_updated_content():
+    snippet_id = request.args.get('id')
+    content = nm.snippetContent(snippet_id)
+    if content:
+        return jsonify({"content": markdown.markdown(content), "content_raw" : content})
+    else:
+        return jsonify({"status": "fail", "message": "Content not found"}), 404

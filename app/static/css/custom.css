@@ -19,3 +19,7 @@
 .hidden {
     display: none !important;
 }
+
+.full-width-textarea{
+    width:100%
+}

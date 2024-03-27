@@ -60,6 +60,7 @@ def listNotesEpoch(id_list):
     conn.close()
     notes=[]
     for note in db_notes:
+        note['content_raw'] =note['content']
         note['content'] = markdown.markdown(note['content'])
         note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
         note["explore_source_url"]=note.pop("source_id")
@@ -264,3 +265,12 @@ def idsFromContent(content):
     ids=cur.fetchall()
     conn.close()
     return(ids)
+
+def snippetContent(snippet_id):
+    conn = get_db_connection()
+    cur=conn.cursor()
+    sql="select content from note where id=?;"
+    cur.execute(sql,(snippet_id,))
+    content=cur.fetchone()[0]
+    conn.close()
+    return(content)
