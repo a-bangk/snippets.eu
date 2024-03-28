@@ -34,18 +34,30 @@ nginx
 gunicorn
 
 ## Production 
-branch live is run on coolermaster. 
+Branch live is run on coolermaster as a service. Configuration is in /etc/systemd/system/snippets-website.service
+Environment variables in snippets/env and snippets/.secrets.toml both outside of version control.
+
+Private key password in Bitwarden under "Private Key service-user-snippets"
+
+To update live
+```
+sudo su service-user-snippets
+cd ~/websites/snippets
+git fetch origin main:main
+git merge main
+```
+
+It case it doesn't work
+
+```
+git reset --hard origin/live
+```
+
 To update need to run ```systemctl restart snippets-website```
 
 ## Server
 Snippets runs on Coolermaster under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
 
-### Environments
-Dynaconf sets database by FLASK_ENV, see settings.toml for possible environments
-
-```
-export FLASK_ENV=""
-```
 ### Testing
 
 VSCode uses pytest and relies on a local test database
@@ -55,15 +67,14 @@ VSCode uses pytest and relies on a local test database
 Currently running on coolermaster codename hal2.
 With python libraries installed on hal2 and running from virtual environments. See details in tech-guides/hosting-flask.md
 
-# Versioning <not being used>
+# Versioning
 
-Builds are named as Build-Major.Minor.Fix
-Builds numbers are incremented in sync with sprint stories
+Builds are named as Major.Minor.Fix
 
-Build:
-* alpha
-* beta
-* release
+Versions running on server:
+* alpha - main branch running alpha/snippets. Pulled from live after a release
+* beta - release candidates beta/snippets. Get own named branches on github
+* live - running on main URL websites/snippets. Merged from beta branch on github
 
 Numbering
 * Major for changes that break backwards compatibly or major new release
