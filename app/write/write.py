@@ -52,7 +52,7 @@ def write():
             tagString=existingSnippet['tags']
             snippetId=existingSnippet['id']
             authorsString=am.authorsStringFromNoteId(snippetId)
-    snippets=nm.listNotesForUserId(current_user.id)
+    snippets=nm.listNotesForUserIdRecent14(current_user.id)
     tags=tm.tagsForUserId(current_user.id)
     sources = sm.sourceTitlesForUserId(current_user.id)
     authors = am.listAuthorsAutoForUserId(current_user.id)
