@@ -29,8 +29,6 @@
         
           $cardBody.append($('<span>').addClass('badge badge-default').text(formattedDate));
         $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.explore_source_url + '">' + item.sources + '</a>'));
-        $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.url + '" target="_blank">weblink</a>'));
-
         $cardBody.append($('<br>'));
         $cardBody.append($tagsSpan);
         createEditTagButton($tagsSpan, $cardBody, item.id);
