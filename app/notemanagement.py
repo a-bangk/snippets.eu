@@ -203,7 +203,7 @@ def listTaggedNotesForUserId(tags,filter,user_id):
 def addNewSnippet(content,user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)   
-    sql="insert into note(content,user_id,entry_epoch,update_epoch) VALUES (?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())"
+    sql="insert into note(content,user_id,entry_datetime,update_datetime) VALUES (?, ?, now(), now())"
     cur.execute(sql,(content,user_id))
     snippetId=cur.lastrowid
     conn.commit()
@@ -213,7 +213,7 @@ def addNewSnippet(content,user_id):
 def updateSnippet(content,snippetId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    sql_query="update note set content = ?,update_epoch=UNIX_TIMESTAMP() where id = ?;"   
+    sql_query="update note set content = ?,update_datetime=now() where id = ?;"   
     cur.execute(sql_query,(content,snippetId))
     conn.commit()
     conn.close()
@@ -236,6 +236,7 @@ def alterSnippet(content,source_title,tags,url,authors,snippet_id,user_id):
     elif url:    
         source_id=sm.idFromUrl(url)
         asm.linkSourceToNote(snippet_id,source_id)
+    #TODO Snip-94
     if (url or source_title) and authors[0] != '':
         am.alterAuthors(authors,source_id,user_id)  
 
