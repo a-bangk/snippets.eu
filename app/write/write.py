@@ -1,4 +1,5 @@
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, Blueprint
+import json
 from .. import helperfunctions as hf
 from .. import tagmanagement as tm
 from .. import notemanagement as nm
@@ -8,6 +9,8 @@ from . import write_bp
 import re
 from flask_login import current_user, login_required
 
+
+filter_bp = Blueprint('filter_bp', __name__)
 
 @write_bp.route('/write', methods=('GET', 'POST'))
 @login_required
@@ -53,9 +56,33 @@ def write():
             snippetId=existingSnippet['id']
             authorsString=am.authorsStringFromNoteId(snippetId)
     snippets=nm.listNotesForUserIdRecent14(current_user.id)
+    snippets=json.dumps(snippets)
+
     tags=tm.tagsForUserId(current_user.id)
     sources = sm.sourceTitlesForUserId(current_user.id)
     authors = am.listAuthorsAutoForUserId(current_user.id)
-    return render_template('write.html', items=snippets, tags=tags, authors=authors,sources=sources,previous_authors=authorsString, previous_source=sourceString, previous_url=sourceUrl,previous_tags=tagString, previous_content=contentString, previous_id=snippetId)
+    return render_template('write.html', 
+                           items=snippets, tags=tags, authors=authors,
+                           sources=sources,previous_authors=authorsString, 
+                           previous_source=sourceString, 
+                           previous_url=sourceUrl,
+                           previous_tags=tagString, 
+                           previous_content=contentString, 
+                           previous_id=snippetId)
+
+@write_bp.route('/update-tags')
+def redirect_to_update_tags():
+    # Redirecting to a route in the first blueprint
+    return redirect(url_for('filter_bp.update_tags'))
 
 
+@write_bp.route('/update-content', methods=['POST'])
+@login_required
+def redirect_to_update_snippet():
+    return redirect(url_for('filter_bp.update_snippet'))
+
+# Adjusted route definition
+@write_bp.route('/get-updated-content', methods=['GET'])
+@login_required
+def redirect_to_get_updated_content():
+    return redirect(url_for('filter_bp.get_updated_content'))

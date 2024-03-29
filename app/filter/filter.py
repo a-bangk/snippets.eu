@@ -20,7 +20,6 @@ def filtersnippetslist():
             note_ids_str = request.form['noteIds']
             note_ids = json.loads(note_ids_str)
             snippets=nm.listNotesEpoch(note_ids)
-            snippets=json.dumps(snippets)
         elif re.search("Edit*",request.form['action']):
             return render_template('write.html')
         if request.form['action'] == 'Add':
@@ -43,6 +42,7 @@ def filtersnippetslist():
             nm.alterSnippet(content,source_string,tag_list,source_url,author_list,snippet_id,current_user.id)
     else:
         snippets=[]
+    snippets=json.dumps(snippets)
     return render_template('explore.html', items=snippets, tags=tags, tags2=tags2)
 
 @filter_bp.route('/<user_username>/tag=<tag>', methods=('GET', 'POST'))
@@ -81,8 +81,6 @@ def update_snippet():
     content = data.get('content')
     nm.updateSnippet(content,snippetId)
     return jsonify({"status": "success", "message": "Content updated successfully"})
-
-
 
 # Adjusted route definition
 @filter_bp.route('/get-updated-content', methods=['GET'])
