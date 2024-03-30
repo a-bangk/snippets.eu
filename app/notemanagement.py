@@ -10,7 +10,7 @@ from . import authormanagement as am
 def listNotesForUserId(user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    sql_query='WITH nt AS ( SELECT ann.note_id, GROUP_CONCAT(nt.tag ORDER BY tag ASC SEPARATOR "; ") AS tags FROM associate_notetag_note ann JOIN notetag nt ON nt.id = ann.notetag_id GROUP BY ann.note_id ), s AS ( SELECT asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") AS sources,s.id, s.url FROM associate_source_note asn JOIN source s ON s.id = asn.source_id GROUP BY asn.note_id ) SELECT n.id,s.id as source_id, n.content, n.entry_datetime, nt.tags, s.sources, s.url, u.username FROM note n LEFT JOIN nt ON nt.note_id = n.id LEFT JOIN s ON s.note_id = n.id JOIN user u ON n.user_id = u.id WHERE n.user_id = ? ORDER BY n.update_datetime DESC;'
+    sql_query='select * from snippet_view WHERE user_id = ? ORDER BY note_update_epoch DESC;'
     cur.execute(sql_query,(user_id,))
     db_notes=cur.fetchall()
     conn.close()
@@ -28,7 +28,7 @@ def listNotesForUserId(user_id):
 def listNotesForUserIdRecent14(userId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    sql_query='WITH nt AS ( SELECT ann.note_id, GROUP_CONCAT(nt.tag ORDER BY tag ASC SEPARATOR "; ") AS tags FROM associate_notetag_note ann JOIN notetag nt ON nt.id = ann.notetag_id GROUP BY ann.note_id ), s AS ( SELECT asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") AS sources,s.id, s.url FROM associate_source_note asn JOIN source s ON s.id = asn.source_id GROUP BY asn.note_id ) SELECT n.id,s.id as source_id, n.content, n.entry_epoch, nt.tags, s.sources, s.url, u.username FROM note n LEFT JOIN nt ON nt.note_id = n.id LEFT JOIN s ON s.note_id = n.id JOIN user u ON n.user_id = u.id WHERE n.user_id = ? ORDER BY n.update_epoch DESC limit 14;'
+    sql_query='select * from snippet_view WHERE user_id = ? ORDER BY note_update_epoch DESC limit 14;'
     cur.execute(sql_query,(userId,))
     dbNotes=cur.fetchall()
     conn.close()
@@ -54,7 +54,7 @@ def listNotes(id_list):
     conn = get_db_connection()
     placeholders = ', '.join(['%s'] * len(id_list))
     cur=conn.cursor(dictionary=True)
-    sql_query=f'WITH nt AS ( SELECT ann.note_id, GROUP_CONCAT(nt.tag ORDER BY tag ASC SEPARATOR "; ") AS tags FROM associate_notetag_note ann JOIN notetag nt ON nt.id = ann.notetag_id GROUP BY ann.note_id ), s AS ( SELECT asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") AS sources,s.id, s.url FROM associate_source_note asn JOIN source s ON s.id = asn.source_id GROUP BY asn.note_id ) SELECT n.id, n.content, n.entry_datetime, nt.tags, s.id as source_id,s.sources, s.url, u.username FROM note n LEFT JOIN nt ON nt.note_id = n.id LEFT JOIN s ON s.note_id = n.id JOIN user u ON n.user_id = u.id WHERE n.id in ({placeholders}) ORDER BY n.update_datetime DESC;'
+    sql_query=f'SELECT  * FROM snippet_view WHERE note_id in ({placeholders}) ORDER BY note_update_epoch DESC;'
     cur.execute(sql_query,id_list)
     db_notes=cur.fetchall()
     conn.close()
@@ -91,7 +91,7 @@ def listNotesWithExplore(id_list):
     conn = get_db_connection()
     placeholders = ', '.join(['%s'] * len(id_list))
     cur=conn.cursor(dictionary=True)
-    sql_query=f'WITH nt AS ( SELECT ann.note_id, GROUP_CONCAT(nt.tag ORDER BY tag ASC SEPARATOR "; ") AS tags FROM associate_notetag_note ann JOIN notetag nt ON nt.id = ann.notetag_id GROUP BY ann.note_id ), s AS ( SELECT asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") AS sources,s.id, s.url FROM associate_source_note asn JOIN source s ON s.id = asn.source_id GROUP BY asn.note_id ) SELECT n.id, n.content, n.entry_datetime, nt.tags, s.id as source_id,s.sources, s.url, u.username FROM note n LEFT JOIN nt ON nt.note_id = n.id LEFT JOIN s ON s.note_id = n.id JOIN user u ON n.user_id = u.id WHERE n.id in ({placeholders}) ORDER BY n.update_datetime DESC;'
+    sql_query=f'SELECT  * FROM snippet_view WHERE note_id in ({placeholders}) ORDER BY note_update_epoch DESC;'
     cur.execute(sql_query,id_list)
     db_notes=cur.fetchall()
     conn.close()
@@ -105,7 +105,7 @@ def listNotesWithExplore(id_list):
 def listNotesForUserIdSourceId(user_id,source_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    sql_query='WITH nt AS ( SELECT ann.note_id, GROUP_CONCAT(nt.tag ORDER BY tag ASC SEPARATOR "; ") AS tags FROM associate_notetag_note ann JOIN notetag nt ON nt.id = ann.notetag_id GROUP BY ann.note_id ), s AS ( SELECT asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") AS sources,s.id, s.url FROM associate_source_note asn JOIN source s ON s.id = asn.source_id GROUP BY asn.note_id ) SELECT n.id, n.content, n.entry_datetime, nt.tags, s.sources, s.url, u.username FROM note n LEFT JOIN nt ON nt.note_id = n.id LEFT JOIN s ON s.note_id = n.id JOIN user u ON n.user_id = u.id WHERE n.user_id = ? and s.id=? ORDER BY n.update_datetime DESC;'
+    sql_query='SELECT * FROM snippet_view WHERE user_id = ? AND source_id=? ORDER BY note_update_epoch DESC;'
     cur.execute(sql_query,(user_id,source_id))
     db_notes=cur.fetchall()
     conn.close()
@@ -122,7 +122,7 @@ def listNotesForUserIdSourceId(user_id,source_id):
 def listNotesForUserIdTag(user_id, tag):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    sql_query='WITH nt AS ( SELECT ann.note_id, GROUP_CONCAT(nt.tag ORDER BY tag ASC SEPARATOR "; ") AS tags FROM associate_notetag_note ann JOIN notetag nt ON nt.id = ann.notetag_id GROUP BY ann.note_id ), s AS ( SELECT asn.note_id, GROUP_CONCAT(s.title SEPARATOR ", ") AS sources,s.id, s.url FROM associate_source_note asn JOIN source s ON s.id = asn.source_id GROUP BY asn.note_id ) SELECT n.id,s.id as source_id, n.content, n.entry_datetime, nt.tags, s.sources, s.url, u.username FROM note n LEFT JOIN nt ON nt.note_id = n.id LEFT JOIN s ON s.note_id = n.id JOIN user u ON n.user_id = u.id WHERE n.user_id = ? ORDER BY n.update_datetime DESC;'
+    sql_query='SELECT * FROM snippet_view WHERE user_id = ? ORDER BY note_update_epoch DESC;'
     cur.execute(sql_query,(user_id,))
     db_notes=cur.fetchall()
     conn.close()

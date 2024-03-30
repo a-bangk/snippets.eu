@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template, request, flash, redirect, url_for
 import re
+import json
 from flask_login import login_required, current_user
 
 from ..helperfunctions import get_db_connection
@@ -59,4 +60,5 @@ def source_sorted(user_username,source_id):
     snippets=nm.listNotesForUserIdSourceId(current_user.id, source_id)
     for dictionary in snippets:
         dictionary['exploreSource']=f'/{user_username}/source={source_id}'
+    snippets=json.dumps(snippets)
     return render_template('exploreSource.html', items=snippets, tags=tags, tags2=tags2, source=source_fields)
