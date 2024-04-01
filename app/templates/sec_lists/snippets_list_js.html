@@ -4,7 +4,6 @@
 <script>
   $(document).ready(function () {
     var contents = {{ items | safe}};
-    // var contents = '[{"id": 249, "content": "<p>Hopper traveled a lot</p>", "entry_epoch": 1708283153, "tags": "art; tag 1", "sources": "The Art of Travel", "url": null, "username": "susan", "explore_source_url": "/susan/source=258", "explore_tag_urls": "<a href=\\"/susan/tag=art\\">art</a>; <a href=\\"/susan/tag=tag%201\\">tag 1</a>"}]'
     function generateContent() {
       $.each(contents, function (index, item) {
         let date = new Date(item.entry_epoch * 1000)
@@ -27,7 +26,8 @@
           .html(item.content);
         let $cardBody = $('<div>').addClass('card-body');
         
-          $cardBody.append($('<span>').addClass('badge badge-default').text(formattedDate));
+//        createEditSnippetButton($contentElement, $cardBody, item.id);
+        $cardBody.append($('<span>').addClass('badge badge-default').text(formattedDate));
         $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.explore_source_url + '">' + item.sources + '</a>'));
         $cardBody.append($('<br>'));
         $cardBody.append($tagsSpan);
@@ -41,7 +41,7 @@
       });
     }
     function createEditContentButton($elementToEdit, $parentDiv, contentId) {
-      var $editButton = $('<button>').addClass('edit-icon').text('Edit Snippet');
+      var $editButton = $('<button>').addClass('edit-icon').text('Edit Text');
       var $saveButton = $('<button>').addClass('save-icon').text('💾').hide();
       var $inputElement = $('<textarea class="full-width-textarea">');
       $editButton.click(function () {
@@ -71,6 +71,15 @@
       });
       $parentDiv.append($editButton, $saveButton);
     }
+    /*
+    function createEditSnippetButton($elementToEdit, $parentDiv, contentId) {
+      let $editContentButton = $('<button>').addClass('edit-icon').text('Edit Snippet');
+      $editContentButton.click(function () {
+       
+      });
+      $parentDiv.append($editContentButton);
+    }
+    */
 
     function fetchUpdatedContent(contentId, $elementToReplace) {
       fetch('/get-updated-content?id=' + contentId)
@@ -105,7 +114,38 @@
         .catch(error => console.error('Error fetching updated content:', error));
     }
 
+    function fetchUpdatedContent(contentId, $elementToReplace) {
+      fetch('/get-updated-content?id=' + contentId)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          var itemIndex = contents.findIndex(item => item.id === contentId);
+      if (itemIndex !== -1) {
+        contents[itemIndex].content = data.content; // Update content_raw if needed
+        contents[itemIndex].content_raw = data.content_raw; // Update content_raw if needed
+      }
+          // Assuming server responds with { content: "new content..." }
+          // Create a new element that is non-editable to replace the inputElement
+          var $elementToShow = $('<div>')
+            .addClass('editable-text-content')
+            .attr('data-type', 'note-content')
+            .attr('data-id', contentId)
+            .html(data.content); 
+          $elementToReplace.replaceWith($elementToShow);
+          var $parentDiv = $elementToShow.parent();
+          
 
+
+          createEditContentButton($elementToShow, $parentDiv, contentId);
+
+
+        })
+        .catch(error => console.error('Error fetching updated content:', error));
+    }
     function createEditTagButton($elementToEdit, $parentDiv, contentId, username) {
       var $editButton = $('<button>').addClass('edit-icon').text('✏️');
       var $saveButton = $('<button>').addClass('save-icon').text('💾').hide();
@@ -165,7 +205,6 @@
       // Append edit and save buttons next to the tag container
       $parentDiv.append($editButton, $saveButton);
     }
-
     generateContent();
   });
 </script>
