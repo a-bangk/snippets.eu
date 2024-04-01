@@ -6,7 +6,7 @@
     var contents = {{ items | safe}};
     function generateContent() {
       $.each(contents, function (index, item) {
-        let date = new Date(item.entry_epoch * 1000)
+        let date = new Date(item.note_update_epoch * 1000)
         let year = date.getFullYear();
         let month = ('0' + (date.getMonth() + 1)).slice(-2);
         let day = ('0' + date.getDate()).slice(-2);
