@@ -1,8 +1,7 @@
 {% for source in sources %}
     <div class="card">
         <div class="card-body">
-            <span class="badge badge-default">{{ source['entry_datetime'] }}</span>
-            <span class="badge badge-default">{{ source['type'] }}</span>
+
 
             <input type="checkbox" id="{{ source['id'] }}" name="delete-checks" value="{{ source['id'] }}"   {% if source in request.form.getlist('delete-checks') %}checked{%endif -%} />
         <label for="{{ source['id'] }}">Mark for delete</label>
