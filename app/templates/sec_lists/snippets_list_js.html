@@ -19,6 +19,10 @@
           .attr('data-type', 'tags ')
           .attr('data-id', item.note_id)
           .html(item.explore_tag_urls);
+        var $urlSpan = $('<span>')
+          .addClass('badge badge-default')
+          .attr('data-id', item.note_id)
+          .html(item.explore_source_url);
         var $contentElement = $('<div>')
           .addClass('editable-text-content')
           .attr('data-type', 'note-content')
@@ -28,7 +32,8 @@
         
 //        createEditSnippetButton($contentElement, $cardBody, item.id);
         $cardBody.append($('<span>').addClass('badge badge-default').text(formattedDate));
-        $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.explore_source_url + '">' + item.sources + '</a>'));
+       // $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.explore_source_url + '">' + item.sources + '</a>'));
+        $cardBody.append($urlSpan);
         $cardBody.append($('<br>'));
         $cardBody.append($tagsSpan);
         createEditTagButton($tagsSpan, $cardBody, item.note_id);

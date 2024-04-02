@@ -82,8 +82,8 @@ def loadSource(source_id):
     conn.close()
     return(source)
 
-def generate_source_url(user_name, source):
-    return f"/{user_name}/source={quote(source)}"
+def generate_source_url_link(username, source):
+    return (f'<a href="/{username}/source={quote(source)}">{source}</a>')
 
 def addSource(title, typeId, url, year,user_id):
     conn = get_db_connection()

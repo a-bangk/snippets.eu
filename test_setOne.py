@@ -121,7 +121,7 @@ def test_sm_loadSource(app):
     assert result == {'type': 'website', 'id': 60, 'year': 2023, 'title': 'Garbage Day Blog', 'author': 'RYAN BRODERICK', 'url': 'https://www.garbageday.email/p/heres-where-the-fake-podcast-clips'}
 
 def test_sm_generateExploreUrl(app):
-    result=sm.generate_source_url("susan", 265)
+    result=sm.generate_source_url_link("susan", 265)
     assert result== f"/susan/source=European%20Court%20of%20Human%20Rights%20declares%20backdoored%20encryption%20is%20illegal"
 
 

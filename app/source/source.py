@@ -60,12 +60,12 @@ def source_sorted(user_username,source_title):
         source_id=sm.idFromTitle(source_title,current_user.id)
         source_fields=sm.loadSource(source_id)
         snippets=nm.list_notes_for_userid_sourceid(current_user.id, source_id)
-        for dictionary in snippets:
-            dictionary['exploreSource']=f'/{user_username}/source={source_title}'
+       # for dictionary in snippets:
+         #   dictionary['exploreSource']=f'/{user_username}/source={source_title}'
     elif source_title=="Source Deleted":
         snippets=nm.list_note_for_user_id_deleted_source(current_user.id)
         source_fields={'type': None, 'id': None, 'year': None, 'title': 'Source Deleted', 'author': 'Source Deleted', 'url': None}
-        for dictionary in snippets:
-            dictionary['exploreSource']=f'/{user_username}/source={source_title}'
+        #for dictionary in snippets:
+        # dictionary['exploreSource']=f'/{user_username}/source={source_title}'
     snippets=json.dumps(snippets)
     return render_template('exploreSource.html', items=snippets, tags=tags, tags2=tags2, source=source_fields)
