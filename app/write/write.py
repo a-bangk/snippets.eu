@@ -25,18 +25,25 @@ def write():
         if request.form['action'] == 'Add':
             content = request.form['content']
             sourceString = request.form['sources-auto']
+            if sourceString=="":
+                authorsString=hf.username_from_user_id(current_user.id)
+                sourceString=authorsString + "'s Notes"
             snippetId=request.form['snippet-id']
             sourceUrl=request.form['source-url']
             tagString=request.form['tags-auto']
+            if tagString =="":
+                tagString="unsorted"
             tag_list=hf.commaStringToList(tagString)
             authorsString=request.form['authors-auto']
+            if authorsString=="":
+                authorsString=hf.username_from_user_id(current_user.id)
             authorList=hf.commaStringToList(authorsString)
             authorList=authorsString.split(',')
             if not content:
                 flash('Content is required!')
                 return redirect(url_for('write_bp.write'))
-            if (authorsString or sourceUrl) and not sourceString:
-                flash('Author or URL entries require Source Title')
+            if (authorsString !="" and sourceUrl !="") and sourceString=="":
+                flash('Author or URL entries require a Source Title')
                 return redirect(url_for('write_bp.write'))
             nm.alterSnippet(content,sourceString,tag_list,sourceUrl,authorList,snippetId,current_user.id)
             snippetId=False

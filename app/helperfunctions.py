@@ -31,3 +31,11 @@ def commaStringToList(commaString):
     itemList = sorted(itemList, key=str.casefold)
     return itemList
      
+def username_from_user_id(user_id):
+    conn = get_db_connection()
+    cur=conn.cursor()
+    sql='select username from user where id=?;'
+    cur.execute(sql,(user_id,))
+    username=cur.fetchone()
+    conn.close()
+    return username[0]

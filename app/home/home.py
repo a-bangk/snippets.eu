@@ -26,8 +26,12 @@ def index(authorsString="",sourceString="",sourceUrl="",tagString="", contentStr
             snippetId=request.form['snippet-id']
             sourceUrl=request.form['source-url']
             tagString=request.form['tags-auto']
+            if tagString =="":
+                tagString="unsorted"
             tag_list=hf.commaStringToList(tagString)
             authorsString=request.form['authors-auto']
+            if authorsString=="":
+                authorsString=hf.username_from_user_id(current_user.id)
             authorList=hf.commaStringToList(authorsString)
             authorList=authorsString.split(',')
             if not content:
