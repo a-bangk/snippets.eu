@@ -74,7 +74,8 @@ def tagsAllFieldsForUserId(user_id):
     conn.close()
     tags=[]
     for tag in db_tags:
-        tags.append(tag)
+        if tag['tag'] != 'unsorted':
+            tags.append(tag)
     return tags
 
 def idFromTagsList(tag_list,user_id):
