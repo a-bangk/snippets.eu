@@ -17,12 +17,12 @@
         var $tagsSpan = $('<span>')
           .addClass('editable-text-tags')
           .attr('data-type', 'tags ')
-          .attr('data-id', item.id)
+          .attr('data-id', item.note_id)
           .html(item.explore_tag_urls);
         var $contentElement = $('<div>')
           .addClass('editable-text-content')
           .attr('data-type', 'note-content')
-          .attr('data-id', item.id)
+          .attr('data-id', item.note_id)
           .html(item.content);
         let $cardBody = $('<div>').addClass('card-body');
         
@@ -31,10 +31,10 @@
         $cardBody.append($('<span>').addClass('badge badge-default').html('<a href="' + item.explore_source_url + '">' + item.sources + '</a>'));
         $cardBody.append($('<br>'));
         $cardBody.append($tagsSpan);
-        createEditTagButton($tagsSpan, $cardBody, item.id);
+        createEditTagButton($tagsSpan, $cardBody, item.note_id);
         $cardBody.append($('<hr>'));
         $cardBody.append($contentElement);
-        createEditContentButton($contentElement, $cardBody, item.id);
+        createEditContentButton($contentElement, $cardBody, item.note_id);
         $card.append($cardBody);
         $('#content-area').append($card);
         $('#content-area').append($('<br>'));
@@ -45,7 +45,7 @@
       var $saveButton = $('<button>').addClass('save-icon').text('💾').hide();
       var $inputElement = $('<textarea class="full-width-textarea">');
       $editButton.click(function () {
-        var contentRaw = contents.find(item => item.id === contentId).content_raw;
+        var contentRaw = contents.find(item => item.note_id === contentId).content_raw;
         $inputElement.val(contentRaw);
         $elementToEdit.replaceWith($inputElement);
         $inputElement.focus();
@@ -90,7 +90,7 @@
           return response.json();
         })
         .then(data => {
-          var itemIndex = contents.findIndex(item => item.id === contentId);
+          var itemIndex = contents.findIndex(item => item.note_id === contentId);
       if (itemIndex !== -1) {
         contents[itemIndex].content = data.content; // Update content_raw if needed
         contents[itemIndex].content_raw = data.content_raw; // Update content_raw if needed
@@ -123,7 +123,7 @@
           return response.json();
         })
         .then(data => {
-          var itemIndex = contents.findIndex(item => item.id === contentId);
+          var itemIndex = contents.findIndex(item => item.note_id === contentId);
       if (itemIndex !== -1) {
         contents[itemIndex].content = data.content; // Update content_raw if needed
         contents[itemIndex].content_raw = data.content_raw; // Update content_raw if needed

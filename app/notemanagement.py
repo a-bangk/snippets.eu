@@ -30,17 +30,9 @@ def listNotesForUserIdRecent14(userId):
     cur=conn.cursor(dictionary=True)
     sql_query='select * from snippet_view WHERE user_id = ? ORDER BY note_update_epoch DESC limit 14;'
     cur.execute(sql_query,(userId,))
-    dbNotes=cur.fetchall()
+    db_notes=cur.fetchall()
     conn.close()
-    notes=[]
-    for note in dbNotes:
-        note['content'] = markdown.markdown(note['content'])
-        note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
-        note["explore_source_url"]=note.pop("source_id")
-        if note["tags"] is not None:
-            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
-        notes.append(note)
-    return notes
+    return snippets_result_enrichment(db_notes)
 
 def tagUrlsFromTags(tag_list, username):
     tags_urls = []
@@ -55,7 +47,7 @@ def listNotes(id_list):
     placeholders = ', '.join(['%s'] * len(id_list))
     cur=conn.cursor(dictionary=True)
     sql_query=f'SELECT  * FROM snippet_view WHERE note_id in ({placeholders}) ORDER BY note_update_epoch DESC;'
-    cur.execute(sql_query,id_list)
+    cur.execute(sql_query,)
     db_notes=cur.fetchall()
     conn.close()
     notes=[]
@@ -68,24 +60,15 @@ def listNotes(id_list):
         notes.append(note)
     return notes
 
-def listNotesEpoch(id_list):
+def list_notes_epoch(id_list):
     conn = get_db_connection()
     placeholders = ', '.join(['%s'] * len(id_list))
     cur=conn.cursor(dictionary=True)
-    sql_query=f'select * from snippet_view WHERE note_id in ({placeholders}) ORDER BY note_update_epoch DESC;;'
+    sql_query=f'select * from snippet_view WHERE note_id in ({placeholders}) ORDER BY note_update_epoch DESC;'
     cur.execute(sql_query,id_list)
     db_notes=cur.fetchall()
     conn.close()
-    notes=[]
-    for note in db_notes:
-        note['content_raw'] =note['content']
-        note['content'] = markdown.markdown(note['content'])
-        note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
-        note["explore_source_url"]=note.pop("source_id")
-        if note["tags"] is not None:
-            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
-        notes.append(note)
-    return notes
+    return snippets_result_enrichment(db_notes)
 
 def listNotesWithExplore(id_list):
     conn = get_db_connection()
@@ -200,10 +183,10 @@ def listTaggedNotesForUserId(tags,filter,user_id):
                     notes.append(note)
     return notes
 
-def addNewSnippet(content,user_id):
+def add_new_snippet(content,user_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)   
-    sql="insert into note(content,user_id,entry_datetime,update_datetime) VALUES (?, ?, now(), now())"
+    sql="insert into note(content,user_id,entry_epoch,update_epoch) VALUES (?, ?, UNIX_TIMESTAMP(now()), UNIX_TIMESTAMP(now()))"
     cur.execute(sql,(content,user_id))
     snippetId=cur.lastrowid
     conn.commit()
@@ -213,14 +196,14 @@ def addNewSnippet(content,user_id):
 def updateSnippet(content,snippetId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    sql_query="update note set content = ?,update_datetime=now() where id = ?;"   
+    sql_query="update note set content = ?,update_epoch=UNIX_TIMESTAMP(now()) where id = ?;"   
     cur.execute(sql_query,(content,snippetId))
     conn.commit()
     conn.close()
 
 def alterSnippet(content,source_title,tags,url,authors,snippet_id,user_id):
     if snippet_id == 'False':
-        snippet_id=addNewSnippet(content,user_id)
+        snippet_id=add_new_snippet(content,user_id)
     else:
         updateSnippet(content,snippet_id)
         deleteAssociateLinks(snippet_id)
@@ -236,7 +219,6 @@ def alterSnippet(content,source_title,tags,url,authors,snippet_id,user_id):
     elif url:    
         source_id=sm.idFromUrl(url)
         asm.linkSourceToNote(snippet_id,source_id)
-    #TODO Snip-94
     if (url or source_title) and authors[0] != '':
         am.alterAuthors(authors,source_id,user_id)  
 
@@ -292,3 +274,15 @@ def snippetContent(snippet_id):
     content=cur.fetchone()[0]
     conn.close()
     return(content)
+
+def snippets_result_enrichment(snippets_query_result):
+    notes=[]
+    for note in snippets_query_result:
+        note['content_raw'] =note['content']
+        note['content'] = markdown.markdown(note['content'])
+        note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
+        note["explore_source_url"]=note.pop("source_id")
+        if note["tags"] is not None:
+            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
+        notes.append(note)
+    return notes
