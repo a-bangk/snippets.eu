@@ -25,13 +25,14 @@ def listNotesForUserIdRecent14(userId):
     conn.close()
     return snippets_result_enrichment(db_notes)
 
-def tagUrlsFromTags(tag_list, username):
+def tag_urls_from_tags(tag_list, username):
     tags_urls = []
     for tag in tag_list:
         tag=tag.strip()
         encoded_tag = quote(tag)
         tags_urls.append(f'<a href="/{username}/tag={encoded_tag}">{tag}</a>')
     return '; '.join(tags_urls)
+
 
 def listNotes(id_list):
     conn = get_db_connection()
@@ -47,7 +48,7 @@ def listNotes(id_list):
         note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
         note["explore_source_url"]=note.pop("source_id")
         if note["tags"] is not None:
-            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
+            note["explore_tag_urls"]=tag_urls_from_tags(note["tags"].split(";"), note.get("username"))
         notes.append(note)
     return notes
 
@@ -76,22 +77,23 @@ def listNotesWithExplore(id_list):
         notes.append(note)
     return notes
 
-def listNotesForUserIdSourceId(user_id,source_id):
+def list_notes_for_userid_sourceid(user_id,source_id):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     sql_query='SELECT * FROM snippet_view WHERE user_id = ? AND source_id=? ORDER BY note_update_epoch DESC;'
     cur.execute(sql_query,(user_id,source_id))
     db_notes=cur.fetchall()
     conn.close()
-    notes=[]
-    for note in db_notes:
-        note['content'] = markdown.markdown(note['content'])
-        note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
-        note["explore_source_url"]=note.pop("source_id")
-        if note["tags"] is not None:
-            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
-        notes.append(note)
-    return notes
+    return snippets_result_enrichment(db_notes)
+
+def list_note_for_user_id_deleted_source(user_id):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    sql_query='SELECT * FROM snippet_view WHERE user_id = ? AND source_id is NULL ORDER BY note_update_epoch DESC;'
+    cur.execute(sql_query,(user_id,))
+    db_notes=cur.fetchall()
+    conn.close()
+    return snippets_result_enrichment(db_notes)
 
 def listNotesForUserIdTag(user_id, tag):
     conn = get_db_connection()
@@ -108,11 +110,10 @@ def listNotesForUserIdTag(user_id, tag):
         if note["tags"]:
             tags = [tag.strip() for tag in note["tags"].split(";")]
             if tag in tags:
-                note["explore_tag_urls"]=tagUrlsFromTags(tags, note.get("username"))
+                note["explore_tag_urls"]=tag_urls_from_tags(tags, note.get("username"))
                 notes.append(note)
     return notes
   
-
 def listNotesForNoteIdsSourceIds(id_list, source_list):
     conn = get_db_connection()
     placeholders = ', '.join(['%s'] * len(id_list))
@@ -128,7 +129,7 @@ def listNotesForNoteIdsSourceIds(id_list, source_list):
         note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
         note["explore_source_url"]=note.pop("source_id")
         if note["tags"] is not None:
-            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
+            note["explore_tag_urls"]=tag_urls_from_tags(note["tags"].split(";"), note.get("username"))
         notes.append(note)
     return notes
 
@@ -271,9 +272,10 @@ def snippets_result_enrichment(snippets_query_result):
     for note in snippets_query_result:
         note['content_raw'] =note['content']
         note['content'] = markdown.markdown(note['content'])
-        note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
-        note["explore_source_url"]=note.pop("source_id")
+        if note["sources"] is None:
+            note["sources"] = "Source Deleted"
+        note["explore_source_url"]=f'{note.get("username")}/source={quote(note["sources"])}'
         if note["tags"] is not None:
-            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
+            note["explore_tag_urls"]=tag_urls_from_tags(note["tags"].split(";"), note.get("username"))
         notes.append(note)
     return notes

@@ -51,14 +51,21 @@ def source():
     authors = am.listAuthorsAutoForUserId(current_user.id)
     return render_template('source.html', sources=sourcesList, sourceTypes=sourceTypesDict, title=exisitingTitle, year=exisitingYear, url=exisitingUrl, type=exisitingType, previous_authors=exisitingFullname, previous_id=id, authors=authors )
 
-@source_bp.route('/<user_username>/source=<source_id>', methods=('GET', 'POST'))
+@source_bp.route('/<user_username>/source=<source_title>', methods=('GET', 'POST'))
 @login_required
-def source_sorted(user_username,source_id):
+def source_sorted(user_username,source_title):
     tags2=tm.tagsForUserIdSortable(current_user.id)
     tags=tm.tagsForUserIdWithCount(current_user.id)
-    source_fields=sm.loadSource(source_id)
-    snippets=nm.listNotesForUserIdSourceId(current_user.id, source_id)
-    for dictionary in snippets:
-        dictionary['exploreSource']=f'/{user_username}/source={source_id}'
+    if source_title!="Source Deleted":
+        source_id=sm.idFromTitle(source_title,current_user.id)
+        source_fields=sm.loadSource(source_id)
+        snippets=nm.list_notes_for_userid_sourceid(current_user.id, source_id)
+        for dictionary in snippets:
+            dictionary['exploreSource']=f'/{user_username}/source={source_title}'
+    elif source_title=="Source Deleted":
+        snippets=nm.list_note_for_user_id_deleted_source(current_user.id)
+        source_fields={'type': None, 'id': None, 'year': None, 'title': 'Source Deleted', 'author': 'Source Deleted', 'url': None}
+        for dictionary in snippets:
+            dictionary['exploreSource']=f'/{user_username}/source={source_title}'
     snippets=json.dumps(snippets)
     return render_template('exploreSource.html', items=snippets, tags=tags, tags2=tags2, source=source_fields)

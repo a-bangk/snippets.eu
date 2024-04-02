@@ -3,6 +3,7 @@ import app.authormanagement as am
 import app.associationmanagement as asm
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
+from urllib.parse import quote
 
 def dictSourceTypes():
     query = 'select id,entry from source_type st;'
@@ -81,8 +82,8 @@ def loadSource(source_id):
     conn.close()
     return(source)
 
-def generateExploreUrl(user_name, source_id):
-    return f"/{user_name}/source={source_id}"
+def generate_source_url(user_name, source):
+    return f"/{user_name}/source={quote(source)}"
 
 def addSource(title, typeId, url, year,user_id):
     conn = get_db_connection()

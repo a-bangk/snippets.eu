@@ -1,28 +1,85 @@
 [
-    {
-        "note_id": 266,
-        "content": "<h1>Header 1</h1>",
-        "note_update_epoch": 1711703220,
-        "tags": "cheese; None",
-        "sources": "test",
-        "url": null,
-        "username": "susan",
-        "user_id": 1,
-        "content_raw": "# Header 1",
-        "explore_source_url": "/susan/source=266",
-        "explore_tag_urls": "<a href=\\"/susan/tag=cheese\\">cheese</a>; <a href=\\"/susan/tag=None\\">None</a>"
+    {'note_id': 302, 'content': '<p>test</p>', 'note_update_epoch': 1712054882, 'tags': 'unsorted', 'sources': "susan's Notes", 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=271', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
     },
-
-    {
-    'note_id': 249, 
-    'content': '<p>d</p>', 
-    'note_update_epoch': 1711707671, 
-    'tags': 'art; booger; tag 1; tag 2', 
-    'sources': 'The Art of Travel', '
-    'url': None, 
-    username': 'susan', 
-    'user_id': 1, 
-    'explore_source_url': '/susan/source=258', 
-    'explore_tag_urls': '<a href="/susan/tag=art">art</a>; <a href="/susan/tag=booger">booger</a>; <a href="/susan/tag=tag%201">tag 1</a>; <a href="/susan/tag=tag%202">tag 2</a>'
-    }
-]
+    {'note_id': 301, 'content': '<p>test</p>', 'note_update_epoch': 1712054875, 'tags': 'unsorted', 'sources': "susan's Notes", 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=271', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 300, 'content': '<p>test</p>', 'note_update_epoch': 1712054869, 'tags': 'unsorted', 'sources': "susan's Notes", 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=271', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 299, 'content': '<p>tesete</p>', 'note_update_epoch': 1712054397, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'tesete', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 298, 'content': '<p>teset</p>', 'note_update_epoch': 1712054392, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'teset', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 297, 'content': '<p>test2</p>', 'note_update_epoch': 1712054184, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test2', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 296, 'content': '<p>test</p>', 'note_update_epoch': 1712054162, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 295, 'content': '<p>test</p>', 'note_update_epoch': 1712051801, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 294, 'content': '<p>test</p>', 'note_update_epoch': 1712050421, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 293, 'content': '<p>test</p>', 'note_update_epoch': 1712050419, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 292, 'content': '<p>test</p>', 'note_update_epoch': 1712050377, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 291, 'content': '<p>test</p>', 'note_update_epoch': 1712050344, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 290, 'content': '<p>test</p>', 'note_update_epoch': 1712050317, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 289, 'content': '<p>test</p>', 'note_update_epoch': 1712050282, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 288, 'content': '<p>test</p>', 'note_update_epoch': 1712050238, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 287, 'content': "<p>Bob's notes</p>", 'note_update_epoch': 1712048600, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': "Bob's notes", 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 286, 'content': '<p>test</p>', 'note_update_epoch': 1712048543, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 285, 'content': '<p>test</p>', 'note_update_epoch': 1712048533, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 284, 'content': '<p>test 3</p>', 'note_update_epoch': 1712048181, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test 3', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 283, 'content': '<p>test 2</p>', 'note_update_epoch': 1712048177, 'tags': 'unsorted', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test 2', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=unsorted">unsorted</a>'
+    },
+    {'note_id': 282, 'content': '<p>test 2</p>', 'note_update_epoch': 1712048128, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test 2', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 281, 'content': '<p>test</p>', 'note_update_epoch': 1712048121, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 280, 'content': '<p>test</p>', 'note_update_epoch': 1712048009, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 276, 'content': '<p>test j</p>\n<p>hello</p>', 'note_update_epoch': 1712046776, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test j\n\nhello', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 279, 'content': '<p>Hello I am adding a source herea</p>', 'note_update_epoch': 1712046762, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'Hello I am adding a source herea', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 278, 'content': '<p>Hello I am adding a source here</p>', 'note_update_epoch': 1712046186, 'tags': 'None', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'Hello I am adding a source here', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=None">None</a>'
+    },
+    {'note_id': 277, 'content': '<p>test 2</p>', 'note_update_epoch': 1712046170, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test 2', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 275, 'content': '<p>test</p>', 'note_update_epoch': 1712046162, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 249, 'content': '<p>dda hellow it works</p>', 'note_update_epoch': 1711707671, 'tags': 'art; booger; tag 1; tag 2', 'sources': 'The Art of Travel', 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'dda hellow it works', 'explore_source_url': '/susan/source=258', 'explore_tag_urls': '<a href="/susan/tag=art">art</a>; <a href="/susan/tag=booger">booger</a>; <a href="/susan/tag=tag%201">tag 1</a>; <a href="/susan/tag=tag%202">tag 2</a>'
+    },
+    {'note_id': 266, 'content': '<h1>Header 1</h1>', 'note_update_epoch': 1711703220, 'tags': 'cheese; None', 'sources': 'test', 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '# Header 1', 'explore_source_url': '/susan/source=266', 'explore_tag_urls': '<a href="/susan/tag=cheese">cheese</a>; <a href="/susan/tag=None">None</a>'
+    },
+    {'note_id': 265, 'content': '', 'note_update_epoch': 1711639327, 'tags': 'tag 2', 'sources': 'test', 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '', 'explore_source_url': '/susan/source=266', 'explore_tag_urls': '<a href="/susan/tag=tag%202">tag 2</a>'
+    },
+    {'note_id': 264, 'content': '<p>Adding this should set an epoch update and entry d</p>', 'note_update_epoch': 1711639221, 'tags': 'None', 'sources': 'test', 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'Adding this should set an epoch update and entry d', 'explore_source_url': '/susan/source=266', 'explore_tag_urls': '<a href="/susan/tag=None">None</a>'
+    },
+    {'note_id': 262, 'content': '<p>5</p>', 'note_update_epoch': 1711638796, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '5', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 261, 'content': '<p>5</p>', 'note_update_epoch': 1711638792, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '5', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 260, 'content': '<p>4</p>', 'note_update_epoch': 1711638781, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '4', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 259, 'content': '<p>4</p>', 'note_update_epoch': 1711638774, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '4', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 258, 'content': '<p>3</p>', 'note_update_epoch': 1711638767, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '3', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 257, 'content': '<p>3</p>', 'note_update_epoch': 1711638664, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '3', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 256, 'content': '<p>2</p>', 'note_update_epoch': 1711638658, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '2', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 255, 'content': '<p>1</p>', 'note_update_epoch': 1711638650, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '1', 'explore_source_url': '/susan/source=None'
+    },
+    {'note_id': 248, 'content': '<p><em>Languages</em> are made of phonemes and we recognize which phonemes below to our own language as well as what combination of phonemes are used. </p>', 'note_update_epoch': 1711532431, 'tags': 'language; tag 1; tag 2; tag 3', 'sources': 'The Language Instinct', 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '*Languages* are made of phonemes and we recognize which phonemes below to our own language as well as what combination of phonemes are used. ', 'explore_source_url': '/susan/source=260', 'explore_tag_urls': '<a href="/susan/tag=language">language</a>; <a href="/susan/tag=tag%201">tag 1</a>; <a href="/susan/tag=tag%202">tag 2</a>; <a href="/susan/tag=tag%203">tag 3</a>'
+    },
+    {'note_id': 252, 'content': '<p>✏️<a href="https://www.google.com">Google link</a> d</p>', 'note_update_epoch': 1711532343, 'tags': 'tag1; ✏️', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '✏️[Google link
+        ](https: //www.google.com) d', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=tag1">tag1</a>; <a href="/susan/tag=%E2%9C%8F%EF%B8%8F">✏️</a>'}, {'note_id': 254, 'content': '<h1>H1 test</h1>\n<p>how is this formatted \n--HmM-- \n<strong>hmm</strong></p>', 'note_update_epoch': 1711455220, 'tags': None, 'sources': 'test', 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '# H1 test \r\nhow is this formatted \r\n--HmM-- \r\n__hmm__', 'explore_source_url': '/susan/source=266'}, {'note_id': 253, 'content': '<h1>H1 test</h1>\n<p>how is this formatted \n--HmM-- \n<strong>hmm</strong></p>\n<p>it works</p>', 'note_update_epoch': 1711455085, 'tags': 'None', 'sources': 'test', 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '# H1 test \r\nhow is this formatted \r\n--HmM-- \r\n__hmm__\r\n\r\nit works', 'explore_source_url': '/susan/source=266', 'explore_tag_urls': '<a href="/susan/tag=None">None</a>'}, {'note_id': 251, 'content': '<p>The EU court has ruled that saving all data of all users is not safe and not necessary in a democracy</p>', 'note_update_epoch': 1709377740, 'tags': 'privacy; tag 2', 'sources': 'European Court of Human Rights declares backdoored encryption is illegal', 'url': 'https://www.theregister.com/2024/02/15/echr_backdoor_encryption/', 'username': 'susan', 'user_id': 1, 'content_raw': 'The EU court has ruled that saving all data of all users is not safe and not necessary in a democracy', 'explore_source_url': '/susan/source=265', 'explore_tag_urls': '<a href="/susan/tag=privacy">privacy</a>; <a href="/susan/tag=tag%202">tag 2</a>'}, {'note_id': 247, 'content': '<p>Babies have to hear themselves to figure out how to make the correct nosies for language</p>', 'note_update_epoch': 1709377732, 'tags': 'language; tag 1', 'sources': 'The Language Instinct', 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'Babies have to hear themselves to figure out how to make the correct nosies for language', 'explore_source_url': '/susan/source=260', 'explore_tag_urls': '<a href="/susan/tag=language">language</a>; <a href="/susan/tag=tag%201">tag 1</a>'}, {'note_id': 246, 'content': '<p>I will tags this with tag 2, tag 3</p>', 'note_update_epoch': 1707397307, 'tags': 'tag 2; tag 3', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'I will tags this with tag 2, tag 3', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=tag%202">tag 2</a>; <a href="/susan/tag=tag%203">tag 3</a>'}, {'note_id': 245, 'content': '<p>I will tags this with tag 1, tag 2</p>', 'note_update_epoch': 1707388087, 'tags': 'tag 1; tag 2', 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'I will tags this with tag 1, tag 2', 'explore_source_url': '/susan/source=None', 'explore_tag_urls': '<a href="/susan/tag=tag%201">tag 1</a>; <a href="/susan/tag=tag%202">tag 2</a>'}, {'note_id': 263, 'content': '<p>5</p>', 'note_update_epoch': None, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': '5', 'explore_source_url': '/susan/source=None'}, {'note_id': 267, 'content': "<p>Don't shake base paint</p>", 'note_update_epoch': None, 'tags': 'mazda', 'sources': 'Mazda paint guide', 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': "Don't shake base paint", 'explore_source_url': '/susan/source=267', 'explore_tag_urls': '<a href="/susan/tag=mazda">mazda</a>'}, {'note_id': 268, 'content': '<p>asd</p>', 'note_update_epoch': None, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'asd', 'explore_source_url': '/susan/source=None'}, {'note_id': 269, 'content': '<p>hjkhj</p>', 'note_update_epoch': None, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'hjkhj', 'explore_source_url': '/susan/source=None'}, {'note_id': 270, 'content': '<p>jkj</p>', 'note_update_epoch': None, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'jkj', 'explore_source_url': '/susan/source=None'}, {'note_id': 271, 'content': '<p>Why is this not showing???</p>', 'note_update_epoch': None, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'Why is this not showing???', 'explore_source_url': '/susan/source=None'}, {'note_id': 272, 'content': '<p>test</p>', 'note_update_epoch': None, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None'}, {'note_id': 273, 'content': '<p>test</p>', 'note_update_epoch': None, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None'}, {'note_id': 274, 'content': '<p>test</p>', 'note_update_epoch': None, 'tags': None, 'sources': None, 'url': None, 'username': 'susan', 'user_id': 1, 'content_raw': 'test', 'explore_source_url': '/susan/source=None'}]

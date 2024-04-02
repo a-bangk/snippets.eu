@@ -9,7 +9,7 @@ import markdown
 
 from flask_login import login_required, current_user
 
-
+# OLD maybe delete
 @filter_bp.route('/filter-by-tags', methods=('GET', 'POST'))
 @login_required
 def filtersnippetslist():
