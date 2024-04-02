@@ -35,8 +35,8 @@ def write():
             if not content:
                 flash('Content is required!')
                 return redirect(url_for('write_bp.write'))
-            if authorsString and not (sourceString or sourceUrl):
-                flash('Author entry requires Source Title or URL')
+            if (authorsString or sourceUrl) and not sourceString:
+                flash('Author or URL entries require Source Title')
                 return redirect(url_for('write_bp.write'))
             nm.alterSnippet(content,sourceString,tag_list,sourceUrl,authorList,snippetId,current_user.id)
             snippetId=False

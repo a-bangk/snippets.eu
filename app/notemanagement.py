@@ -198,9 +198,13 @@ def alterSnippet(content,source_title,tags,url,authors,snippet_id,user_id):
     else:
         updateSnippet(content,snippet_id)
         deleteAssociateLinks(snippet_id)
+    if not tags:
+        tags=['unsorted']
     if tags:
         tagIds=tm.idFromTagsList(tags,user_id)
         asm.linkTagsToNote(snippet_id,tagIds)
+    if not source_title and (url or authors):
+        source_title="Personal Note"
     if source_title and url:
         source_id=sm.idFromTitleAndUrl(source_title,url,user_id)
         asm.linkSourceToNote(snippet_id,source_id)
@@ -210,7 +214,7 @@ def alterSnippet(content,source_title,tags,url,authors,snippet_id,user_id):
     elif url:    
         source_id=sm.idFromUrl(url)
         asm.linkSourceToNote(snippet_id,source_id)
-    if (url or source_title) and authors[0] != '':
+    if source_title and authors[0] != '':
         am.alterAuthors(authors,source_id,user_id)  
 
 
