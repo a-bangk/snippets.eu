@@ -45,7 +45,7 @@ def filtersnippetslist():
     snippets=json.dumps(snippets)
     return render_template('explore.html', items=snippets, tags=tags, tags2=tags2)
 
-@filter_bp.route('/explore', methods=('GET', 'POST'))
+@filter_bp.route('/explore', methods=['GET'])
 @login_required
 def all_snippets():
     snippets=nm.listNotesForUserId(current_user.id)
