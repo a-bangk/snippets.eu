@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{% block title %} Explore Your Snippets {% endblock %}</h1>
-<form method="post">
-    {% include 'sec_filter.html' %}
-</form>
+<h1>{% block title %} All Snippets {% endblock %}</h1>
+
 {% include 'sec_lists/snippets_list_js.html' %}
 {% endblock %}

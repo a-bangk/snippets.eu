@@ -10,7 +10,7 @@ import markdown
 from flask_login import login_required, current_user
 
 
-@filter_bp.route('/explore', methods=('GET', 'POST'))
+@filter_bp.route('/filter-by-tags', methods=('GET', 'POST'))
 @login_required
 def filtersnippetslist():
     tags2=tm.tagsForUserIdSortable(current_user.id)
@@ -44,6 +44,13 @@ def filtersnippetslist():
         snippets=[]
     snippets=json.dumps(snippets)
     return render_template('explore.html', items=snippets, tags=tags, tags2=tags2)
+
+@filter_bp.route('/explore', methods=('GET', 'POST'))
+@login_required
+def all_snippets():
+    snippets=nm.listNotesForUserId(current_user.id)
+    snippets=json.dumps(snippets)
+    return render_template('explore.html', items=snippets)
 
 @filter_bp.route('/<user_username>/tag=<tag>', methods=('GET', 'POST'))
 @login_required

@@ -14,16 +14,7 @@ def listNotesForUserId(user_id):
     cur.execute(sql_query,(user_id,))
     db_notes=cur.fetchall()
     conn.close()
-    notes=[]
-    for note in db_notes:
-        note['content'] = markdown.markdown(note['content'])
-        note["source_id"]=f'/{note.get("username")}/source={note.get("source_id")}'
-        note["explore_source_url"]=note.pop("source_id")
-        if note["tags"] is not None:
-            note["explore_tag_urls"]=tagUrlsFromTags(note["tags"].split(";"), note.get("username"))
-        notes.append(note)
-    return notes
-
+    return snippets_result_enrichment(db_notes)
 
 def listNotesForUserIdRecent14(userId):
     conn = get_db_connection()
