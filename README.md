@@ -18,8 +18,6 @@ To reset the password for username Adam
 
 # Source Control
 
-Epics get own branch
-
 End of sprint aim is to update live branch
 
 ## Branches
@@ -32,6 +30,7 @@ End of sprint aim is to update live branch
 
 nginx
 gunicorn
+mariadb
 
 ## Production 
 Branch live is run on coolermaster as a service. Configuration is in /etc/systemd/system/snippets-website.service
@@ -55,8 +54,18 @@ git reset --hard origin/live
 
 To update need to run ```systemctl restart snippets-website```
 
-## Server
+## Flask Server
 Snippets runs on Coolermaster under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
+
+## Database Server
+
+raspberrypi
+password saved as "raspberry pi mariadb root user" in Bitwarden
+
+
+```
+mysql -u root -p
+```
 
 ### Testing
 

@@ -7,6 +7,12 @@ port="3306"
 database="snippets_test_a"
 user="snippets_test_admin"
 
+[testa]
+host="192.168.0.42" 
+port="3306"
+database="snippets_test_a"
+user="snippets_test_admin"
+
 [production]
 host="192.168.0.42"
 port="3306"
