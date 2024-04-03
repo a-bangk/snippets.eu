@@ -90,8 +90,9 @@ def list_note_for_user_id_deleted_source(user_id):
 def listNotesForUserIdTag(user_id, tag):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
-    sql_query='SELECT * FROM snippet_view WHERE user_id = ? ORDER BY note_update_epoch DESC;'
-    cur.execute(sql_query,(user_id,))
+    sql_query="WITH nt AS ( SELECT ann.note_id, GROUP_CONCAT(DISTINCT nt.tag ORDER BY nt.tag ASC SEPARATOR '; ') AS tags, GROUP_CONCAT(DISTINCT nt.id ORDER BY nt.tag ASC SEPARATOR ';') as tagsId FROM associate_notetag_note ann JOIN notetag nt ON nt.id = ann.notetag_id WHERE ann.note_id IN ( SELECT distinct ann_inner.note_id FROM associate_notetag_note ann_inner JOIN notetag nt_inner ON nt_inner.id = ann_inner.notetag_id WHERE nt_inner.tag = ? ) GROUP BY ann.note_id ), s AS ( SELECT asn.note_id, GROUP_CONCAT(s.title SEPARATOR ', ') AS sources, s.id, s.url FROM associate_source_note asn JOIN source s ON s.id = asn.source_id GROUP BY asn.note_id ) SELECT n.id as note_id, s.id as source_id, n.content as content, n.update_epoch as note_update_epoch, nt.tags as tags, nt.tagsId as tagIds, s.sources as sources, s.url as url, u.username username, u.id as user_id FROM note n LEFT JOIN nt ON nt.note_id = n.id LEFT JOIN s ON s.note_id = n.id JOIN user u ON n.user_id = u.id where tags is not null and user_id=?;"
+
+    cur.execute(sql_query,(tag,user_id))
     db_notes=cur.fetchall()
     conn.close()
     return snippets_result_enrichment(db_notes)

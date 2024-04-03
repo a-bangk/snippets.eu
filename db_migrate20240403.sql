@@ -1,9 +1,8 @@
-
 CREATE OR REPLACE VIEW snippet_view AS
 WITH nt AS (
   SELECT 
     ann.note_id, 
-    GROUP_CONCAT(nt.tag ORDER BY tag ASC SEPARATOR '; ') AS tags 
+    GROUP_CONCAT(nt.tag ORDER BY tag ASC SEPARATOR '; ') AS tags
   FROM 
     associate_notetag_note ann 
     JOIN notetag nt ON nt.id = ann.notetag_id 
