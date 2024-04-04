@@ -3,9 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlTag = pathSegments[pathSegments.length - 1]; 
     let tagOnly = urlTag.split('=')[1];
     tagFromUrl=decodeURIComponent(tagOnly);
+    console.log("tagFromUrl: ",tagFromUrl)
     createTagCheckboxes(tagData, tagFromUrl);
     updateSelectedNotes();
 });
+window.addEventListener('beforeunload', function (event) {
+    localStorage.clear();
+});
+
 function createTagCheckboxes(tagData, tagFromUrl) {
     console.log(tagData, tagFromUrl)
     const container = document.getElementById('tagCheckboxes');
