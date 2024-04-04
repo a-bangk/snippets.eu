@@ -7,6 +7,15 @@ from . import tagmanagement as tm
 from .source import management as sm
 from . import authormanagement as am
 
+def listNotesForUserId(user_id):
+    conn = get_db_connection()
+    cur=conn.cursor(dictionary=True)
+    sql_query='select * from snippet_view WHERE user_id = ? ORDER BY note_update_epoch DESC;'
+    cur.execute(sql_query,(user_id,))
+    db_notes=cur.fetchall()
+    conn.close()
+    return snippets_result_enrichment(db_notes)
+
 def list_notes_user_id_recent_14(userId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
