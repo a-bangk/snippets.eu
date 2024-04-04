@@ -45,7 +45,7 @@ def write():
             if (authorsString !="" and sourceUrl !="") and sourceString=="":
                 flash('Author or URL entries require a Source Title')
                 return redirect(url_for('write_bp.write'))
-            nm.alterSnippet(content,sourceString,tag_list,sourceUrl,authorList,snippetId,current_user.id)
+            nm.alter_snippet(content,sourceString,tag_list,sourceUrl,authorList,snippetId,current_user.id)
             snippetId=False
         elif request.form['action'] == 'Delete':
             nm.deleteSnippet(request.form.getlist('delete-checks'))
@@ -62,7 +62,7 @@ def write():
             tagString=existingSnippet['tags']
             snippetId=existingSnippet['id']
             authorsString=am.authorsStringFromNoteId(snippetId)
-    snippets=nm.listNotesForUserIdRecent14(current_user.id)
+    snippets=nm.list_notes_user_id_recent_14(current_user.id)
     snippets=json.dumps(snippets)
 
     tags=tm.tagsForUserId(current_user.id)

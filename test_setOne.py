@@ -57,7 +57,7 @@ def test_sm_alterSource(app):
 def test_alterSnippet_SourceTitle(app):
     user_id=3
     content="Test Content 667504ggyj"
-    nm.alterSnippet(content,"New title 3",'','',[''],'False',user_id)        
+    nm.alter_snippet(content,"New title 3",'','',[''],'False',user_id)        
     sIds=nm.idsFromContent(content)
     latestId=sIds[0][0]
     sValues=nm.editSnippet(latestId)
@@ -72,7 +72,7 @@ def test_alterSnippet_Tag(app):
     content="Test Content adding Tags"
     tagString="test tag,    testtag    ,  @dae ,   "
     tagList=hf.commaStringToList(tagString)
-    nm.alterSnippet(content,'',tagList,'',[''],'False',user_id)        
+    nm.alter_snippet(content,'',tagList,'',[''],'False',user_id)        
     sIds=nm.idsFromContent(content)
     latestId=sIds[0][0]
     sValues=nm.editSnippet(latestId)
@@ -92,7 +92,7 @@ def test_alterSnippet_All(app):
     author_string="Author 1,     Author person 3, M.D manpanfan,    "
     tag_list=hf.commaStringToList(tag_string)
     authors_list=hf.commaStringToList(author_string)
-    nm.alterSnippet(content,title,tag_list,url,authors_list,'False', user_id)        
+    nm.alter_snippet(content,title,tag_list,url,authors_list,'False', user_id)        
     source_ids=nm.idsFromContent(content)
     latest_id=source_ids[0][0]
     all_snippets=nm.listNotesForUserId(user_id)

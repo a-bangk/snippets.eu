@@ -39,7 +39,7 @@ def filtersnippetslist():
             if authorsString and not source_string:
                 flash('Author entry requires Source Title or URL')
                 return redirect(url_for('home_bp.index'))
-            nm.alterSnippet(content,source_string,tag_list,source_url,author_list,snippet_id,current_user.id)
+            nm.alter_snippet(content,source_string,tag_list,source_url,author_list,snippet_id,current_user.id)
     else:
         snippets=[]
     snippets=json.dumps(snippets)
@@ -57,12 +57,12 @@ def all_snippets():
 def tag_sorted(user_username,tag):
     tags2=tm.tagsForUserIdSortable(current_user.id)
     tags=tm.tagsForUserIdWithCount(current_user.id)
-    snippets=nm.listNotesForUserIdTag(current_user.id, tag)
+    snippets=nm.list_notes_for_user_id_tag(current_user.id, tag)
     if request.method == 'POST':
         if request.form['action'] =='filter':
             note_ids_str = request.form['noteIds']
             note_ids = json.loads(note_ids_str)
-            snippets=nm.listNotes(note_ids)
+            snippets=nm.list_notes_epoch(note_ids)
         elif re.search("Edit*",request.form['action']):
             return render_template('write.html')
     for dictionary in snippets:
@@ -86,7 +86,7 @@ def update_snippet():
     data = request.json
     snippetId = data.get('id')
     content = data.get('content')
-    nm.updateSnippet(content,snippetId)
+    nm.update_snippet(content,snippetId)
     return jsonify({"status": "success", "message": "Content updated successfully"})
 
 # Adjusted route definition

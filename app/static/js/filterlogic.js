@@ -1,4 +1,7 @@
+let formSubmitted = false;
+
 document.addEventListener('DOMContentLoaded', () => {
+    
     const pathSegments = window.location.pathname.split('/');
     const urlTag = pathSegments[pathSegments.length - 1]; 
     let tagOnly = urlTag.split('=')[1];
@@ -7,8 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     createTagCheckboxes(tagData, tagFromUrl);
     updateSelectedNotes();
 });
-window.addEventListener('beforeunload', function (event) {
-    localStorage.clear();
+window.addEventListener('beforeunload', function(event) {
+    if (!formSubmitted) {
+        localStorage.clear();
+    }
 });
 
 function createTagCheckboxes(tagData, tagFromUrl) {

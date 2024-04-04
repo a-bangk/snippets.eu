@@ -7,16 +7,7 @@ from . import tagmanagement as tm
 from .source import management as sm
 from . import authormanagement as am
 
-def listNotesForUserId(user_id):
-    conn = get_db_connection()
-    cur=conn.cursor(dictionary=True)
-    sql_query='select * from snippet_view WHERE user_id = ? ORDER BY note_update_epoch DESC;'
-    cur.execute(sql_query,(user_id,))
-    db_notes=cur.fetchall()
-    conn.close()
-    return snippets_result_enrichment(db_notes)
-
-def listNotesForUserIdRecent14(userId):
+def list_notes_user_id_recent_14(userId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     sql_query='select * from snippet_view WHERE user_id = ? ORDER BY note_update_epoch DESC limit 14;'
@@ -33,17 +24,6 @@ def tag_urls_from_tags(tag_list, username):
         tags_urls.append(f'<a href="/{username}/tag={encoded_tag}">{tag}</a>')
     return '; '.join(tags_urls)
 
-
-def listNotes(id_list):
-    conn = get_db_connection()
-    placeholders = ', '.join(['%s'] * len(id_list))
-    cur=conn.cursor(dictionary=True)
-    sql_query=f'SELECT  * FROM snippet_view WHERE note_id in ({placeholders}) ORDER BY note_update_epoch DESC;'
-    cur.execute(sql_query,)
-    db_notes=cur.fetchall()
-    conn.close()
-    return snippets_result_enrichment(db_notes)
-
 def list_notes_epoch(id_list):
     conn = get_db_connection()
     placeholders = ', '.join(['%s'] * len(id_list))
@@ -53,21 +33,6 @@ def list_notes_epoch(id_list):
     db_notes=cur.fetchall()
     conn.close()
     return snippets_result_enrichment(db_notes)
-
-def listNotesWithExplore(id_list):
-    conn = get_db_connection()
-    placeholders = ', '.join(['%s'] * len(id_list))
-    cur=conn.cursor(dictionary=True)
-    sql_query=f'SELECT  * FROM snippet_view WHERE note_id in ({placeholders}) ORDER BY note_update_epoch DESC;'
-    cur.execute(sql_query,id_list)
-    db_notes=cur.fetchall()
-    conn.close()
-    notes=[]
-    for note in db_notes:
-        note['content'] = markdown.markdown(note['content'])
-        note['exploreSource'] = f"/{note['username']}/source={note['source_id']}"
-        notes.append(note)
-    return notes
 
 def list_notes_for_userid_sourceid(user_id,source_id):
     conn = get_db_connection()
@@ -87,7 +52,7 @@ def list_note_for_user_id_deleted_source(user_id):
     conn.close()
     return snippets_result_enrichment(db_notes)
 
-def listNotesForUserIdTag(user_id, tag):
+def list_notes_for_user_id_tag(user_id, tag):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     sql_query="WITH nt AS ( SELECT ann.note_id, GROUP_CONCAT(DISTINCT nt.tag ORDER BY nt.tag ASC SEPARATOR '; ') AS tags, GROUP_CONCAT(DISTINCT nt.id ORDER BY nt.tag ASC SEPARATOR ';') as tagsId FROM associate_notetag_note ann JOIN notetag nt ON nt.id = ann.notetag_id WHERE ann.note_id IN ( SELECT distinct ann_inner.note_id FROM associate_notetag_note ann_inner JOIN notetag nt_inner ON nt_inner.id = ann_inner.notetag_id WHERE nt_inner.tag = ? ) GROUP BY ann.note_id ), s AS ( SELECT asn.note_id, GROUP_CONCAT(s.title SEPARATOR ', ') AS sources, s.id, s.url FROM associate_source_note asn JOIN source s ON s.id = asn.source_id GROUP BY asn.note_id ) SELECT n.id as note_id, s.id as source_id, n.content as content, n.update_epoch as note_update_epoch, nt.tags as tags, nt.tagsId as tagIds, s.sources as sources, s.url as url, u.username username, u.id as user_id FROM note n LEFT JOIN nt ON nt.note_id = n.id LEFT JOIN s ON s.note_id = n.id JOIN user u ON n.user_id = u.id where tags is not null and user_id=? order by note_update_epoch desc;"
@@ -167,7 +132,7 @@ def add_new_snippet(content,user_id):
     conn.close()
     return(snippetId)
 
-def updateSnippet(content,snippetId):
+def update_snippet(content,snippetId):
     conn = get_db_connection()
     cur=conn.cursor(dictionary=True)
     sql_query="update note set content = ?,update_epoch=UNIX_TIMESTAMP(now()) where id = ?;"   
@@ -175,11 +140,11 @@ def updateSnippet(content,snippetId):
     conn.commit()
     conn.close()
 
-def alterSnippet(content,source_title,tags,url,authors,snippet_id,user_id):
+def alter_snippet(content,source_title,tags,url,authors,snippet_id,user_id):
     if snippet_id == 'False':
         snippet_id=add_new_snippet(content,user_id)
     else:
-        updateSnippet(content,snippet_id)
+        update_snippet(content,snippet_id)
         deleteAssociateLinks(snippet_id)
     if tags:
         tagIds=tm.idFromTagsList(tags,user_id)
