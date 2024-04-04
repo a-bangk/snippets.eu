@@ -42,8 +42,8 @@ To update live
 ```
 sudo su service-user-snippets
 cd ~/websites/snippets
-git fetch origin main:main
-git merge main
+git fetch origin <Latest build>:<Latest Build>
+git merge <Latest Build>
 ```
 
 It case it doesn't work
