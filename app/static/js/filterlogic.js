@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSelectedNotes();
 });
 function createTagCheckboxes(tagData, tagFromUrl) {
+    console.log(tagData, tagFromUrl)
     const container = document.getElementById('tagCheckboxes');
     Object.keys(tagData).forEach(tag => {
         const checkboxWrapper = document.createElement('div');
