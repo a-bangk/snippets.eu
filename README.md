@@ -89,3 +89,7 @@ Numbering
 * Major for changes that break backwards compatibly or major new release
 * Minor Changing new features and usability
 * Fix, cosmetic and bug fixes
+
+## Releases
+
+2024-04-05: alpha-0.6
