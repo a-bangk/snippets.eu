@@ -22,38 +22,39 @@ End of sprint aim is to update live branch
 
 ## Branches
 
-* production: the live version running. Tested and works
 * main : Code branch all works starts from and returns to
-* snip-### : A specific feature reflecting the user story, task, bug ,or epic in Jira. If Jira item is an epic, other branches come out of here, to keep main in a runnable.
-* build-YYMMDD : Builds that merged to production
+* snip-### : A specific feature reflecting the user story, task, bug ,or epic in Jira. If Jira item is an epic, other branches come out of here, to keep main in a runnable state
+* build-YYMMDD : Builds that are run on production
 
-# Hosting
+# Hosting Setup
 
 nginx
 gunicorn
 mariadb
 
 ## Production 
-Branch live is run on coolermaster as a service. Configuration is in /etc/systemd/system/snippets-website.service
+Branch production is run on coolermaster as a service. Configuration is in /etc/systemd/system/snippets-website.service
 Environment variables in snippets/env and snippets/.secrets.toml both outside of version control.
 
 Private key password in Bitwarden under "Private Key service-user-snippets"
 
-To update live
+To update production
 ```
 sudo su service-user-snippets
 cd ~/websites/snippets
-git fetch origin <Latest build>:<Latest Build>
-git merge <Latest Build>
+git branch
+git fetch origin/build-YYMMDD 
+git checkout build-YYMMDD
 ```
 
-It case it doesn't work
+It case it doesn't work go back to working build
 
 ```
-git reset --hard origin/live
+git checkout build-YYMMDD
 ```
 
-To update need to run ```systemctl restart snippets-website```
+To update need to be a sudo user and run:
+```sudo systemctl restart snippets-website```
 
 ## Flask Server
 Snippets runs on Coolermaster under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
@@ -62,7 +63,6 @@ Snippets runs on Coolermaster under the service-user-snippets account. Passwords
 
 raspberrypi
 password saved as "raspberry pi mariadb root user" in Bitwarden
-
 
 ```
 mysql -u root -p
@@ -79,18 +79,9 @@ With python libraries installed on hal2 and running from virtual environments. S
 
 # Versioning
 
-Builds are named as Major.Minor.Fix
-
-Versions running on server:
-* alpha - main branch running alpha/snippets. Pulled from live after a release
-* beta - release candidates beta/snippets. Get own named branches on github
-* live - running on main URL websites/snippets. Merged from beta branch on github
-
-Numbering
-* Major for changes that break backwards compatibly or major new release
-* Minor Changing new features and usability
-* Fix, cosmetic and bug fixes
+Based on date of build. 
 
 ## Releases
 
+2024-04-22: build-240422
 2024-04-05: alpha-0.6
