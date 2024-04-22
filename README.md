@@ -22,9 +22,10 @@ End of sprint aim is to update live branch
 
 ## Branches
 
-* Live: the live version running. Tested and works
-* Main : Code branch all works starts from and returns to
+* production: the live version running. Tested and works
+* main : Code branch all works starts from and returns to
 * snip-### : A specific feature reflecting the user story, task, bug ,or epic in Jira. If Jira item is an epic, other branches come out of here, to keep main in a runnable.
+* build-YYMMDD : Builds that merged to production
 
 # Hosting
 
