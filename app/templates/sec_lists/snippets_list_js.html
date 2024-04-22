@@ -49,10 +49,17 @@
       var $editButton = $('<button>').addClass('edit-icon').text('Edit Text');
       var $saveButton = $('<button>').addClass('save-icon').text('💾').hide();
       var $inputElement = $('<textarea class="full-width-textarea">');
+      
+      function adjustTextareaHeight() {
+        $inputElement.css('height', 'auto');  // Reset the height
+        $inputElement.css('height', $inputElement.prop('scrollHeight') + 'px');  // Set the height to scroll height
+      }
+
       $editButton.click(function () {
         var contentRaw = contents.find(item => item.note_id === contentId).content_raw;
         $inputElement.val(contentRaw);
         $elementToEdit.replaceWith($inputElement);
+        adjustTextareaHeight();
         $inputElement.focus();
         $editButton.hide();
         $saveButton.show();
