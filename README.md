@@ -1,11 +1,18 @@
-# Use
+Snippets: Knowledge not trust
 
-Test user
-username: susan
-email/login : susan@example.com
-password: see Bitwarden
+# About
 
-To reset the password for username Adam
+Snippets is a knowledge aggregater where information is linked to the source.
+
+Development has four progression paths
+
+1. Refactor and clean up current Flask and Jinja2 version
+2. Automate deploy and hosting on local and remote serves
+3. Refactor to use API backend with React frontend
+4. Impelementing new features and use cases
+
+
+## User Management from Flask Shell
 
 ```
 >>> u = User(username='New user', email='Their Email.com')
@@ -16,14 +23,11 @@ To reset the password for username Adam
 >>> db.session.commit()
 ```
 
-# Source Control
-
-End of sprint aim is to update live branch
 
 ## Branches
 
 * main : Code branch all works starts from and returns to always pushed to origin
-* snip-### : A specific feature reflecting the user story, task, bug ,or epic in Jira. If Jira item is an epic, other branches come out of here, to keep main in a runnable state
+* snip-### : A specific feature reflecting the user story, task, bug ,or epic in Jira. If Jira item is an epic, other branches come out of here, to keep main in a runnable state. 
 * build-YYMMDD : Builds that are run on production, always pushed to origin. 
 
 # Hosting Setup
@@ -33,7 +37,7 @@ gunicorn
 mariadb
 
 ## Production 
-Branch production is run on coolermaster as a service. Configuration is in 
+Branch production is run on my local server as a service. Configuration is in 
 
 ```
 /etc/systemd/system/snippets-website.service
@@ -62,7 +66,7 @@ To update need to be a sudo user and run:
 ```sudo systemctl restart snippets-website```
 
 ## Flask Server
-Snippets runs on Coolermaster under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
+Snippets runs on local server under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
 
 To follow logs
 
@@ -94,5 +98,11 @@ Based on date of build.
 
 ## Releases
 
-2024-04-22: build-240422
-2024-04-05: alpha-0.6
+* 2024-04-22: build-240422
+* 2024-04-05: alpha-0.6
+
+# TODOs
+
+* TODO open JIRA or find alternative
+* TODO Add database configuration and guide to run locally
+* TODO Remove references to bitwarden
