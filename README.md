@@ -1,54 +1,51 @@
-Snippets: Knowledge not trust
+# Snippets: Knowledge Over Trust
 
-# About
+## About
 
-Snippets is a knowledge aggregater where information is linked to the source.
+Snippets is a knowledge aggregator where information is linked to its source.
 
-Development has four progression paths
+Development has four progression paths:
 
-1. Refactor and clean up current Flask and Jinja2 version
-2. Automate deploy and hosting on local and remote serves
-3. Refactor to use API backend with React frontend
-4. Impelementing new features and use cases
-
+1. Refactor and clean up the current Flask and Jinja2 version.
+2. Automate deployment and hosting on local and remote servers.
+3. Refactor to use an API backend with a React frontend.
+4. Implement new features and use cases.
 
 ## User Management from Flask Shell
 
-```
+```python
 >>> u = User(username='New user', email='Their Email.com')
-
->>> u=db.session.scalar(sa.select(User).where(User.username == "Martin"))
->>> u.set_password("new password)
+>>> u = db.session.scalar(sa.select(User).where(User.username == "Martin"))
+>>> u.set_password("new password")
 >>> db.session.add(u)
 >>> db.session.commit()
 ```
 
-
 ## Branches
 
-* main : Code branch all works starts from and returns to always pushed to origin
-* snip-### : A specific feature reflecting the user story, task, bug ,or epic in Jira. If Jira item is an epic, other branches come out of here, to keep main in a runnable state. 
-* build-YYMMDD : Builds that are run on production, always pushed to origin. 
+- **main**: The main branch where all work starts from and returns to, always pushed to origin.
+- **snip-###**: A specific feature branch reflecting the user story, task, bug, or epic in Jira. If the Jira item is an epic, other branches are created from here to keep the main branch in a runnable state.
+- **build-YYMMDD**: Builds that are run on production, always pushed to origin.
 
-# Hosting Setup
+## Hosting Setup
 
-nginx
-gunicorn
-mariadb
+- nginx
+- gunicorn
+- mariadb
 
-## Production 
-Branch production is run on my local server as a service. Configuration is in 
+### Production
+
+The production branch is run on my local server as a service. Configuration is in:
 
 ```
 /etc/systemd/system/snippets-website.service
 ```
 
-Environment variables in snippets/env and snippets/.secrets.toml both outside of version control.
+Environment variables are in `snippets/env` and `snippets/.secrets.toml`, both outside of version control. The private key password is in Bitwarden under "Private Key service-user-snippets".
 
-Private key password in Bitwarden under "Private Key service-user-snippets"
+To update production:
 
-To update production
-```
+```bash
 sudo su service-user-snippets
 cd ~/websites/snippets
 git branch
@@ -56,53 +53,55 @@ git fetch origin/build-YYMMDD
 git checkout build-YYMMDD
 ```
 
-It case it doesn't work go back to working build
+If it doesn't work, revert to the previous build:
 
+```bash
+git checkout build-previousYYMMDD
 ```
-git checkout build-YYMMDD
+
+To update, you need to be a sudo user and run:
+
+```bash
+sudo systemctl restart snippets-website
 ```
 
-To update need to be a sudo user and run:
-```sudo systemctl restart snippets-website```
+### Flask Server
 
-## Flask Server
-Snippets runs on local server under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
+Snippets runs on a local server under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
 
-To follow logs
+To follow logs:
 
-```
+```bash
 sudo journalctl -u snippets-website.service -f
 ```
 
-## Database Server
+### Database Server
 
-raspberrypi
-password saved as "raspberry pi mariadb root user" in Bitwarden
+Runs on a Raspberry Pi. The password is saved as "raspberry pi mariadb root user" in Bitwarden.
 
-```
+```bash
 mysql -u root -p
 ```
 
 ### Testing
 
-VSCode uses pytest and relies on a local test database
-
+VSCode uses pytest and relies on a local test database.
 
 ## Infrastructure
-Currently running on coolermaster codename hal2.
-With python libraries installed on hal2 and running from virtual environments. See details in tech-guides/hosting-flask.md
 
-# Versioning
+Currently running on a Coolermaster codename hal2, with Python libraries installed on hal2 and running from virtual environments. See details in `tech-guides/hosting-flask.md`.
 
-Based on date of build. 
+## Versioning
+
+Versioning is based on the date of the build.
 
 ## Releases
 
-* 2024-04-22: build-240422
-* 2024-04-05: alpha-0.6
+- **2024-04-22**: build-240422
+- **2024-04-05**: alpha-0.6
 
-# TODOs
+## TODOs
 
-* TODO open JIRA or find alternative
-* TODO Add database configuration and guide to run locally
-* TODO Remove references to bitwarden
+- Open JIRA or find an alternative.
+- Add database configuration and guide to run locally.
+- Remove references to Bitwarden.
