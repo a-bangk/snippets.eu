@@ -1,4 +1,4 @@
-# Snippets: Knowledge Over Trust
+# Snippets: Information, sourced
 
 ## About
 
