@@ -1,4 +1,4 @@
-# Snippets: Information, sourced
+# Snippets: Information, sourced and taggable
 
 ## About
 
