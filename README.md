@@ -1,8 +1,8 @@
-# Snippets: Information, sourced and taggable
+# Snippets: Sourced, Taggable, and Shareable Information
 
 ## About
 
-Snippets is a knowledge aggregator where information is linked to its source.
+Snippets is an knowledge aggregator where information is linked to its source, can be tagged to organized and searched and shareable with other users.
 
 Development has four progression paths:
 
@@ -102,6 +102,7 @@ Versioning is based on the date of the build.
 
 ## TODOs
 
+- Quick start guide to run on a dev server
 - Open JIRA or find an alternative.
 - Add database configuration and guide to run locally.
 - Remove references to Bitwarden.
