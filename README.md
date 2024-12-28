@@ -41,7 +41,7 @@ The production branch is run on my local server as a service. Configuration is i
 /etc/systemd/system/snippets-website.service
 ```
 
-Environment variables are in `snippets/env` and `snippets/.secrets.toml`, both outside of version control. The private key password is in Bitwarden under "Private Key service-user-snippets".
+Environment variables are in `snippets/env` and `snippets/.secrets.toml`, both outside of version control. The private key password is in password manager under "Private Key service-user-snippets".
 
 To update production:
 
@@ -67,7 +67,7 @@ sudo systemctl restart snippets-website
 
 ### Flask Server
 
-Snippets runs on a local server under the service-user-snippets account. Passwords and logins are kept in Bitwarden. 
+Snippets runs on a local server under the service-user-snippets account. Passwords and logins are kept in password manager. 
 
 To follow logs:
 
@@ -77,7 +77,7 @@ sudo journalctl -u snippets-website.service -f
 
 ### Database Server
 
-Runs on a Raspberry Pi. The password is saved as "raspberry pi mariadb root user" in Bitwarden.
+Runs on a Raspberry Pi. The password is saved as "raspberry pi mariadb root user" in password maanger.
 
 ```bash
 mysql -u root -p
@@ -103,6 +103,3 @@ Versioning is based on the date of the build.
 ## TODOs
 
 - Quick start guide to run on a dev server
-- Open JIRA or find an alternative.
-- Add database configuration and guide to run locally.
-- Remove references to Bitwarden.
