@@ -2,14 +2,19 @@
 
 ## About
 
-Snippets is an knowledge aggregator where information is linked to its source, can be tagged to organized and searched and shareable with other users.
+Snippets is a knowledge aggregator where information is always linked to its source, can be tagged to organized, searched and shareable with others.
 
 Development has four progression paths:
 
 1. Refactor and clean up the current Flask and Jinja2 version.
 2. Automate deployment and hosting on local and remote servers.
-3. Refactor to use an API backend with a React frontend.
+3. Refactor to use an API backend apps or web frontend.
 4. Implement new features and use cases.
+
+## Running Locally
+
+Requires a connection to a database to run. Currently uses snippets_test_a run locally. 
+
 
 ## User Management from Flask Shell
 
