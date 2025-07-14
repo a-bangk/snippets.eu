@@ -13,7 +13,14 @@ Development has four progression paths:
 
 ## Running Locally
 
-Requires a connection to a database to run. Currently uses snippets_test_a run locally. 
+Requires a database to run. Currently uses snippets_test_a run locally. 
+
+After setting up the test database and installing python packages needed in the virtual environment. Adjust the settings.toml and run the following commands
+
+```
+export ENV_FOR_DYNACONF=test
+flask --app snippets run --debug
+```
 
 
 ## User Management from Flask Shell
@@ -30,13 +37,13 @@ Requires a connection to a database to run. Currently uses snippets_test_a run l
 
 - **main**: The main branch where all work starts from and returns to, always pushed to origin.
 - **snip-###**: A specific feature branch reflecting the user story, task, bug, or epic in Jira. If the Jira item is an epic, other branches are created from here to keep the main branch in a runnable state.
-- **build-YYMMDD**: Builds that are run on production, always pushed to origin.
 
 ## Hosting Setup
 
 - nginx
 - gunicorn
 - mariadb
+- flask
 
 ### Production
 
@@ -105,6 +112,3 @@ Versioning is based on the date of the build.
 - **2024-04-22**: build-240422
 - **2024-04-05**: alpha-0.6
 
-## TODOs
-
-- Quick start guide to run on a dev server
