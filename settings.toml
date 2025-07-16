@@ -1,7 +1,5 @@
-[default]
-FLASK_DEBUG="TRUE"
-
 [test]
+FLASK_DEBUG="TRUE"
 host="localhost" 
 port="3306"
 database="snippets_test_a"
