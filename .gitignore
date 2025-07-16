@@ -9,7 +9,7 @@ env
 sql_scratch.sql
 *.pyc
 .pytest_cache
-
+settings.toml
 
 # Ignore dynaconf secret files
 .secrets.*

@@ -8,3 +8,7 @@ database="snippets_test_a"
 user="snippets_test_admin"
 SQLALCHEMY_DATABASE_URI="mysql+pymysql://snippets_test_admin:savage@localhost:3306/snippets_test_a"
 SECRET_KEY="dev-secret-key-for-testing-only"
+
+[production]
+port="3306"
+
