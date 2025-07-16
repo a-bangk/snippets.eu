@@ -89,7 +89,7 @@ sudo journalctl -u snippets-website.service -f
 
 ### Database Server
 
-Runs on a Raspberry Pi. The password is saved as "raspberry pi mariadb root user" in password maanger.
+Runs on a Raspberry Pi. The password is saved as "raspberry pi mariadb root user" in password mananer.
 
 ```bash
 mysql -u root -p
@@ -101,7 +101,7 @@ VSCode uses pytest and relies on a local test database.
 
 ## Infrastructure
 
-Currently running on a Coolermaster codename hal2, with Python libraries installed on hal2 and running from virtual environments. See details in `tech-guides/hosting-flask.md`.
+Currently running on a hal, with Python libraries installed on hal and running from virtual environments. See details in `tech-guides/hosting-flask.md`.
 
 ## Versioning
 
